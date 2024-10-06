@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class Controller extends GetxController {
+class OpinionsController extends GetxController {
   var name = 'prueba'.obs;
 
   changeWord(String word) {
