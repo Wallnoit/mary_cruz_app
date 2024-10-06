@@ -17,7 +17,7 @@ class CustomTextArea extends StatelessWidget {
           ),
         ),
         TextFormField(
-          maxLines: 8, // Área de texto grande
+          maxLines: 8,
           decoration: const InputDecoration(
             filled: true,
             fillColor: Color(0xffF2EFEF),

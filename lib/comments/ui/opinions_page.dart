@@ -8,7 +8,6 @@ import '../../core/enums/sidebar.dart';
 import '../../core/ui/components/custom_forms/custom_text_area.dart';
 import '../../core/ui/components/custom_forms/dropdown.dart';
 import '../../core/ui/components/sidebar.dart';
-import '../../home/ui/provider/prueba.dart';
 import '../controllers/opinions_controller.dart';
 
 class OpinionsPage extends StatefulWidget {

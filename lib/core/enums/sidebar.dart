@@ -1,1 +1,10 @@
-enum SideBar { home, candidates, proposals, events, news, testimony, opinions }
+enum SideBar {
+  home,
+  candidates,
+  proposals,
+  events,
+  news,
+  testimony,
+  opinions,
+  survey
+}
