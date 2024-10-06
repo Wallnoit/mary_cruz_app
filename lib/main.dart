@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mary_cruz_app/core/config/routes/global_route_get.dart';
 import 'package:mary_cruz_app/core/theme/theme_data/global_theme_data.dart';
@@ -13,14 +14,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Mary Cruz App',
-      themeMode: ThemeMode.light,
-      theme: GlobalThemeData.lightThemeData,
-      darkTheme: GlobalThemeData.darkThemeData,
-      debugShowCheckedModeBanner: false,
-      getPages: GlobalRouteGet.routes,
-      initialRoute: GlobalRouteGet.initialRoute,
-    );
+    return ScreenUtilInit(
+        builder: (context, child) => GetMaterialApp(
+              title: 'Mary Cruz App',
+              themeMode: ThemeMode.light,
+              theme: GlobalThemeData.lightThemeData,
+              darkTheme: GlobalThemeData.darkThemeData,
+              debugShowCheckedModeBanner: false,
+              getPages: GlobalRouteGet.routes,
+              initialRoute: GlobalRouteGet.initialRoute,
+            ));
   }
 }

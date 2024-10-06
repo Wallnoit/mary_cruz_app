@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
 
@@ -53,43 +54,20 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
               child: Column(
                 children: <Widget>[
                   UserAccountsDrawerHeader(
-                      accountName: Text(
-                        'William Perez',
-                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
+                      accountName: const Text(
+                        '',
                       ),
-                      accountEmail: Text('william@gmail.com',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall!
-                              .copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              )),
-                      currentAccountPicture: ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(12.0), // Radio de redondeo
-                        child: Container(
-                          color: Theme.of(context).colorScheme.primary,
-                          child: Center(
-                            child: Text(
-                              'WP',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displayMedium!
-                                  .copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                      fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
+                      accountEmail: const Text(
+                        '',
                       ),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                      )),
-                  const SizedBox(
-                    height: 20,
+                          color: Theme.of(context).colorScheme.surface,
+                          image: const DecorationImage(
+                            image: AssetImage('lib/assets/logo.png'),
+                            fit: BoxFit.cover,
+                          ))),
+                  SizedBox(
+                    height: 20.h,
                   ),
                   RowSidebar(
                     title: "Home",
@@ -103,52 +81,52 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                     icon: Icons.people_alt_outlined,
                     isSelected: selectIndex == SideBar.candidates,
                     isDisplayed: false,
-                    onTap: () => Get.offNamed("/"),
+                    onTap: () => Get.offNamed("candidates"),
                   ),
                   RowSidebar(
                     title: "Propuestas",
                     icon: Icons.assignment_outlined,
                     isSelected: selectIndex == SideBar.proposals,
                     isDisplayed: false,
-                    onTap: () => Get.offNamed("/"),
+                    onTap: () => Get.offNamed("proposals"),
                   ),
                   RowSidebar(
                     title: "Noticias",
                     icon: Icons.newspaper_outlined,
                     isSelected: selectIndex == SideBar.news,
                     isDisplayed: false,
-                    onTap: () => Get.offNamed("/"),
+                    onTap: () => Get.offNamed("news"),
                   ),
                   RowSidebar(
                     title: "Eventos",
                     icon: Icons.event_outlined,
                     isSelected: selectIndex == SideBar.events,
                     isDisplayed: false,
-                    onTap: () => Get.offNamed("/"),
+                    onTap: () => Get.offNamed("events"),
                   ),
                   RowSidebar(
                     title: "Testimonios",
                     icon: Icons.star_border_outlined,
                     isSelected: selectIndex == SideBar.testimony,
                     isDisplayed: false,
-                    onTap: () => Get.offNamed("/"),
+                    onTap: () => Get.offNamed("testimony"),
                   ),
                   RowSidebar(
                     title: "Opiniones",
                     icon: Icons.chat_outlined,
                     isSelected: selectIndex == SideBar.opinions,
                     isDisplayed: false,
-                    onTap: () => Get.offNamed("/"),
+                    onTap: () => Get.offNamed("opinions"),
                   ),
                   RowSidebar(
                     title: "Encuesta",
                     icon: Icons.poll_outlined,
-                    isSelected: selectIndex == SideBar.opinions,
+                    isSelected: selectIndex == SideBar.survey,
                     isDisplayed: false,
-                    onTap: () => Get.offNamed("/"),
+                    onTap: () => Get.offNamed("survey"),
                   ),
-                  const SizedBox(
-                    height: 90,
+                  SizedBox(
+                    height: 90.h,
                   ),
                 ],
               ),
@@ -162,24 +140,44 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                   child: Column(
                     children: [
                       Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          padding: EdgeInsets.symmetric(horizontal: 15.w),
                           child: Divider(
                             color: Theme.of(context)
                                 .colorScheme
-                                .secondary
+                                .tertiary
                                 .withOpacity(0.5),
                             height: 1,
                           )),
                       const SizedBox(
                         height: 1,
                       ),
-                      RowSidebar(
-                        title: "Logout",
-                        icon: Icons.logout,
-                        onTap: () => Get.offNamed("/login"),
-                        isSelected: false,
-                        isDisplayed: false,
-                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 17, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(
+                              Icons.facebook_outlined,
+                              size: 40,
+                            ),
+                            SizedBox(
+                              width: 20.w,
+                            ),
+                            Icon(
+                              Icons.email_outlined,
+                              size: 40,
+                            ),
+                            SizedBox(
+                              width: 20.w,
+                            ),
+                            Icon(
+                              Icons.tiktok_outlined,
+                              size: 40,
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 )),
@@ -209,9 +207,9 @@ class RowSidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+        contentPadding: EdgeInsets.symmetric(vertical: 3.w, horizontal: 10.h),
         selected: isSelected,
         selectedTileColor: Theme.of(context).colorScheme.primary,
         shape: RoundedRectangleBorder(
@@ -219,7 +217,7 @@ class RowSidebar extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               color: isSelected
                   ? Theme.of(context).colorScheme.surface
                   : Theme.of(context).colorScheme.onSurface,
@@ -228,7 +226,7 @@ class RowSidebar extends StatelessWidget {
         onTap: onTap,
         leading: Icon(
           icon,
-          size: 35,
+          size: 30,
           color: isSelected
               ? Theme.of(context).colorScheme.surface
               : Theme.of(context).colorScheme.onSurface,

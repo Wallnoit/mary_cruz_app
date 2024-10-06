@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
@@ -84,27 +85,27 @@ TextTheme lightGlobalText = TextTheme(
 
 TextTheme darkGlobalText = TextTheme(
   bodyLarge: GoogleFonts.roboto(
-    fontSize: 20,
+    fontSize: 20.sp,
     fontWeight: FontWeight.w400,
     color: onDark,
   ),
   bodyMedium: GoogleFonts.roboto(
-    fontSize: 16,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w400,
     color: onDark,
   ),
   bodySmall: GoogleFonts.roboto(
-    fontSize: 14,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w400,
     color: onDark,
   ),
   displayLarge: GoogleFonts.roboto(
-    fontSize: 34,
+    fontSize: 34.sp,
     fontWeight: FontWeight.w400,
     color: onDark,
   ),
   displayMedium: GoogleFonts.roboto(
-    fontSize: 28,
+    fontSize: 28.sp,
     fontWeight: FontWeight.w400,
     color: onDark,
   ),
@@ -114,47 +115,47 @@ TextTheme darkGlobalText = TextTheme(
     color: onDark,
   ),
   headlineLarge: GoogleFonts.roboto(
-    fontSize: 20,
+    fontSize: 20.sp,
     fontWeight: FontWeight.w700,
     color: onDark,
   ),
   headlineMedium: GoogleFonts.roboto(
-    fontSize: 16,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w700,
     color: onDark,
   ),
   headlineSmall: GoogleFonts.roboto(
-    fontSize: 14,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w700,
     color: onDark,
   ),
   labelLarge: GoogleFonts.roboto(
-    fontSize: 20,
+    fontSize: 20.sp,
     fontWeight: FontWeight.w400,
     color: onDark,
   ),
   labelMedium: GoogleFonts.roboto(
-    fontSize: 16,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w400,
     color: onDark,
   ),
   labelSmall: GoogleFonts.roboto(
-    fontSize: 14,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w400,
     color: onDark,
   ),
   titleLarge: GoogleFonts.robotoSlab(
-    fontSize: 25,
+    fontSize: 25.sp,
     fontWeight: FontWeight.w700,
     color: onDark,
   ),
   titleMedium: GoogleFonts.robotoSlab(
-    fontSize: 20,
+    fontSize: 20.sp,
     fontWeight: FontWeight.w700,
     color: onDark,
   ),
   titleSmall: GoogleFonts.robotoSlab(
-    fontSize: 17,
+    fontSize: 17.sp,
     fontWeight: FontWeight.w700,
     color: onDark,
   ),
