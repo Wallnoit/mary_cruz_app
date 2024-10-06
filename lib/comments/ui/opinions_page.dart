@@ -44,9 +44,6 @@ class OpinionsPageState extends State<OpinionsPage> {
     DropdownData(value: '3', display: 'Otro'),
   ];
 
-  final _future = supabase.from('encuesta_inicial')
-      .select();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,17 +58,6 @@ class OpinionsPageState extends State<OpinionsPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 20),
             child: Column(children: [
-              FutureBuilder(
-              future: _future,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                final countries = snapshot.data!;
-                print(countries);
-                return SizedBox();
-              },
-            ),
               Dropdown(
                 label: 'Facultad',
                 getData: facultyData,
