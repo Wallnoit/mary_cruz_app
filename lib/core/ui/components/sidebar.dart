@@ -138,7 +138,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                     icon: Icons.chat_outlined,
                     isSelected: selectIndex == SideBar.opinions,
                     isDisplayed: false,
-                    onTap: () => Get.offNamed("/"),
+                    onTap: () => Get.offNamed("/opinions"),
                   ),
                   RowSidebar(
                     title: "Encuesta",
