@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/enums/sidebar.dart';
 import '../../core/ui/components/custom_forms/custom_text_area.dart';
 import '../../core/ui/components/custom_forms/dropdown.dart';
 import '../../core/ui/components/sidebar.dart';
+import '../../main.dart';
 import '../controllers/opinions_controller.dart';
 
 class OpinionsPage extends StatefulWidget {
@@ -42,6 +44,9 @@ class OpinionsPageState extends State<OpinionsPage> {
     DropdownData(value: '3', display: 'Otro'),
   ];
 
+  final _future = supabase.from('encuesta_inicial')
+      .select();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +61,17 @@ class OpinionsPageState extends State<OpinionsPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 20),
             child: Column(children: [
+              FutureBuilder(
+              future: _future,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final countries = snapshot.data!;
+                print(countries);
+                return SizedBox();
+              },
+            ),
               Dropdown(
                 label: 'Facultad',
                 getData: facultyData,
@@ -114,6 +130,7 @@ class OpinionsPageState extends State<OpinionsPage> {
               const SizedBox(height: 10),
               CustomTextArea(label: 'Comentario'),
               Text(opinionsController.name.value),
+
             ]),
           ),
         );
