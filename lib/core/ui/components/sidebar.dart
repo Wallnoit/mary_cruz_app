@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
+import 'package:mary_cruz_app/core/utils/screen_utils.dart';
 
 class GlobalSidebar extends StatefulWidget {
   final SideBar selectedIndex;
@@ -53,21 +54,24 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
             SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  UserAccountsDrawerHeader(
-                      accountName: const Text(
-                        '',
-                      ),
-                      accountEmail: const Text(
-                        '',
-                      ),
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          image: const DecorationImage(
-                            image: AssetImage('lib/assets/logo.png'),
-                            fit: BoxFit.cover,
-                          ))),
                   SizedBox(
-                    height: 20.h,
+                    width: getContainerWidth(context) * 0.6,
+                    child: UserAccountsDrawerHeader(
+                        accountName: const Text(
+                          '',
+                        ),
+                        accountEmail: const Text(
+                          '',
+                        ),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
+                            image: const DecorationImage(
+                              image: AssetImage('lib/assets/logo.png'),
+                              fit: BoxFit.cover,
+                            ))),
+                  ),
+                  SizedBox(
+                    height: 5.h,
                   ),
                   RowSidebar(
                     title: "Home",
