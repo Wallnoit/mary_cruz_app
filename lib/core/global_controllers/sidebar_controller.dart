@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:mary_cruz_app/core/interfaces/sidebar_option.dart';
+import 'package:mary_cruz_app/core/entities/sidebar_option.dart';
 import 'package:mary_cruz_app/core/supabase/supabase_instance.dart';
 
 class SidebarController extends GetxController {
@@ -14,8 +14,6 @@ class SidebarController extends GetxController {
 
       final List<SidebarOptions> sidebarOptions =
           data.map((e) => SidebarOptions.fromMap(e)).toList();
-      print("Sidebar Options");
-      print(sidebarOptions);
 
       listSidebarOptions.value = sidebarOptions;
     } catch (e) {
