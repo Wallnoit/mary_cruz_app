@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:mary_cruz_app/core/entities/question.dart';
+import 'package:mary_cruz_app/core/entities/response.dart';
 
 class SurveyItem extends StatefulWidget {
   final int questionIndex;
-  final String question;
-  final List<String> options;
+  final Question question;
+  final Function(String, ResponseQuestion) onSelectedOption;
+  final Function(String) isSelected;
 
-  const SurveyItem(
-      {super.key,
-      required this.questionIndex,
-      required this.question,
-      required this.options});
+  const SurveyItem({
+    super.key,
+    required this.questionIndex,
+    required this.question,
+    required this.onSelectedOption,
+    required this.isSelected,
+  });
 
   @override
   State<SurveyItem> createState() => _SurveyItemState();
@@ -18,22 +23,44 @@ class SurveyItem extends StatefulWidget {
 class _SurveyItemState extends State<SurveyItem> {
   String selectedOption = '';
 
+  get isSelected => widget.isSelected;
+
+  @override
+  void initState() {
+    super.initState();
+    print("${widget.question.title}  $isSelected");
+    selectedOption = isSelected(widget.question.id);
+
+    print("selectedOption $selectedOption");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Column(
+              children: [
+                Text(
+                  "${widget.questionIndex}.",
+                  style: Theme.of(context).textTheme.titleMedium!,
+                  softWrap: true, // Asegura que el texto se envuelva
+                  overflow: TextOverflow
+                      .visible, // Si prefieres que se muestre todo el texto
+                ),
+              ],
+            ),
+            const SizedBox(width: 10),
             Expanded(
               // O usa Flexible aquí si prefieres
               child: Text(
-                "${widget.questionIndex}. ${widget.question}",
+                widget.question.title,
                 style: Theme.of(context).textTheme.titleMedium!,
-                softWrap: true, // Asegura que el texto se envuelva
-                overflow: TextOverflow
-                    .visible, // Si prefieres que se muestre todo el texto
+                softWrap: true,
+                overflow: TextOverflow.visible,
               ),
             ),
             Icon(Icons.favorite,
@@ -42,23 +69,26 @@ class _SurveyItemState extends State<SurveyItem> {
         ),
         const Divider(),
         Column(
-          children: widget.options
+          children: widget.question.responses
               .map(
                 (option) => RadioListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: Text(option,
+                  title: Text(option.title,
                       style: Theme.of(context).textTheme.bodyMedium),
-                  value: option,
+                  value: option.title,
                   groupValue: selectedOption,
                   onChanged: (value) {
                     setState(() {
                       selectedOption = value.toString();
                     });
+
+                    widget.onSelectedOption(widget.question.id, option);
                   },
                 ),
               )
               .toList(),
         ),
+        const SizedBox(height: 50),
       ],
     );
   }

@@ -1,4 +1,4 @@
-package com.example.mary_cruz_app
+package com.mary_cruz.uta
 
 import io.flutter.embedding.android.FlutterActivity
 
