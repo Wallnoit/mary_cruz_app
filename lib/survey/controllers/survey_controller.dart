@@ -142,6 +142,8 @@ class SurveyController extends GetxController {
 
       clearAnswers();
 
+      configController.isCompletedSurvey.value = true;
+
       Get.snackbar('Respuestas enviadas', 'Gracias por participar',
           colorText: Colors.white, backgroundColor: Colors.green);
       return true;
