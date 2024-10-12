@@ -20,6 +20,7 @@ Future<void> main() async {
   ConfigController configController =
       Get.put(ConfigController(), permanent: true);
 
+  await configController.getCurrentVersion();
   await controller.getSidebarOptions();
   await configController.getCurrentSurvey();
   await configController.isCompletedSurveyF();
@@ -30,7 +31,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(

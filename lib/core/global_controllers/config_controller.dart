@@ -5,6 +5,7 @@ import 'package:mary_cruz_app/core/utils/cellphone_info.dart';
 class ConfigController extends GetxController {
   var currentSurvey = "".obs;
   var isCompletedSurvey = false.obs;
+  var currentVersion = "".obs;
 
   getCurrentSurvey() async {
     try {
@@ -18,7 +19,7 @@ class ConfigController extends GetxController {
 
       currentSurvey.value = data['value'];
     } catch (e) {
-      print("Error al obtener las opciones del menú $e");
+      print("Error al obtener la encuesta $e");
       currentSurvey.value = "";
     }
   }
@@ -37,6 +38,21 @@ class ConfigController extends GetxController {
     } catch (e) {
       print("Error al obtener las opciones del menú $e");
       currentSurvey.value = "";
+    }
+  }
+
+  getCurrentVersion() async {
+    try {
+      var data = await supabase
+          .from('configuraciones')
+          .select()
+          .eq('key', 'currentVersion')
+          .single();
+
+      currentVersion.value = data['value'];
+    } catch (e) {
+      print("Error al obtener la version $e");
+      currentVersion.value = '';
     }
   }
 }

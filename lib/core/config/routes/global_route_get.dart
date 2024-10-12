@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:mary_cruz_app/actualizations/Actualization_page.dart';
 import 'package:mary_cruz_app/candidates/pages/candidates_page.dart';
 import 'package:mary_cruz_app/events/pages/events_page.dart';
 import 'package:mary_cruz_app/home/pages/home_page.dart';
@@ -15,6 +16,7 @@ class GlobalRouteGet {
   static final List<GetPage> routes = [
     GetPage(
         name: '/', page: () => const HomePage(), transition: Transition.fadeIn),
+    
     GetPage(
         name: '/candidates',
         page: () => const CandidatesPage(),
