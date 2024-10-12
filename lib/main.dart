@@ -22,6 +22,7 @@ Future<void> main() async {
 
   await controller.getSidebarOptions();
   await configController.getCurrentSurvey();
+  await configController.isCompletedSurveyF();
 
   runApp(const MyApp());
 }

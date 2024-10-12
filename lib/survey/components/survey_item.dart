@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:mary_cruz_app/core/entities/question.dart';
+import 'package:mary_cruz_app/core/entities/response.dart';
 
 class SurveyItem extends StatefulWidget {
   final int questionIndex;
   final Question question;
+  final Function(String, ResponseQuestion) onSelectedOption;
+  final Function(String) isSelected;
 
   const SurveyItem({
     super.key,
     required this.questionIndex,
     required this.question,
+    required this.onSelectedOption,
+    required this.isSelected,
   });
 
   @override
@@ -17,6 +22,17 @@ class SurveyItem extends StatefulWidget {
 
 class _SurveyItemState extends State<SurveyItem> {
   String selectedOption = '';
+
+  get isSelected => widget.isSelected;
+
+  @override
+  void initState() {
+    super.initState();
+    print("${widget.question.title}  $isSelected");
+    selectedOption = isSelected(widget.question.id);
+
+    print("selectedOption $selectedOption");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +81,8 @@ class _SurveyItemState extends State<SurveyItem> {
                     setState(() {
                       selectedOption = value.toString();
                     });
+
+                    widget.onSelectedOption(widget.question.id, option);
                   },
                 ),
               )

@@ -13,4 +13,7 @@ class ResponseQuestion {
       title: map['respuesta'],
     );
   }
+
+  @override
+  String toString() => 'ResponseQuestion(id: $id, title: $title)';
 }
