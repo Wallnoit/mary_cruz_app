@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "905943685724",
+    "project_id": "testutamary",
+    "storage_bucket": "testutamary.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905943685724:android:96d688d02a9738cd96a499",
+        "android_client_info": {
+          "package_name": "com.mary_cruz.uta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyL-TYwiufDoAm-qjTMlDg8O8MXOsUHs0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
