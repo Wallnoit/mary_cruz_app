@@ -35,7 +35,7 @@ class RowSideBarObject {
 }
 
 class _GlobalSidebarState extends State<GlobalSidebar> {
-  SidebarController controller = Get.put(SidebarController(), permanent: true);
+  SidebarController controller = Get.find();
 
   get selectIndex => widget.selectedIndex;
 
@@ -148,7 +148,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       icon: Icons.poll_outlined,
                       isSelected: selectIndex == SideBar.survey,
                       isVisible: controller.listSidebarOptions[7].isVisible,
-                      onTap: () => {Get.offNamed("survey"), getOptionMenu()},
+                      onTap: () => Get.offNamed("survey"),
                     ),
                     SizedBox(
                       height: 90.h,
