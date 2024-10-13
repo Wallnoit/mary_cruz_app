@@ -2,6 +2,8 @@
 
 import 'package:mary_cruz_app/core/supabase/supabase_instance.dart';
 
+import '../../core/errors/exceptions.dart';
+import '../../core/errors/failures.dart';
 import '../models/comment_model.dart';
 
 class CommentsDataSource {
@@ -10,10 +12,9 @@ class CommentsDataSource {
   Future<void> addComment({required CommentModel comment}) async{
     try{
       await supabase.from('opiniones').insert([comment.toJson()]);
-      print('Comentario agregado correctamente');
     }catch(e){
-      print('Error al agregar el comentario: $e');
-      throw Exception('Error al agregar el comentario: $e');
+      print(e);
+      throw ServerFailure(errorMessage: 'Error en servidor al agregar comentario');
     }
   }
 

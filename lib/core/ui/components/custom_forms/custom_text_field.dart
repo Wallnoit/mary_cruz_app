@@ -38,14 +38,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
   get enabled => widget.enabled;
 
   @override
-  void dispose() {
-    if (mounted) {
-      valueController.dispose();
-    }
-    super.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
   }

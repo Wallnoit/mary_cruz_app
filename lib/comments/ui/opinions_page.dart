@@ -5,13 +5,17 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mary_cruz_app/comments/ui/widgets/age_custom_text_field.dart';
+import 'package:mary_cruz_app/core/errors/failures.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_forms/custom_text_field.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../core/data/users_datasource.dart';
 import '../../core/enums/sidebar.dart';
+import '../../core/models/user_model.dart';
 import '../../core/ui/components/custom_forms/custom_text_area.dart';
 import '../../core/ui/components/custom_forms/dropdown.dart';
 import '../../core/ui/components/sidebar.dart';
+import '../../core/utils/cellphone_info.dart';
 import '../../main.dart';
 import '../controllers/opinions_controller.dart';
 import '../data/comments_datasource.dart';
@@ -29,6 +33,9 @@ class OpinionsPage extends StatefulWidget {
 class OpinionsPageState extends State<OpinionsPage> {
   OpinionsController opinionsController =
       Get.put(OpinionsController(), permanent: true);
+
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
 
   List<DropdownData> facultyData = [
     DropdownData(value: '1', display: 'Ciencias Humanas y de la Educación'),
@@ -59,9 +66,9 @@ class OpinionsPageState extends State<OpinionsPage> {
   ];
 
   List<DropdownData> genreData = [
-    DropdownData(value: 'MASCULINO', display: 'Masculino'),
-    DropdownData(value: 'FEMENINO', display: 'Femenino'),
-    DropdownData(value: 'OTRO', display: 'Otro'),
+    DropdownData(value: 'M', display: 'Masculino'),
+    DropdownData(value: 'F', display: 'Femenino'),
+    DropdownData(value: 'O', display: 'Otro'),
   ];
 
   //controllers
@@ -70,8 +77,7 @@ class OpinionsPageState extends State<OpinionsPage> {
   final genreController = TextEditingController();
   final ageController = TextEditingController();
   final commentController = TextEditingController();
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
+
 
   // Errores
   String? facultyError;
@@ -92,74 +98,91 @@ class OpinionsPageState extends State<OpinionsPage> {
 
   void validateInputs() {
     setState(() {
-      if(opinionsController.personalDataOptionSelected.value.toString() == 'SI'){
-        nameError = nameController.text.isEmpty
-            ? 'Nombre es requerido' : null;
-        emailError = emailController.text.isEmpty
-            ? 'Correo es requerido'
-            : !RegExp('.*')
-            .hasMatch(emailController.text)
-            ? 'Ingrese un correo válido'
-            : null;
-      }else{
-      }
-      facultyError = facultyController.text.isEmpty
-          ? 'Facultad es requerida'
-          : null;
+      facultyError =
+          facultyController.text.isEmpty ? 'Facultad es requerida' : null;
       personTypeError = personTypeController.text.isEmpty
-              ? 'Tipo de persona es requerido'
-              : null;
-      genreError = genreController.text.isEmpty
-          ? 'Genero es requerido' : null;
+          ? 'Tipo de persona es requerido'
+          : null;
+      genreError = genreController.text.isEmpty ? 'Genero es requerido' : null;
       ageError = ageController.text.isEmpty
           ? 'Edad es requerida'
           : !RegExp(r'^(1[6-9]|[2-7][0-9]|80)$').hasMatch(ageController.text)
-          ? 'Ingrese una edad entre 16 y 80 año9'
-          : null;
-      commentError = commentController.text.isEmpty
-          ? 'Comentario es requerido' : null;
-      nameError = nameController.text.isEmpty
-          ? 'Nombre es requerido' : null;
+              ? 'Ingrese una edad entre 16 y 80 años'
+              : null;
+      commentError =
+          commentController.text.isEmpty ? 'Comentario es requerido' : null;
+    });
+  }
+
+  void validateUserInfo() {
+    setState(() {
+      nameError = nameController.text.isEmpty ? 'Nombre es requerido' : null;
       emailError = emailController.text.isEmpty
           ? 'Correo es requerido'
           : !RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
           .hasMatch(emailController.text)
-          ? 'Ingrese un correo válido'
-          : null;
+              ? 'Ingrese un correo válido'
+              : null;
     });
   }
 
   onSaveComment() async {
-    validateInputs();
     print('Guardando comentario');
+    validateInputs();
     if (facultyError == null &&
         personTypeError == null &&
         genreError == null &&
         ageError == null &&
-        commentError == null
-        ) {
-      CommentsDataSource().addComment(
-          comment: CommentModel(
-              facultad: facultyController.text,
-              tipoUsuario: personTypeController.text,
-              genero: genreController.text,
-              edad: int.parse(ageController.text),
-              comentario: commentController.text,
-              idDispositivo: '123456',
-              ));
-
-    }else{
-      print(facultyError);
-      print(personTypeError);
-      print(genreError);
-      print(ageError);
-      print(commentError);
-      print(nameError);
-      print(emailError);
+        commentError == null) {
+      if(opinionsController.personalDataOptionSelected.value.toString() == 'SI'){
+        validateUserInfo();
+        await onSaveUserInfo();
+      }
+      try {
+        String deviceInfo = await getDeviceId();
+        CommentsDataSource().addComment(
+            comment: CommentModel(
+          facultad: facultyController.text,
+          tipoUsuario: personTypeController.text,
+          genero: genreController.text,
+          edad: int.parse(ageController.text),
+          comentario: commentController.text,
+          idDispositivo: deviceInfo,
+        ));
+      } on ServerFailure catch (e) {
+        //Cambiar Dialogo de acuerdo al error
+      }
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Por favor, corrija los errores en el formulario'),
       ));
     }
+  }
+
+
+  onSaveUserInfo() async {
+    validateUserInfo();
+    if (nameError == null && emailError == null) {
+      try {
+        String deviceInfo = await getDeviceId();
+        UsersDataSource().addUser(
+            user: UserModel(
+              facultad: facultyController.text,
+              tipoUsuario: personTypeController.text,
+              genero: genreController.text,
+              edad: int.parse(ageController.text),
+              idDispositivo: deviceInfo,
+              email: emailController.text,
+            ));
+      } on ServerFailure catch (e) {
+        //Cambiar Dialogo de acuerdo al error
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Por favor, corrija los errores en el formulario'),
+      ));
+    }
+
   }
 
   @override
@@ -189,8 +212,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                 enabled: true,
               ),
               if (facultyError != null)
-                Text(facultyError!,
-                    style: TextStyle(color: Colors.red)),
+                Text(facultyError!, style: TextStyle(color: Colors.red)),
               const SizedBox(height: 10),
               Dropdown(
                 label: 'Soy',
@@ -205,8 +227,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                 enabled: true,
               ),
               if (personTypeError != null)
-                Text(personTypeError!,
-                    style: TextStyle(color: Colors.red)),
+                Text(personTypeError!, style: TextStyle(color: Colors.red)),
               const SizedBox(height: 10),
               Row(
                 children: [
@@ -214,7 +235,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                     child: Dropdown(
                       label: 'Genero',
                       getData: genreData,
-                      value: 'MASCULINO',
+                      value: 'M',
                       height: 50.0,
                       expanded: true,
                       onSelected: (String newValue) {
@@ -227,8 +248,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                 ],
               ),
               if (genreError != null)
-                Text(genreError!,
-                    style: TextStyle(color: Colors.red)),
+                Text(genreError!, style: TextStyle(color: Colors.red)),
               const SizedBox(height: 10),
               InputColumn(
                   textField: AgeCustomTextField(
@@ -241,14 +261,12 @@ class OpinionsPageState extends State<OpinionsPage> {
                   ),
                   title: 'Edad'),
               if (ageError != null)
-                Text(ageError!,
-                    style: TextStyle(color: Colors.red)),
+                Text(ageError!, style: TextStyle(color: Colors.red)),
               const SizedBox(height: 10),
               CustomTextArea(
                   controller: commentController, label: 'Comentario'),
               if (commentError != null)
-                Text(commentError!,
-                    style: TextStyle(color: Colors.red)),
+                Text(commentError!, style: TextStyle(color: Colors.red)),
               const SizedBox(height: 10),
               Column(
                 children: [
@@ -291,42 +309,43 @@ class OpinionsPageState extends State<OpinionsPage> {
                 ],
               ),
               const SizedBox(height: 10),
-              opinionsController.personalDataOptionSelected.value.toString() ==
-                      'SI'
-                  ? Container(
-                      child: Column(
-                        children: [
-                          InputColumn(
-                              textField: CustomTextField(
-                                regex: RegExp(r'^\d+$'),
-                                inputType: TextInputType.text,
-                                fontSize: 14,
-                                radius: 8,
-                                valueController: nameController,
-                                enabled: true,
-                              ),
-                              title: 'Nombre'),
-                          if (nameError != null)
-                            Text(nameError!,
-                                style: TextStyle(color: Colors.red)),
-                          const SizedBox(height: 10),
-                          InputColumn(
-                              textField: AgeCustomTextField(
-                                regex: RegExp(r'^\d+$'),
-                                inputType: TextInputType.text,
-                                fontSize: 14,
-                                radius: 8,
-                                valueController: emailController,
-                                enabled: true,
-                              ),
-                              title: 'Email'),
-                          if (emailError != null)
-                            Text(emailError!,
-                                style: TextStyle(color: Colors.red)),
-                        ],
-                      ),
-                    )
-                  : const SizedBox(),
+              Visibility(
+                  visible: opinionsController.personalDataOptionSelected.value ==
+                      'SI',
+              child: Container(
+                child: Column(
+                  children: [
+                    InputColumn(
+                        textField: CustomTextField(
+                          regex: RegExp(r'^\d+$'),
+                          inputType: TextInputType.text,
+                          fontSize: 14,
+                          radius: 8,
+                          valueController: nameController,
+                          enabled: true,
+                        ),
+                        title: 'Nombre'),
+                    if (nameError != null)
+                      Text(nameError!,
+                          style: TextStyle(color: Colors.red)),
+                    const SizedBox(height: 10),
+                    InputColumn(
+                        textField: CustomTextField(
+                          regex: RegExp(r'^\d+$'),
+                          inputType: TextInputType.text,
+                          fontSize: 14,
+                          radius: 8,
+                          valueController: emailController,
+                          enabled: true,
+                        ),
+                        title: 'Email'),
+                    if (emailError != null)
+                      Text(emailError!,
+                          style: TextStyle(color: Colors.red)),
+                  ],
+                ),
+              )
+              ),
               SizedBox(
                 height: 20,
               ),
