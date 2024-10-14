@@ -16,6 +16,7 @@ import '../../core/ui/components/custom_forms/custom_text_area.dart';
 import '../../core/ui/components/custom_forms/dropdown.dart';
 import '../../core/ui/components/sidebar.dart';
 import '../../core/utils/cellphone_info.dart';
+import '../../core/utils/cellphone_token.dart';
 import '../../main.dart';
 import '../controllers/opinions_controller.dart';
 import '../data/comments_datasource.dart';
@@ -126,29 +127,28 @@ class OpinionsPageState extends State<OpinionsPage> {
     });
   }
 
-  onSaveComment() async {
-    print('Guardando comentario');
+  onSaveCommentWithoutPersonalInfo() async {
+    print('Guardando comentario sin datos personales');
     validateInputs();
+    String deviceInfo = await getDeviceId();
+    String userToken = await getToken();
     if (facultyError == null &&
         personTypeError == null &&
         genreError == null &&
         ageError == null &&
         commentError == null) {
-      if(opinionsController.personalDataOptionSelected.value.toString() == 'SI'){
-        validateUserInfo();
-        await onSaveUserInfo();
-      }
       try {
-        String deviceInfo = await getDeviceId();
-        CommentsDataSource().addComment(
-            comment: CommentModel(
-          facultad: facultyController.text,
-          tipoUsuario: personTypeController.text,
-          genero: genreController.text,
-          edad: int.parse(ageController.text),
-          comentario: commentController.text,
-          idDispositivo: deviceInfo,
-        ));
+        UsersDataSource().addUser(
+            user: UserAndCommentModel(
+              facultad: facultyController.text,
+              tipoUsuario: personTypeController.text,
+              genero: genreController.text,
+              edad: int.parse(ageController.text),
+              idDispositivo: deviceInfo,
+              email: 'ANONYMOUS',
+              tokenUser: userToken,
+              opinion: commentController.text,
+            ));
       } on ServerFailure catch (e) {
         //Cambiar Dialogo de acuerdo al error
       }
@@ -160,19 +160,22 @@ class OpinionsPageState extends State<OpinionsPage> {
   }
 
 
-  onSaveUserInfo() async {
+  onSaveCommentWithPersonalInfo() async {
     validateUserInfo();
     if (nameError == null && emailError == null) {
       try {
         String deviceInfo = await getDeviceId();
+        String userToken = await getToken();
         UsersDataSource().addUser(
-            user: UserModel(
+            user: UserAndCommentModel(
               facultad: facultyController.text,
               tipoUsuario: personTypeController.text,
               genero: genreController.text,
               edad: int.parse(ageController.text),
               idDispositivo: deviceInfo,
               email: emailController.text,
+              tokenUser: userToken,
+              opinion: commentController.text,
             ));
       } on ServerFailure catch (e) {
         //Cambiar Dialogo de acuerdo al error
@@ -358,7 +361,11 @@ class OpinionsPageState extends State<OpinionsPage> {
                       padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                     onPressed: () async {
-                      onSaveComment();
+                      if(opinionsController.personalDataOptionSelected.value == 'SI'){
+                        onSaveCommentWithPersonalInfo();
+                      }else{
+                        onSaveCommentWithoutPersonalInfo();
+                      }
                     },
                     child: Text(
                       'GUARDAR',

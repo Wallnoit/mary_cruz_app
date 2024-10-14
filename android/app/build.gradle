@@ -66,13 +66,14 @@ android {
         versionName = flutter.versionName
     }
 
+
     signingConfigs {
-       release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile file(keystoreProperties['storeFile'])
-           storePassword keystoreProperties['storePassword']
-       }
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
     }
 
     buildTypes {
@@ -103,7 +104,7 @@ flutter {
 
 dependencies {
     implementation 'com.google.firebase:firebase-messaging:23.0.0'  // Update as needed
-    implementation 'io.flutter:flutter_embedding_debug:1.0.0'  // Update as needed
+    //implementation 'io.flutter:flutter_embedding_debug:1.0.0'  // Update as needed
 }
 
 apply plugin: 'com.google.gms.google-services'

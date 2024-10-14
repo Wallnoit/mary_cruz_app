@@ -7,10 +7,11 @@ import '../models/user_model.dart';
 class UsersDataSource {
 
 
-  Future<void> addUser({required UserModel user}) async{
+  Future<void> addUser({required UserAndCommentModel user}) async{
     print('Agregando datos de usuario');
     try{
-      await supabase.from('usuarios').insert([user.toJson()]);
+      await supabase.rpc('insert_opinion_and_user',params: user.toJson());
+      //await supabase.from('usuarios').insert([user.toJson()]);
       print('Datos de usuario agregados correctamente');
     }catch(e){
       print(e);
