@@ -57,9 +57,11 @@ class ConfigController extends GetxController {
         .select()
         .eq('id_dispositivo', deviceId);
 
-      print(" updateResponse " + response.first.isNotEmpty.toString());
+      
 
-      if(response.first.isNotEmpty){
+      print(" updateResponse " + (response.length.toString()));
+
+      if(response.length > 0){
          await supabase
         .from('usuarios') // Reemplaza con el nombre de tu tabla
         .update({"token_user": tokenPhone})
