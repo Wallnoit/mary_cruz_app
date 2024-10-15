@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mary_cruz_app/comments/ui/widgets/age_custom_text_field.dart';
+import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_forms/custom_text_field.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -92,40 +93,35 @@ class OpinionsPageState extends State<OpinionsPage> {
 
   void validateInputs() {
     setState(() {
-      if(opinionsController.personalDataOptionSelected.value.toString() == 'SI'){
-        nameError = nameController.text.isEmpty
-            ? 'Nombre es requerido' : null;
+      if (opinionsController.personalDataOptionSelected.value.toString() ==
+          'SI') {
+        nameError = nameController.text.isEmpty ? 'Nombre es requerido' : null;
         emailError = emailController.text.isEmpty
             ? 'Correo es requerido'
-            : !RegExp('.*')
-            .hasMatch(emailController.text)
-            ? 'Ingrese un correo válido'
-            : null;
-      }else{
-      }
-      facultyError = facultyController.text.isEmpty
-          ? 'Facultad es requerida'
-          : null;
+            : !RegExp('.*').hasMatch(emailController.text)
+                ? 'Ingrese un correo válido'
+                : null;
+      } else {}
+      facultyError =
+          facultyController.text.isEmpty ? 'Facultad es requerida' : null;
       personTypeError = personTypeController.text.isEmpty
-              ? 'Tipo de persona es requerido'
-              : null;
-      genreError = genreController.text.isEmpty
-          ? 'Genero es requerido' : null;
+          ? 'Tipo de persona es requerido'
+          : null;
+      genreError = genreController.text.isEmpty ? 'Genero es requerido' : null;
       ageError = ageController.text.isEmpty
           ? 'Edad es requerida'
           : !RegExp(r'^(1[6-9]|[2-7][0-9]|80)$').hasMatch(ageController.text)
-          ? 'Ingrese una edad entre 16 y 80 año9'
-          : null;
-      commentError = commentController.text.isEmpty
-          ? 'Comentario es requerido' : null;
-      nameError = nameController.text.isEmpty
-          ? 'Nombre es requerido' : null;
+              ? 'Ingrese una edad entre 16 y 80 año9'
+              : null;
+      commentError =
+          commentController.text.isEmpty ? 'Comentario es requerido' : null;
+      nameError = nameController.text.isEmpty ? 'Nombre es requerido' : null;
       emailError = emailController.text.isEmpty
           ? 'Correo es requerido'
           : !RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
-          .hasMatch(emailController.text)
-          ? 'Ingrese un correo válido'
-          : null;
+                  .hasMatch(emailController.text)
+              ? 'Ingrese un correo válido'
+              : null;
     });
   }
 
@@ -136,19 +132,17 @@ class OpinionsPageState extends State<OpinionsPage> {
         personTypeError == null &&
         genreError == null &&
         ageError == null &&
-        commentError == null
-        ) {
+        commentError == null) {
       CommentsDataSource().addComment(
           comment: CommentModel(
-              facultad: facultyController.text,
-              tipoUsuario: personTypeController.text,
-              genero: genreController.text,
-              edad: int.parse(ageController.text),
-              comentario: commentController.text,
-              idDispositivo: '123456',
-              ));
-
-    }else{
+        facultad: facultyController.text,
+        tipoUsuario: personTypeController.text,
+        genero: genreController.text,
+        edad: int.parse(ageController.text),
+        comentario: commentController.text,
+        idDispositivo: '123456',
+      ));
+    } else {
       print(facultyError);
       print(personTypeError);
       print(genreError);
@@ -165,8 +159,8 @@ class OpinionsPageState extends State<OpinionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dinos que Piensas'),
+      appBar: CustomAppbar(
+        title: 'Dinos que piensas',
       ),
       drawer: const GlobalSidebar(
         selectedIndex: SideBar.opinions,
@@ -189,8 +183,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                 enabled: true,
               ),
               if (facultyError != null)
-                Text(facultyError!,
-                    style: TextStyle(color: Colors.red)),
+                Text(facultyError!, style: TextStyle(color: Colors.red)),
               const SizedBox(height: 10),
               Dropdown(
                 label: 'Soy',
@@ -205,8 +198,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                 enabled: true,
               ),
               if (personTypeError != null)
-                Text(personTypeError!,
-                    style: TextStyle(color: Colors.red)),
+                Text(personTypeError!, style: TextStyle(color: Colors.red)),
               const SizedBox(height: 10),
               Row(
                 children: [
@@ -227,8 +219,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                 ],
               ),
               if (genreError != null)
-                Text(genreError!,
-                    style: TextStyle(color: Colors.red)),
+                Text(genreError!, style: TextStyle(color: Colors.red)),
               const SizedBox(height: 10),
               InputColumn(
                   textField: AgeCustomTextField(
@@ -241,14 +232,12 @@ class OpinionsPageState extends State<OpinionsPage> {
                   ),
                   title: 'Edad'),
               if (ageError != null)
-                Text(ageError!,
-                    style: TextStyle(color: Colors.red)),
+                Text(ageError!, style: TextStyle(color: Colors.red)),
               const SizedBox(height: 10),
               CustomTextArea(
                   controller: commentController, label: 'Comentario'),
               if (commentError != null)
-                Text(commentError!,
-                    style: TextStyle(color: Colors.red)),
+                Text(commentError!, style: TextStyle(color: Colors.red)),
               const SizedBox(height: 10),
               Column(
                 children: [
