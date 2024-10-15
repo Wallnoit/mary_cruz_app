@@ -11,7 +11,7 @@ class FirstPage extends StatefulWidget {
   State<FirstPage> createState() => _FirstPageState();
 }
 
-const String appVersionLocal = "0.0.0"; // Version actual de la app local
+const String appVersionLocal = "0.0.1"; // Version actual de la app local
 
 openStore() {
   LaunchReview.launch(androidAppId: 'com.mary_cruz.uta', iOSAppId: '');
