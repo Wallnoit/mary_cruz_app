@@ -53,20 +53,22 @@ class ConfigController extends GetxController {
       print(" tokenPhone " + tokenPhone.toString());
       
       final response = await supabase
-        .from('usuario') // Reemplaza con el nombre de tu tabla
+        .from('usuarios') // Reemplaza con el nombre de tu tabla
         .select()
         .eq('id_dispositivo', deviceId);
 
-      print(" updateResponse " + response.first.isNotEmpty.toString());
+      
 
-      if(response.first.isNotEmpty){
+      print(" updateResponse " + (response.length.toString()));
+
+      if(response.length > 0){
          await supabase
-        .from('usuario') // Reemplaza con el nombre de tu tabla
+        .from('usuarios') // Reemplaza con el nombre de tu tabla
         .update({"token_user": tokenPhone})
         .eq('id_dispositivo', deviceId);
       }else{
         await supabase
-        .from('usuario') // Reemplaza con el nombre de tu tabla
+        .from('usuarios') // Reemplaza con el nombre de tu tabla
         .insert({"token_user": tokenPhone,'id_dispositivo': deviceId});
         
 

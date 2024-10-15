@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -48,9 +50,8 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterL
 
 Future<void> createNotificationChannels() async {
   const AndroidNotificationChannel callChannel = AndroidNotificationChannel(
-    'channel ID', // 
-    'channel name', // 
-    description: 'Incoming call notifications',
+   'partido_notificaciones', 'notificaciones',
+    description: 'Notifications',
     importance: Importance.high,
   );
 
@@ -60,15 +61,57 @@ Future<void> createNotificationChannels() async {
       ?.createNotificationChannel(callChannel);
 }
 
+
+ Future<void> _showNotificationWithImage(RemoteNotification notification, String imageUrl) async {
+    final ByteData imageData = await NetworkAssetBundle(Uri.parse(imageUrl)).load("");
+    final Uint8List bytess = imageData.buffer.asUint8List();
+    final AndroidBitmap<Object> largeIcon = ByteArrayAndroidBitmap(bytess);
+    
+    BigPictureStyleInformation bigPictureStyleInformation = BigPictureStyleInformation(
+      largeIcon, // Usar NetworkImage para cargar desde una URL
+      largeIcon: largeIcon, // Icono grande
+      contentTitle: notification.title,
+      summaryText: notification.body,
+      htmlFormatContent: true,
+      htmlFormatTitle: true,
+    );
+
+     AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+           
+          'partido_notificaciones', 'notificaciones', importance: Importance.max,
+          //'channel.id', 'channel.name',importance: Importance.max,
+            priority: Priority.max,
+            channelShowBadge: true,
+            enableVibration: true,
+            enableLights: true,
+          showWhen: true,
+      styleInformation: bigPictureStyleInformation,
+    );
+
+    NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      notification.title,
+      notification.body,
+      platformChannelSpecifics,
+    );
+  }
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // Handle the background message
+  print("Handling a background message: ${message.messageId}");
+  // You can also show a local notification here if desired
+}
+
 Future<void> initFcm() async {
   await Firebase.initializeApp();
 
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
 
 
-  createNotificationChannels();
-
-  var initializationSettingsAndroid = const AndroidInitializationSettings('@mipmap/ic_launcher_monochrome');
+  var initializationSettingsAndroid = const AndroidInitializationSettings('@mipmap/ic_launcher');
   var initializationSettingsIOS = const DarwinInitializationSettings(); // ios
   var initializationSettings = InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
   flutterLocalNotificationsPlugin.initialize(initializationSettings);
@@ -82,27 +125,39 @@ Future<void> initFcm() async {
 
 
     if (notification != null && android != null) {
-      flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
 
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-           
-          'partido_notificaciones', 'notificaciones', importance: Importance.max,
-          //'channel.id', 'channel.name',importance: Importance.max,
-            priority: Priority.max,
-            channelShowBadge: true,
-            enableVibration: true,
-            enableLights: true,
-          showWhen: true,)),
-        payload: json.encode(message?.data),
-      );
+      if (message!.data.isNotEmpty) {
+        String imageUrl = message.data['image'];
+        _showNotificationWithImage(notification, imageUrl);
+      }else{
+
+          flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+
+            const NotificationDetails(
+              android: AndroidNotificationDetails(
+              
+              'partido_notificaciones', 'notificaciones', importance: Importance.max,
+              //'channel.id', 'channel.name',importance: Importance.max,
+                priority: Priority.max,
+                channelShowBadge: true,
+                enableVibration: true,
+                enableLights: true,
+              showWhen: true,)),
+            payload: json.encode(message.data),
+          );
+
+      }
+
     }
+
+
   });
 
   
+   createNotificationChannels();
 
 
 
