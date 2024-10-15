@@ -137,11 +137,8 @@ class OpinionsPageState extends State<OpinionsPage> {
   }
 
   onSaveCommentWithoutPersonalInfo() async {
-    showLoadingDialog(
-        context, statusNotifier
-    );
     validateInputs();
-    statusNotifier.value = 'Obteniendo informacion del dispositivo...';
+
     String deviceInfo = await getDeviceId();
     String userToken = await getToken();
     if (facultyError == null &&
@@ -150,6 +147,9 @@ class OpinionsPageState extends State<OpinionsPage> {
         ageError == null &&
         commentError == null) {
       try {
+        showLoadingDialog(
+            context, statusNotifier
+        );
         statusNotifier.value = 'Enviando Comentario...';
         await UsersDataSource().addUser(
             user: UserAndCommentModel(
@@ -178,11 +178,11 @@ class OpinionsPageState extends State<OpinionsPage> {
 
 
   onSaveCommentWithPersonalInfo() async {
-    showLoadingDialog(
-        context, statusNotifier
-    );
     validateUserInfo();
     if (nameError == null && emailError == null) {
+      showLoadingDialog(
+          context, statusNotifier
+      );
       try {
         statusNotifier.value = 'Obteniendo informacion del dispositivo...';
         String deviceInfo = await getDeviceId();
