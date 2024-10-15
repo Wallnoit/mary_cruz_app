@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:launch_review/launch_review.dart';
 import 'package:mary_cruz_app/core/config/routes/global_route_get.dart';
 import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
 import 'package:mary_cruz_app/core/global_controllers/sidebar_controller.dart';
 import 'package:mary_cruz_app/core/theme/theme_data/global_theme_data.dart';
+import 'package:mary_cruz_app/home/pages/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
@@ -28,6 +30,7 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -42,6 +45,9 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               getPages: GlobalRouteGet.routes,
               initialRoute: GlobalRouteGet.initialRoute,
+              
             ));
   }
 }
+
+
