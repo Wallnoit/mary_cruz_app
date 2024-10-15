@@ -5,6 +5,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mary_cruz_app/comments/ui/widgets/age_custom_text_field.dart';
+import 'package:mary_cruz_app/comments/ui/widgets/loading_dialog/loading_dialog.dart';
+import 'package:mary_cruz_app/comments/ui/widgets/loading_dialog/loading_dialog_controller.dart';
+import 'package:mary_cruz_app/comments/ui/widgets/terms_conditions_dialog.dart';
 import 'package:mary_cruz_app/core/errors/failures.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_forms/custom_text_field.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -34,6 +37,9 @@ class OpinionsPage extends StatefulWidget {
 class OpinionsPageState extends State<OpinionsPage> {
   OpinionsController opinionsController =
       Get.put(OpinionsController(), permanent: true);
+  LoadingDialogController loadingDialogController =
+  Get.put(LoadingDialogController(), permanent: true);
+
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -78,6 +84,9 @@ class OpinionsPageState extends State<OpinionsPage> {
   final genreController = TextEditingController();
   final ageController = TextEditingController();
   final commentController = TextEditingController();
+
+  ValueNotifier<String> statusNotifier = ValueNotifier<String>("Guardando...");
+
 
 
   // Errores
@@ -128,8 +137,11 @@ class OpinionsPageState extends State<OpinionsPage> {
   }
 
   onSaveCommentWithoutPersonalInfo() async {
-    print('Guardando comentario sin datos personales');
+    showLoadingDialog(
+        context, statusNotifier
+    );
     validateInputs();
+    statusNotifier.value = 'Obteniendo informacion del dispositivo...';
     String deviceInfo = await getDeviceId();
     String userToken = await getToken();
     if (facultyError == null &&
@@ -138,7 +150,8 @@ class OpinionsPageState extends State<OpinionsPage> {
         ageError == null &&
         commentError == null) {
       try {
-        UsersDataSource().addUser(
+        statusNotifier.value = 'Enviando Comentario...';
+        await UsersDataSource().addUser(
             user: UserAndCommentModel(
               facultad: facultyController.text,
               tipoUsuario: personTypeController.text,
@@ -149,6 +162,10 @@ class OpinionsPageState extends State<OpinionsPage> {
               tokenUser: userToken,
               opinion: commentController.text,
             ));
+        print('El comentario ha sido enviado!');
+        statusNotifier.value = 'Comentario enviado!';
+        loadingDialogController.isLoading(false);
+        print(LoadingDialogController().isProcessing);
       } on ServerFailure catch (e) {
         //Cambiar Dialogo de acuerdo al error
       }
@@ -161,12 +178,17 @@ class OpinionsPageState extends State<OpinionsPage> {
 
 
   onSaveCommentWithPersonalInfo() async {
+    showLoadingDialog(
+        context, statusNotifier
+    );
     validateUserInfo();
     if (nameError == null && emailError == null) {
       try {
+        statusNotifier.value = 'Obteniendo informacion del dispositivo...';
         String deviceInfo = await getDeviceId();
         String userToken = await getToken();
-        UsersDataSource().addUser(
+        statusNotifier.value = 'Enviando Comentario...';
+        await UsersDataSource().addUser(
             user: UserAndCommentModel(
               facultad: facultyController.text,
               tipoUsuario: personTypeController.text,
@@ -177,6 +199,7 @@ class OpinionsPageState extends State<OpinionsPage> {
               tokenUser: userToken,
               opinion: commentController.text,
             ));
+        LoadingDialogController().isLoading(false);
       } on ServerFailure catch (e) {
         //Cambiar Dialogo de acuerdo al error
       }
@@ -187,6 +210,43 @@ class OpinionsPageState extends State<OpinionsPage> {
     }
 
   }
+
+  void showTermConditionsDialog(){
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return TermsConditionsDialog(
+          onAccept: (){
+            if(opinionsController.personalDataOptionSelected.value == 'SI'){
+              onSaveCommentWithPersonalInfo();
+            }else{
+              onSaveCommentWithoutPersonalInfo();
+            }
+          },
+          onReject: (){
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
+
+  void showLoadingDialog(
+      BuildContext context, ValueNotifier<String> statusNotifier) {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return CommentsLoadingDialog(
+            statusNotifier: statusNotifier,
+            onAccept: (){},
+            onReject: (){}
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -361,11 +421,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                       padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                     onPressed: () async {
-                      if(opinionsController.personalDataOptionSelected.value == 'SI'){
-                        onSaveCommentWithPersonalInfo();
-                      }else{
-                        onSaveCommentWithoutPersonalInfo();
-                      }
+                      showTermConditionsDialog();
                     },
                     child: Text(
                       'GUARDAR',
