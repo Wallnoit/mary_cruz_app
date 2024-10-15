@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextArea extends StatelessWidget {
   String label;
-  CustomTextArea({super.key, required this.label});
+  TextEditingController controller;
+  CustomTextArea({super.key, required this.label, required this.controller});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,6 +18,7 @@ class CustomTextArea extends StatelessWidget {
           ),
         ),
         TextFormField(
+          controller: controller,
           maxLines: 8,
           decoration: const InputDecoration(
             filled: true,
