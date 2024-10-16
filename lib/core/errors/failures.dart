@@ -8,6 +8,11 @@ class ServerFailure extends Failure {
       : super(errorMessage: errorMessage);
 }
 
+class NotFoundFailure extends Failure {
+  NotFoundFailure({required String errorMessage})
+      : super(errorMessage: errorMessage);
+}
+
 class LocalStorageFailure extends Failure {
   LocalStorageFailure({required String errorMessage})
       : super(errorMessage: errorMessage);

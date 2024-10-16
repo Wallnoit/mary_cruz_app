@@ -35,6 +35,9 @@ class OpinionsPage extends StatefulWidget {
 }
 
 class OpinionsPageState extends State<OpinionsPage> {
+  UserModel? userData;
+  bool isLoading = true;
+  bool userNotFound = false;
   OpinionsController opinionsController =
       Get.put(OpinionsController(), permanent: true);
   LoadingDialogController loadingDialogController =
@@ -101,6 +104,7 @@ class OpinionsPageState extends State<OpinionsPage> {
   @override
   void initState() {
     super.initState();
+    _loadUserData();
     facultyController.text = facultyData[0].value;
     personTypeController.text = personTypeData[0].value;
     genreController.text = genreData[0].value;
@@ -126,7 +130,6 @@ class OpinionsPageState extends State<OpinionsPage> {
 
   void validateUserInfo() {
     setState(() {
-      nameError = nameController.text.isEmpty ? 'Nombre es requerido' : null;
       emailError = emailController.text.isEmpty
           ? 'Correo es requerido'
           : !RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
@@ -137,6 +140,7 @@ class OpinionsPageState extends State<OpinionsPage> {
   }
 
   onSaveCommentWithoutPersonalInfo() async {
+    loadingDialogController.isLoading(true);
     validateInputs();
     String deviceInfo = await getDeviceId();
     String userToken = await getToken();
@@ -177,13 +181,16 @@ class OpinionsPageState extends State<OpinionsPage> {
 
 
   onSaveCommentWithPersonalInfo() async {
+    loadingDialogController.isLoading(true);
     validateUserInfo();
-    if (nameError == null && emailError == null) {
+    commentError =
+    commentController.text.isEmpty ? 'Comentario es requerido' : null;
+    if (nameError == null && emailError == null && commentError == null) {
       showLoadingDialog(
           context, statusNotifier
       );
       try {
-        statusNotifier.value = 'Obteniendo informacion del dispositivo...';
+        statusNotifier.value = 'Enviando Comentario...';
         String deviceInfo = await getDeviceId();
         String userToken = await getToken();
         statusNotifier.value = 'Enviando Comentario...';
@@ -198,6 +205,10 @@ class OpinionsPageState extends State<OpinionsPage> {
               tokenUser: userToken,
               opinion: commentController.text,
             ));
+        if(!userNotFound){
+          final newInfoUser = userData?.copyWith(email: emailController.text);
+          await UsersDataSource().updateUser(user: newInfoUser!);
+        }
         print('El comentario ha sido enviado!');
         statusNotifier.value = 'Comentario enviado!';
         loadingDialogController.isLoading(false);
@@ -241,7 +252,9 @@ class OpinionsPageState extends State<OpinionsPage> {
       builder: (BuildContext context) {
         return CommentsLoadingDialog(
             statusNotifier: statusNotifier,
-            onAccept: (){},
+            onAccept: (){
+              _loadUserData();
+            },
             onReject: (){}
         );
       },
@@ -249,8 +262,43 @@ class OpinionsPageState extends State<OpinionsPage> {
   }
 
 
+  Future<void> _loadUserData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      String deviceInfo = await getDeviceId();
+      final data = await UsersDataSource().getUserData(idDispositivo: deviceInfo);
+      setState(() {
+        userData = data;
+        ageController.text = data.edad.toString();
+      });
+    } on NotFoundFailure catch (e) {
+      setState(() {
+        userNotFound = true;
+      });
+    } on ServerFailure catch (e) {
+      print('Error del servidor: ${e.errorMessage}');
+    } catch (e) {
+      print('Error inesperado: $e');
+    } finally {
+      setState(() {
+        isLoading = false; // Finalizamos la carga
+      });
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Cerrar Caja')),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dinos que Piensas'),
@@ -273,7 +321,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                   print('Nuevo valor seleccionado: $newValue');
                   facultyController.text = newValue;
                 },
-                enabled: true,
+                enabled:  userNotFound ? true : false,
               ),
               if (facultyError != null)
                 Text(facultyError!, style: TextStyle(color: Colors.red)),
@@ -281,14 +329,14 @@ class OpinionsPageState extends State<OpinionsPage> {
               Dropdown(
                 label: 'Soy',
                 getData: personTypeData,
-                value: 'ESTUDIANTE',
+                value:'ESTUDIANTE',
                 height: 50.0,
                 expanded: true,
                 onSelected: (String newValue) {
                   personTypeController.text = newValue;
                   print('Nuevo valor seleccionado: $newValue');
                 },
-                enabled: true,
+                enabled:userNotFound ? true : false,
               ),
               if (personTypeError != null)
                 Text(personTypeError!, style: TextStyle(color: Colors.red)),
@@ -306,7 +354,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                         genreController.text = newValue;
                         print('Nuevo valor seleccionado: $newValue');
                       },
-                      enabled: true,
+                      enabled:  userNotFound ? true : false,
                     ),
                   ),
                 ],
@@ -321,7 +369,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                     fontSize: 14,
                     radius: 8,
                     valueController: ageController,
-                    enabled: true,
+                    enabled:  userNotFound ? true : false,
                   ),
                   title: 'Edad'),
               if (ageError != null)
@@ -335,7 +383,7 @@ class OpinionsPageState extends State<OpinionsPage> {
               Column(
                 children: [
                   Text(
-                      'Desea registrar sus datos personales para recibir noticias y temas de su interes? (nombre y correo eletronico)',
+                      'Desea registrar su correo electronico para recibir noticias y temas de su interes? ',
                       style: GoogleFonts.roboto(
                           fontSize: 16, fontWeight: FontWeight.w500)),
                   Row(
@@ -379,20 +427,6 @@ class OpinionsPageState extends State<OpinionsPage> {
               child: Container(
                 child: Column(
                   children: [
-                    InputColumn(
-                        textField: CustomTextField(
-                          regex: RegExp(r'^\d+$'),
-                          inputType: TextInputType.text,
-                          fontSize: 14,
-                          radius: 8,
-                          valueController: nameController,
-                          enabled: true,
-                        ),
-                        title: 'Nombre'),
-                    if (nameError != null)
-                      Text(nameError!,
-                          style: TextStyle(color: Colors.red)),
-                    const SizedBox(height: 10),
                     InputColumn(
                         textField: CustomTextField(
                           regex: RegExp(r'^\d+$'),
