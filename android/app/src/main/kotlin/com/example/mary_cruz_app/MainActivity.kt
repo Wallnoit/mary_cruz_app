@@ -1,4 +1,4 @@
-package com.mary_cruz.uta
+package com.mary.cruz.uta
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine

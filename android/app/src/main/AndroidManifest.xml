@@ -26,8 +26,8 @@
                 android:value="true" />
 
 
-            <meta-data android:name="com.mary_cruz.uta.notification_channel_name" android:value="Notificaciones"/>
-            <meta-data android:name="com.mary_cruz.uta.notification_channel_description" android:value="Notificaciones desde APP"/>
+            <meta-data android:name="com.mary.cruz.uta.notification_channel_name" android:value="Notificaciones"/>
+            <meta-data android:name="com.mary.cruz.uta.notification_channel_description" android:value="Notificaciones desde APP"/>
             <meta-data
                         android:name="com.google.firebase.messaging.default_notification_channel_id"
                         android:value="@string/default_notification_channel_id" />

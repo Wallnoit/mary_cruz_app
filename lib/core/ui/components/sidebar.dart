@@ -99,7 +99,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                           decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.surface,
                               image: const DecorationImage(
-                                image: AssetImage('lib/assets/logo.png'),
+                                image: AssetImage('lib/assets/logo2.png'),
                                 fit: BoxFit.cover,
                               ))),
                     ),
