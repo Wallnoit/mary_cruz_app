@@ -70,7 +70,6 @@ class ConfigController extends GetxController {
         await supabase
         .from('usuarios') // Reemplaza con el nombre de tu tabla
         .insert({"token_user": tokenPhone,'id_dispositivo': deviceId});
-        
 
       }
 

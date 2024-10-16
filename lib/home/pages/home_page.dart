@@ -19,8 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Controller controller = Get.put(Controller(), permanent: true);
-
   @override
   void initState() {
     super.initState();
@@ -100,35 +98,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        appBar: const CustomAppbar(
-          title: 'Home',
-        ),
-        drawer: const GlobalSidebar(
-          selectedIndex: SideBar.home,
-        ),
-        body: Obx(() {
-          return SingleChildScrollView(
-              child: Container(
-            width: deviceWidth,
+          appBar: CustomAppbar(
+            title: 'Home',
+          ),
+          drawer: const GlobalSidebar(
+            selectedIndex: SideBar.home,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 20),
-                Text(controller.name.value),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    controller.changeWord('Hola Mundo');
-                  },
-                  child: const Text('Cambiar texto'),
+                Image.asset(
+                  'lib/assets/logo.png', // Ruta de la imagen
                 ),
               ],
             ),
-          ));
-        }),
-      ),
+          )),
     );
   }
 }

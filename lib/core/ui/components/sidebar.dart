@@ -6,6 +6,7 @@ import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/global_controllers/sidebar_controller.dart';
 import 'package:mary_cruz_app/core/supabase/supabase_instance.dart';
 import 'package:mary_cruz_app/core/utils/screen_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GlobalSidebar extends StatefulWidget {
   final SideBar selectedIndex;
@@ -41,6 +42,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
 
   bool membershipOptions = false;
   bool paymentsOptions = false;
+  SideBar? selected;
 
   getOptionMenu() async {
     final data = await supabase
@@ -51,7 +53,17 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
     print(data);
   }
 
-  SideBar? selected;
+  Future<void> launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri,
+          mode: LaunchMode
+              .externalApplication); // Usa el modo para abrir en un navegador externo
+    } else {
+      throw 'No se pudo abrir la URL $url';
+    }
+  }
 
   @override
   void initState() {
@@ -182,23 +194,44 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(
-                                Icons.facebook_outlined,
-                                size: 40,
+                              InkWell(
+                                onTap: () {
+                                  final String url = Uri.encodeFull(
+                                      'https://www.facebook.com/people/Mary-Cruz/61565950187878/');
+
+                                  launchURL(url);
+                                },
+                                child: Image.asset(
+                                  'lib/assets/fb.png', // Ruta de la imagen
+                                  width: 40, // Establece el ancho
+                                  height: 40, // Establece la altura
+                                ),
                               ),
-                              SizedBox(
-                                width: 20.w,
+                              InkWell(
+                                onTap: () {
+                                  final String url = Uri.encodeFull(
+                                      'https://www.instagram.com/marycruzlascano/');
+
+                                  launchURL(url);
+                                },
+                                child: Image.asset(
+                                  'lib/assets/insta.png', // Ruta de la imagen
+                                  width: 40, // Establece el ancho
+                                  height: 40, // Establece la altura
+                                ),
                               ),
-                              Icon(
-                                Icons.email_outlined,
-                                size: 40,
-                              ),
-                              SizedBox(
-                                width: 20.w,
-                              ),
-                              Icon(
-                                Icons.tiktok_outlined,
-                                size: 40,
+                              InkWell(
+                                onTap: () {
+                                  final String url = Uri.encodeFull(
+                                      'https://www.tiktok.com/@marycruzlascano');
+
+                                  launchURL(url);
+                                },
+                                child: Image.asset(
+                                  'lib/assets/tiktok.png', // Ruta de la imagen
+                                  width: 40, // Establece el ancho
+                                  height: 40, // Establece la altura
+                                ),
                               ),
                             ],
                           ),

@@ -67,7 +67,7 @@ class _SurveyPageState extends State<SurveyPage> {
                   child: const Icon(Icons.send),
                 )
               : null,
-          appBar: const CustomAppbar(
+          appBar: CustomAppbar(
             title: 'Encuestas',
           ),
           drawer: const GlobalSidebar(

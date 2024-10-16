@@ -4,7 +4,7 @@ List<String> personalDataOptions = ['SI', 'NO'];
 
 class OpinionsController extends GetxController {
   var name = 'prueba'.obs;
-  var personalDataOptionSelected = personalDataOptions[0].obs;
+  var personalDataOptionSelected = personalDataOptions[1].obs;
 
   void changeWord(String word) {
     name.value = word;
