@@ -138,7 +138,6 @@ class OpinionsPageState extends State<OpinionsPage> {
 
   onSaveCommentWithoutPersonalInfo() async {
     validateInputs();
-
     String deviceInfo = await getDeviceId();
     String userToken = await getToken();
     if (facultyError == null &&
@@ -167,7 +166,7 @@ class OpinionsPageState extends State<OpinionsPage> {
         loadingDialogController.isLoading(false);
         print(LoadingDialogController().isProcessing);
       } on ServerFailure catch (e) {
-        //Cambiar Dialogo de acuerdo al error
+        print('Error al enviar el comentario');
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -199,7 +198,9 @@ class OpinionsPageState extends State<OpinionsPage> {
               tokenUser: userToken,
               opinion: commentController.text,
             ));
-        LoadingDialogController().isLoading(false);
+        print('El comentario ha sido enviado!');
+        statusNotifier.value = 'Comentario enviado!';
+        loadingDialogController.isLoading(false);
       } on ServerFailure catch (e) {
         //Cambiar Dialogo de acuerdo al error
       }
