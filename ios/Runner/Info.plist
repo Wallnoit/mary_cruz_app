@@ -68,5 +68,9 @@
 		<false/>
 	</dict>
 	</dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+		<array>
+			<string>com.mary.cruz.uta.task1</string>
+		</array>
 </dict>
 </plist>
