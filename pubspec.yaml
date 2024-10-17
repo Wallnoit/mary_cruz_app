@@ -53,6 +53,7 @@ dependencies:
   flutter_local_notifications:
   permission_handler:
   flutter_device_imei: 
+  connectivity_plus:
 
 
 flutter_icons:
@@ -84,6 +85,13 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+
+flutter_native_splash:
+  color: "#ffffff"  # Color de fondo del splash screen
+  image: assets/logo2.png  # Ruta a la imagen del logo
+  android:fullScreen: true
+  ios:fullScreen: true
 
   assets:
     - .env

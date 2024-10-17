@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
+import 'package:mary_cruz_app/core/global_controllers/sidebar_controller.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
 import 'package:mary_cruz_app/home/provider/prueba.dart';
@@ -19,20 +21,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   @override
-  void initState() {
+  void initState()  {
     super.initState();
       
+    var connectivityResult = resultConnectivity();
 
-    _isAndroidPermissionGranted();
-    _requestPermissions();
+    if (connectivityResult == ConnectivityResult.mobile || 
+          connectivityResult == ConnectivityResult.wifi) {
+          _isAndroidPermissionGranted();
+        _requestPermissions();
 
-    initNotifications();
+        initNotifications();
+        // Internet is available, initialize Firebase
+    }
 
 
 
   }
 
+
+  resultConnectivity()async{
+    return await (Connectivity().checkConnectivity());
+  }
   initNotifications()async{
     ConfigController configController =
       Get.put(ConfigController(), permanent: true);
@@ -112,9 +124,13 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'lib/assets/logo2.png', // Ruta de la imagen
-                ),
+                Image(
+                            image: AssetImage('lib/assets/logo3.png'),
+                          ),
+                
+                /*Image.asset(
+                  'lib/assets/logo3.png', // Ruta de la imagen
+                ),*/
               ],
             ),
           )),

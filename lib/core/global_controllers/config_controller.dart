@@ -92,4 +92,7 @@ class ConfigController extends GetxController {
       currentVersion.value = '';
     }
   }
+
+
+
 }

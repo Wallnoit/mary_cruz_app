@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,25 +24,43 @@ import 'package:permission_handler/permission_handler.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //firebase
-  await Firebase.initializeApp(); // Initialize Firebase
-  await initFcm();
-  // firebase
 
-  await dotenv.load(fileName: ".env");
-  await Supabase.initialize(
-    url: dotenv.get('SUPABASE_URL'),
-    anonKey: dotenv.get('SUPABASE_ANON_KEY'),
-  );
 
-  SidebarController controller = Get.put(SidebarController(), permanent: true);
-  ConfigController configController =
-      Get.put(ConfigController(), permanent: true);
 
-  await configController.getCurrentVersion();
-  await controller.getSidebarOptions();
-  await configController.getCurrentSurvey();
-  await configController.isCompletedSurveyF();
+    var connectivityResult = await (Connectivity().checkConnectivity());
+
+    if (connectivityResult == ConnectivityResult.mobile || 
+          connectivityResult == ConnectivityResult.wifi) {
+       
+    // Internet is available, initialize Firebase
+      //firebase
+      await Firebase.initializeApp(); // Initialize Firebase
+      await initFcm();
+      // firebase
+
+      await dotenv.load(fileName: ".env");
+      await Supabase.initialize(
+        url: dotenv.get('SUPABASE_URL'),
+        anonKey: dotenv.get('SUPABASE_ANON_KEY'),
+      );
+
+
+    SidebarController controller = Get.put(SidebarController(), permanent: true);
+      ConfigController configController =
+          Get.put(ConfigController(), permanent: true);
+
+
+
+      await configController.getCurrentVersion();
+      await controller.getSidebarOptions();
+      await configController.getCurrentSurvey();
+      await configController.isCompletedSurveyF();
+  } else {
+    // Handle offline scenario
+    print('No internet connection. Firebase will not be initialized.');
+  }
+
+
 
   HttpOverrides.global = MyHttpOverrides();
 
@@ -57,6 +76,10 @@ class MyHttpOverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
   }
 }
+
+
+
+
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
