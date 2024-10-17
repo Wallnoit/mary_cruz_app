@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:905943685724:android:96d688d02a9738cd96a499",
+        "mobilesdk_app_id": "1:905943685724:android:9cb3b2594745fb2296a499",
         "android_client_info": {
-          "package_name": "com.mary_cruz.uta"
+          "package_name": "com.mary.cruz.uta"
         }
       },
       "oauth_client": [],

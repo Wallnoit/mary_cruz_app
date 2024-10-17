@@ -8,7 +8,6 @@ import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
-import 'package:mary_cruz_app/home/provider/prueba.dart';
 import 'package:mary_cruz_app/main.dart';
 
 class HomePage extends StatefulWidget {
@@ -22,31 +21,23 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-      
 
     _isAndroidPermissionGranted();
     _requestPermissions();
 
     initNotifications();
-
-
-
   }
 
-  initNotifications()async{
+  initNotifications() async {
     ConfigController configController =
-      Get.put(ConfigController(), permanent: true);
+        Get.put(ConfigController(), permanent: true);
     await configController.saveUpdUser();
 
-
     FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
-        configController.saveUpdUser();
+      configController.saveUpdUser();
     });
-
-
   }
 
-  
   bool _notificationsEnabled = false;
 
   Future<void> _isAndroidPermissionGranted() async {
@@ -63,7 +54,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-    Future<void> _requestPermissions() async {
+  Future<void> _requestPermissions() async {
     if (Platform.isIOS || Platform.isMacOS) {
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
@@ -94,8 +85,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -113,7 +102,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'lib/assets/logo.png', // Ruta de la imagen
+                  'lib/assets/logo3.png', // Ruta de la imagen
                 ),
               ],
             ),

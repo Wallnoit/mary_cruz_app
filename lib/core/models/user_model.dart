@@ -22,17 +22,30 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    try{
+      return UserModel(
+          id: json['id'],
+          facultad: json['facultad'],
+          tipoUsuario: json['tipo_usuario'],
+          genero: json['genero'],
+          edad: int.parse(json['edad']),
+          idDispositivo: json['id_dispositivo'],
+          email: json['email'],
+          tokenUser: json['token_user']
+      );
+    }catch(e,stack){
+      print(stack);
+    }
     return UserModel(
-      id: json['id'],
-      facultad: json['facultad'],
-      tipoUsuario: json['tipo_usuario'],
-      genero: json['genero'],
-      edad: json['edad'],
-      idDispositivo: json['id_dispositivo'],
-      email: json['email'],
-      tokenUser: json['token_user']
-    );
-  }
+        id: '',
+        facultad: '',
+        tipoUsuario: '',
+        genero: '',
+        edad: 0,
+        idDispositivo: '',
+        email: '',
+        tokenUser: ''
+    );}
 
   Map<String, dynamic> toJson() {
     return {
@@ -44,6 +57,28 @@ class UserModel {
       'email': email,
       'token_user': tokenUser
     };
+  }
+
+  UserModel copyWith({
+    String? id,
+    String? facultad,
+    String? tipoUsuario,
+    String? genero,
+    int? edad,
+    String? idDispositivo,
+    String? email,
+    String? tokenUser,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      facultad: facultad ?? this.facultad,
+      tipoUsuario: tipoUsuario ?? this.tipoUsuario,
+      genero: genero ?? this.genero,
+      edad: edad ?? this.edad,
+      idDispositivo: idDispositivo ?? this.idDispositivo,
+      email: email ?? this.email,
+      tokenUser: tokenUser ?? this.tokenUser,
+    );
   }
 }
 
@@ -86,7 +121,7 @@ class UserAndCommentModel extends UserModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJsonRpc() {
     return {
       'p_opinion': opinion,
       'p_facultad': facultad,
@@ -98,6 +133,30 @@ class UserAndCommentModel extends UserModel {
       'p_token_user': tokenUser,
       if (id != null) 'id': id,
     };
+  }
+
+  UserModel copyWith({
+    String? id,
+    String? facultad,
+    String? tipoUsuario,
+    String? genero,
+    int? edad,
+    String? idDispositivo,
+    String? email,
+    String? tokenUser,
+    String? opinion,
+  }) {
+    return UserAndCommentModel(
+      id: id ?? this.id,
+      facultad: facultad ?? this.facultad,
+      tipoUsuario: tipoUsuario ?? this.tipoUsuario,
+      genero: genero ?? this.genero,
+      edad: edad ?? this.edad,
+      idDispositivo: idDispositivo ?? this.idDispositivo,
+      email: email ?? this.email,
+      tokenUser: tokenUser ?? this.tokenUser,
+      opinion: opinion ?? this.opinion,
+    );
   }
 }
 
