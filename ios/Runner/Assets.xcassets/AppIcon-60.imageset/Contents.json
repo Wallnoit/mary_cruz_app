@@ -2,17 +2,12 @@
   "images" : [
     {
       "filename" : "AppIcon-60@2x~car.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "AppIcon-60@2x~car 1.png",
-      "idiom" : "universal",
+      "idiom" : "car",
       "scale" : "2x"
     },
     {
       "filename" : "AppIcon-60@3x~car.png",
-      "idiom" : "universal",
+      "idiom" : "car",
       "scale" : "3x"
     }
   ],
