@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:mary_cruz_app/core/supabase/supabase_instance.dart';
 import 'package:mary_cruz_app/core/utils/cellphone_info.dart';
+import 'package:mary_cruz_app/core/utils/cellphone_token.dart';
 
 class ConfigController extends GetxController {
   var currentSurvey = "".obs;
@@ -32,12 +33,48 @@ class ConfigController extends GetxController {
         'encuesta_id': currentSurvey.value
       });
 
-      print(data);
+      print(data.toString());
+      print("deviceId" + deviceId.toString());
+
 
       isCompletedSurvey.value = data;
     } catch (e) {
       print("Error al obtener las opciones del menú $e");
       currentSurvey.value = "";
+    }
+  }
+
+
+  saveUpdUser () async {
+    try {
+      var deviceId = await getDeviceId();
+      var tokenPhone = await getToken();
+
+      //print(" tokenPhone " + tokenPhone.toString());
+      
+      final response = await supabase
+        .from('usuarios') // Reemplaza con el nombre de tu tabla
+        .select()
+        .eq('id_dispositivo', deviceId);
+
+      
+
+      //print(" updateResponse " + (response.length.toString()));
+
+      if(response.length > 0){
+         await supabase
+        .from('usuarios') // Reemplaza con el nombre de tu tabla
+        .update({"token_user": tokenPhone})
+        .eq('id_dispositivo', deviceId);
+      }else{
+        await supabase
+        .from('usuarios') // Reemplaza con el nombre de tu tabla
+        .insert({"token_user": tokenPhone,'id_dispositivo': deviceId});
+
+      }
+
+    } catch (e) {
+      //print("Error al obtener las opciones del menú $e");
     }
   }
 
@@ -55,4 +92,7 @@ class ConfigController extends GetxController {
       currentVersion.value = '';
     }
   }
+
+
+
 }
