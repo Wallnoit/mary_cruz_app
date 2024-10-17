@@ -136,9 +136,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: const CustomAppbar(
+          appBar: conection?const CustomAppbar(
             title: 'Home',
-          ),
+          ):null,
           drawer: const GlobalSidebar(
             selectedIndex: SideBar.home,
           ),
@@ -187,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Text(
-                        'Por favor, Reinice la aplicación',
+                        'Por favor, verifique su conexión',
                         style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).colorScheme.tertiary,
