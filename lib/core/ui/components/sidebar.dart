@@ -103,63 +103,71 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                                 fit: BoxFit.cover,
                               ))),
                     ),
-                    SizedBox(
-                      height: 5.h,
+                    const SizedBox(
+                      height: 10,
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[0].title ?? '',
                       icon: Icons.home_outlined,
                       isSelected: selectIndex == SideBar.home,
-                      isVisible: controller.listSidebarOptions[0].isVisible,
+                      isVisible:
+                          controller.listSidebarOptions[0].isVisible ?? false,
                       onTap: () => Get.offNamed("/"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[1].title ?? '',
                       icon: Icons.people_alt_outlined,
                       isSelected: selectIndex == SideBar.candidates,
-                      isVisible: controller.listSidebarOptions[1].isVisible,
+                      isVisible:
+                          controller.listSidebarOptions[1].isVisible ?? false,
                       onTap: () => Get.offNamed("candidates"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[2].title ?? '',
                       icon: Icons.assignment_outlined,
                       isSelected: selectIndex == SideBar.proposals,
-                      isVisible: false,
+                      isVisible:
+                          controller.listSidebarOptions[2].isVisible ?? false,
                       onTap: () => Get.offNamed("proposals"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[3].title ?? '',
                       icon: Icons.newspaper_outlined,
                       isSelected: selectIndex == SideBar.news,
-                      isVisible: controller.listSidebarOptions[3].isVisible,
+                      isVisible:
+                          controller.listSidebarOptions[3].isVisible ?? false,
                       onTap: () => Get.offNamed("news"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[4].title ?? '',
                       icon: Icons.event_outlined,
                       isSelected: selectIndex == SideBar.events,
-                      isVisible: controller.listSidebarOptions[4].isVisible,
+                      isVisible:
+                          controller.listSidebarOptions[4].isVisible ?? false,
                       onTap: () => Get.offNamed("events"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[5].title ?? '',
                       icon: Icons.star_border_outlined,
                       isSelected: selectIndex == SideBar.testimony,
-                      isVisible: controller.listSidebarOptions[5].isVisible,
+                      isVisible:
+                          controller.listSidebarOptions[5].isVisible ?? false,
                       onTap: () => Get.offNamed("testimony"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[6].title ?? '',
                       icon: Icons.chat_outlined,
                       isSelected: selectIndex == SideBar.opinions,
-                      isVisible: controller.listSidebarOptions[6].isVisible,
+                      isVisible:
+                          controller.listSidebarOptions[6].isVisible ?? false,
                       onTap: () => Get.offNamed("opinions"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[7].title ?? '',
                       icon: Icons.poll_outlined,
                       isSelected: selectIndex == SideBar.survey,
-                      isVisible: controller.listSidebarOptions[7].isVisible,
+                      isVisible:
+                          controller.listSidebarOptions[7].isVisible ?? false,
                       onTap: () => Get.offNamed("survey"),
                     ),
                     SizedBox(

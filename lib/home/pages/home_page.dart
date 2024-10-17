@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
 import 'package:mary_cruz_app/core/global_controllers/sidebar_controller.dart';
@@ -22,24 +23,23 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool conection = true;
 
-
   @override
-  void initState()  {
+  void initState() {
     super.initState();
 
     verificateConection();
 
-    Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
+    Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> result) {
       _updateConnectionStatus(result);
-    } );
-
-
+    });
   }
 
-  void verificateConection()async{
+  void verificateConection() async {
     conection = await checkConnectivity();
 
-    if(conection){
+    if (conection) {
       _isAndroidPermissionGranted();
       _requestPermissions();
       initNotifications();
@@ -48,24 +48,21 @@ class _HomePageState extends State<HomePage> {
 
   Future<bool> checkConnectivity() async {
     List connectivityResult = await (Connectivity().checkConnectivity());
-    if(connectivityResult.length == 0){
+    if (connectivityResult.length == 0) {
       return false;
     }
 
     return connectivityResult[0] == ConnectivityResult.mobile ||
-          connectivityResult[0] == ConnectivityResult.wifi;
+        connectivityResult[0] == ConnectivityResult.wifi;
   }
 
-  
-
-
   void _updateConnectionStatus(List<ConnectivityResult> result) {
-    
     setState(() {
-      if(result.length==0){
-         conection = false;
-      }else {
-        if (result[0] == ConnectivityResult.mobile || result[0] == ConnectivityResult.wifi) {
+      if (result.length == 0) {
+        conection = false;
+      } else {
+        if (result[0] == ConnectivityResult.mobile ||
+            result[0] == ConnectivityResult.wifi) {
           conection = true;
         } else {
           conection = false;
@@ -74,11 +71,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-
-  resultConnectivity()async{
+  resultConnectivity() async {
     return await (Connectivity().checkConnectivity());
   }
-  initNotifications()async{
+
+  initNotifications() async {
     ConfigController configController =
         Get.put(ConfigController(), permanent: true);
     await configController.saveUpdUser();
@@ -139,20 +136,65 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: CustomAppbar(
+          appBar: const CustomAppbar(
             title: 'Home',
           ),
-          drawer: conection ? const GlobalSidebar(
+          drawer: const GlobalSidebar(
             selectedIndex: SideBar.home,
-          ) : null,
+          ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Text(
+                  'Grandes cosas están por venir,',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                ),
+                Text(
+                  'Mantente atento!',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Image.asset(
-                  'lib/assets/logo2.png', // Ruta de la imagen
+                  'lib/assets/logo3.png', // Ruta de la imagen
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Visibility(
+                  visible: !conection,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Sin conexión a internet',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                      ),
+                      Text(
+                        'Por favor, Reinice la aplicación',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
