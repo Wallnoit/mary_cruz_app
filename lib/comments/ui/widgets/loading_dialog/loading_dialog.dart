@@ -71,6 +71,7 @@ class _CommentsLoadingDialogState extends State<CommentsLoadingDialog> {
                                     ),
                                   ),
                                   onPressed: () async {
+                                    widget.onAccept();
                                     Navigator.of(context).pop();
                                   },
                                   child: Text(
