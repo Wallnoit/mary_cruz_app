@@ -24,18 +24,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState()  {
     super.initState();
-<<<<<<< HEAD
       
     var connectivityResult = resultConnectivity();
-=======
->>>>>>> 7209d77f5f2cb75f1b6bec1438082f26c1e63b2a
 
     if (connectivityResult == ConnectivityResult.mobile || 
           connectivityResult == ConnectivityResult.wifi) {
           _isAndroidPermissionGranted();
         _requestPermissions();
 
-<<<<<<< HEAD
         initNotifications();
         // Internet is available, initialize Firebase
     }
@@ -49,12 +45,6 @@ class _HomePageState extends State<HomePage> {
     return await (Connectivity().checkConnectivity());
   }
   initNotifications()async{
-=======
-    initNotifications();
-  }
-
-  initNotifications() async {
->>>>>>> 7209d77f5f2cb75f1b6bec1438082f26c1e63b2a
     ConfigController configController =
         Get.put(ConfigController(), permanent: true);
     await configController.saveUpdUser();

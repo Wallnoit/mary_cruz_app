@@ -73,16 +73,11 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-<<<<<<< HEAD
 
 
 
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-=======
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
->>>>>>> 7209d77f5f2cb75f1b6bec1438082f26c1e63b2a
 
 Future<void> createNotificationChannels() async {
   const AndroidNotificationChannel callChannel = AndroidNotificationChannel(

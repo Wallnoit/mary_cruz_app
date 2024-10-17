@@ -1,9 +1,5 @@
 buildscript {
-<<<<<<< HEAD
-    ext.kotlin_version = '1.7.10'  //'1.8.0' //'1.7.10' //
-=======
     ext.kotlin_version =  '1.8.0' //'1.7.10' //
->>>>>>> 7209d77f5f2cb75f1b6bec1438082f26c1e63b2a
     repositories {
         google()
         mavenCentral()
