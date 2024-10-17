@@ -20,24 +20,58 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool conection = true;
+
 
   @override
   void initState()  {
     super.initState();
-      
-    var connectivityResult = resultConnectivity();
 
-    if (connectivityResult == ConnectivityResult.mobile || 
-          connectivityResult == ConnectivityResult.wifi) {
-          _isAndroidPermissionGranted();
-        _requestPermissions();
+    verificateConection();
 
-        initNotifications();
-        // Internet is available, initialize Firebase
+    Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
+      _updateConnectionStatus(result);
+    } );
+
+
+  }
+
+  void verificateConection()async{
+    conection = await checkConnectivity();
+
+    if(conection){
+      _isAndroidPermissionGranted();
+      _requestPermissions();
+      initNotifications();
+    }
+  }
+
+  Future<bool> checkConnectivity() async {
+    List connectivityResult = await (Connectivity().checkConnectivity());
+    if(connectivityResult.length == 0){
+      return false;
     }
 
+    return connectivityResult[0] == ConnectivityResult.mobile ||
+          connectivityResult[0] == ConnectivityResult.wifi;
+  }
+
+  
 
 
+  void _updateConnectionStatus(List<ConnectivityResult> result) {
+    
+    setState(() {
+      if(result.length==0){
+         conection = false;
+      }else {
+        if (result[0] == ConnectivityResult.mobile || result[0] == ConnectivityResult.wifi) {
+          conection = true;
+        } else {
+          conection = false;
+        }
+      }
+    });
   }
 
 
@@ -108,9 +142,9 @@ class _HomePageState extends State<HomePage> {
           appBar: CustomAppbar(
             title: 'Home',
           ),
-          drawer: const GlobalSidebar(
+          drawer: conection ? const GlobalSidebar(
             selectedIndex: SideBar.home,
-          ),
+          ) : null,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -118,7 +152,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'lib/assets/logo3.png', // Ruta de la imagen
+                  'lib/assets/logo2.png', // Ruta de la imagen
                 ),
               ],
             ),

@@ -79,19 +79,20 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+
+flutter_native_splash:
+  color: "#ffffff"  # Color de fondo del splash screen
+  image: lib/assets/logo2.png  # Ruta a la imagen del logo
+  android:fullScreen: true
+  ios:fullScreen: true
+
+
 flutter:
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
-
-flutter_native_splash:
-  color: "#ffffff"  # Color de fondo del splash screen
-  image: assets/logo2.png  # Ruta a la imagen del logo
-  android:fullScreen: true
-  ios:fullScreen: true
 
   assets:
     - .env

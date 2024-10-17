@@ -21,13 +21,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+    bool isConnected = await checkConnectivity();
 
-
-
-    var connectivityResult = await (Connectivity().checkConnectivity());
-
-    if (connectivityResult == ConnectivityResult.mobile || 
-          connectivityResult == ConnectivityResult.wifi) {
+    if (isConnected) {
        
     // Internet is available, initialize Firebase
       //firebase
@@ -54,7 +50,7 @@ Future<void> main() async {
       await configController.isCompletedSurveyF();
   } else {
     // Handle offline scenario
-    print('No internet connection. Firebase will not be initialized.');
+    //print('No internet connection. Firebase will not be initialized.');
   }
 
 
@@ -62,6 +58,17 @@ Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
 
   runApp(const MyApp());
+}
+
+
+Future<bool> checkConnectivity() async {
+  List connectivityResult = await (Connectivity().checkConnectivity());
+  if(connectivityResult.length == 0){
+    return false;
+  }
+
+  return connectivityResult[0] == ConnectivityResult.mobile ||
+         connectivityResult[0] == ConnectivityResult.wifi;
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -134,7 +141,7 @@ Future<void> _showNotificationWithImage(
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // Handle the background message
-  print("Handling a background message: ${message.messageId}");
+  //print("Handling a background message: ${message.messageId}");
   // You can also show a local notification here if desired
 }
 
@@ -187,6 +194,8 @@ Future<void> initFcm() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  
 
   @override
   Widget build(BuildContext context) {
