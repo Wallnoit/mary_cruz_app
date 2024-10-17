@@ -41,8 +41,7 @@ class OpinionsPageState extends State<OpinionsPage> {
   OpinionsController opinionsController =
       Get.put(OpinionsController(), permanent: true);
   LoadingDialogController loadingDialogController =
-  Get.put(LoadingDialogController(), permanent: true);
-
+      Get.put(LoadingDialogController(), permanent: true);
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -90,8 +89,6 @@ class OpinionsPageState extends State<OpinionsPage> {
 
   ValueNotifier<String> statusNotifier = ValueNotifier<String>("Guardando...");
 
-
-
   // Errores
   String? facultyError;
   String? personTypeError;
@@ -133,7 +130,7 @@ class OpinionsPageState extends State<OpinionsPage> {
       emailError = emailController.text.isEmpty
           ? 'Correo es requerido'
           : !RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
-          .hasMatch(emailController.text)
+                  .hasMatch(emailController.text)
               ? 'Ingrese un correo válido'
               : null;
     });
@@ -150,21 +147,19 @@ class OpinionsPageState extends State<OpinionsPage> {
         ageError == null &&
         commentError == null) {
       try {
-        showLoadingDialog(
-            context, statusNotifier
-        );
+        showLoadingDialog(context, statusNotifier);
         statusNotifier.value = 'Enviando Comentario...';
         await UsersDataSource().addUser(
             user: UserAndCommentModel(
-              facultad: facultyController.text,
-              tipoUsuario: personTypeController.text,
-              genero: genreController.text,
-              edad: int.parse(ageController.text),
-              idDispositivo: deviceInfo,
-              email: 'ANONYMOUS',
-              tokenUser: userToken,
-              opinion: commentController.text,
-            ));
+          facultad: facultyController.text,
+          tipoUsuario: personTypeController.text,
+          genero: genreController.text,
+          edad: int.parse(ageController.text),
+          idDispositivo: deviceInfo,
+          email: 'ANONYMOUS',
+          tokenUser: userToken,
+          opinion: commentController.text,
+        ));
         print('El comentario ha sido enviado!');
         statusNotifier.value = 'Comentario enviado!';
         loadingDialogController.isLoading(false);
@@ -179,16 +174,13 @@ class OpinionsPageState extends State<OpinionsPage> {
     }
   }
 
-
   onSaveCommentWithPersonalInfo() async {
     loadingDialogController.isLoading(true);
     validateUserInfo();
     commentError =
-    commentController.text.isEmpty ? 'Comentario es requerido' : null;
+        commentController.text.isEmpty ? 'Comentario es requerido' : null;
     if (nameError == null && emailError == null && commentError == null) {
-      showLoadingDialog(
-          context, statusNotifier
-      );
+      showLoadingDialog(context, statusNotifier);
       try {
         statusNotifier.value = 'Enviando Comentario...';
         String deviceInfo = await getDeviceId();
@@ -196,16 +188,16 @@ class OpinionsPageState extends State<OpinionsPage> {
         statusNotifier.value = 'Enviando Comentario...';
         await UsersDataSource().addUser(
             user: UserAndCommentModel(
-              facultad: facultyController.text,
-              tipoUsuario: personTypeController.text,
-              genero: genreController.text,
-              edad: int.parse(ageController.text),
-              idDispositivo: deviceInfo,
-              email: emailController.text,
-              tokenUser: userToken,
-              opinion: commentController.text,
-            ));
-        if(!userNotFound){
+          facultad: facultyController.text,
+          tipoUsuario: personTypeController.text,
+          genero: genreController.text,
+          edad: int.parse(ageController.text),
+          idDispositivo: deviceInfo,
+          email: emailController.text,
+          tokenUser: userToken,
+          opinion: commentController.text,
+        ));
+        if (!userNotFound) {
           final newInfoUser = userData?.copyWith(email: emailController.text);
           await UsersDataSource().updateUser(user: newInfoUser!);
         }
@@ -220,23 +212,22 @@ class OpinionsPageState extends State<OpinionsPage> {
         content: Text('Por favor, corrija los errores en el formulario'),
       ));
     }
-
   }
 
-  void showTermConditionsDialog(){
+  void showTermConditionsDialog() {
     showDialog(
       barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
         return TermsConditionsDialog(
-          onAccept: (){
-            if(opinionsController.personalDataOptionSelected.value == 'SI'){
+          onAccept: () {
+            if (opinionsController.personalDataOptionSelected.value == 'SI') {
               onSaveCommentWithPersonalInfo();
-            }else{
+            } else {
               onSaveCommentWithoutPersonalInfo();
             }
           },
-          onReject: (){
+          onReject: () {
             Navigator.of(context).pop();
           },
         );
@@ -252,15 +243,13 @@ class OpinionsPageState extends State<OpinionsPage> {
       builder: (BuildContext context) {
         return CommentsLoadingDialog(
             statusNotifier: statusNotifier,
-            onAccept: (){
+            onAccept: () {
               _loadUserData();
             },
-            onReject: (){}
-        );
+            onReject: () {});
       },
     );
   }
-
 
   Future<void> _loadUserData() async {
     setState(() {
@@ -269,7 +258,8 @@ class OpinionsPageState extends State<OpinionsPage> {
 
     try {
       String deviceInfo = await getDeviceId();
-      final data = await UsersDataSource().getUserData(idDispositivo: deviceInfo);
+      final data =
+          await UsersDataSource().getUserData(idDispositivo: deviceInfo);
       setState(() {
         userData = data;
         ageController.text = data.edad.toString();
@@ -289,14 +279,11 @@ class OpinionsPageState extends State<OpinionsPage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Cerrar Caja')),
-        body: const Center(child: CircularProgressIndicator()),
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
       );
     }
     return Scaffold(
@@ -321,7 +308,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                   print('Nuevo valor seleccionado: $newValue');
                   facultyController.text = newValue;
                 },
-                enabled:  userNotFound ? true : false,
+                enabled: userNotFound ? true : false,
               ),
               if (facultyError != null)
                 Text(facultyError!, style: TextStyle(color: Colors.red)),
@@ -329,14 +316,14 @@ class OpinionsPageState extends State<OpinionsPage> {
               Dropdown(
                 label: 'Soy',
                 getData: personTypeData,
-                value:'ESTUDIANTE',
+                value: 'ESTUDIANTE',
                 height: 50.0,
                 expanded: true,
                 onSelected: (String newValue) {
                   personTypeController.text = newValue;
                   print('Nuevo valor seleccionado: $newValue');
                 },
-                enabled:userNotFound ? true : false,
+                enabled: userNotFound ? true : false,
               ),
               if (personTypeError != null)
                 Text(personTypeError!, style: TextStyle(color: Colors.red)),
@@ -354,7 +341,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                         genreController.text = newValue;
                         print('Nuevo valor seleccionado: $newValue');
                       },
-                      enabled:  userNotFound ? true : false,
+                      enabled: userNotFound ? true : false,
                     ),
                   ),
                 ],
@@ -369,7 +356,7 @@ class OpinionsPageState extends State<OpinionsPage> {
                     fontSize: 14,
                     radius: 8,
                     valueController: ageController,
-                    enabled:  userNotFound ? true : false,
+                    enabled: userNotFound ? true : false,
                   ),
                   title: 'Edad'),
               if (ageError != null)
@@ -422,28 +409,28 @@ class OpinionsPageState extends State<OpinionsPage> {
               ),
               const SizedBox(height: 10),
               Visibility(
-                  visible: opinionsController.personalDataOptionSelected.value ==
-                      'SI',
-              child: Container(
-                child: Column(
-                  children: [
-                    InputColumn(
-                        textField: CustomTextField(
-                          regex: RegExp(r'^\d+$'),
-                          inputType: TextInputType.text,
-                          fontSize: 14,
-                          radius: 8,
-                          valueController: emailController,
-                          enabled: true,
-                        ),
-                        title: 'Email'),
-                    if (emailError != null)
-                      Text(emailError!,
-                          style: TextStyle(color: Colors.red)),
-                  ],
-                ),
-              )
-              ),
+                  visible:
+                      opinionsController.personalDataOptionSelected.value ==
+                          'SI',
+                  child: Container(
+                    child: Column(
+                      children: [
+                        InputColumn(
+                            textField: CustomTextField(
+                              regex: RegExp(r'^\d+$'),
+                              inputType: TextInputType.text,
+                              fontSize: 14,
+                              radius: 8,
+                              valueController: emailController,
+                              enabled: true,
+                            ),
+                            title: 'Email'),
+                        if (emailError != null)
+                          Text(emailError!,
+                              style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
+                  )),
               SizedBox(
                 height: 20,
               ),

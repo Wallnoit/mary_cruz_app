@@ -10,7 +10,6 @@ import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
 import 'package:mary_cruz_app/core/global_controllers/sidebar_controller.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
-import 'package:mary_cruz_app/home/provider/prueba.dart';
 import 'package:mary_cruz_app/main.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,14 +24,18 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState()  {
     super.initState();
+<<<<<<< HEAD
       
     var connectivityResult = resultConnectivity();
+=======
+>>>>>>> 7209d77f5f2cb75f1b6bec1438082f26c1e63b2a
 
     if (connectivityResult == ConnectivityResult.mobile || 
           connectivityResult == ConnectivityResult.wifi) {
           _isAndroidPermissionGranted();
         _requestPermissions();
 
+<<<<<<< HEAD
         initNotifications();
         // Internet is available, initialize Firebase
     }
@@ -46,19 +49,21 @@ class _HomePageState extends State<HomePage> {
     return await (Connectivity().checkConnectivity());
   }
   initNotifications()async{
-    ConfigController configController =
-      Get.put(ConfigController(), permanent: true);
-    await configController.saveUpdUser();
-
-
-    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
-        configController.saveUpdUser();
-    });
-
-
+=======
+    initNotifications();
   }
 
-  
+  initNotifications() async {
+>>>>>>> 7209d77f5f2cb75f1b6bec1438082f26c1e63b2a
+    ConfigController configController =
+        Get.put(ConfigController(), permanent: true);
+    await configController.saveUpdUser();
+
+    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
+      configController.saveUpdUser();
+    });
+  }
+
   bool _notificationsEnabled = false;
 
   Future<void> _isAndroidPermissionGranted() async {
@@ -75,7 +80,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-    Future<void> _requestPermissions() async {
+  Future<void> _requestPermissions() async {
     if (Platform.isIOS || Platform.isMacOS) {
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
@@ -106,8 +111,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -124,6 +127,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+<<<<<<< HEAD
                 Image(
                             image: AssetImage('lib/assets/logo3.png'),
                           ),
@@ -131,6 +135,11 @@ class _HomePageState extends State<HomePage> {
                 /*Image.asset(
                   'lib/assets/logo3.png', // Ruta de la imagen
                 ),*/
+=======
+                Image.asset(
+                  'lib/assets/logo3.png', // Ruta de la imagen
+                ),
+>>>>>>> 7209d77f5f2cb75f1b6bec1438082f26c1e63b2a
               ],
             ),
           )),
