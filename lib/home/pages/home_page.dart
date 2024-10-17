@@ -127,19 +127,9 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-<<<<<<< HEAD
-                Image(
-                            image: AssetImage('lib/assets/logo3.png'),
-                          ),
-                
-                /*Image.asset(
-                  'lib/assets/logo3.png', // Ruta de la imagen
-                ),*/
-=======
                 Image.asset(
                   'lib/assets/logo3.png', // Ruta de la imagen
                 ),
->>>>>>> 7209d77f5f2cb75f1b6bec1438082f26c1e63b2a
               ],
             ),
           )),
