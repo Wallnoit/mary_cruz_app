@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,25 +15,30 @@ import 'package:mary_cruz_app/core/global_controllers/sidebar_controller.dart';
 import 'package:mary_cruz_app/core/theme/theme_data/global_theme_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //firebase
-  await Firebase.initializeApp(); // Initialize Firebase
-  await initFcm();
-  // firebase
+  bool isConnected = await checkConnectivity();
 
-  await dotenv.load(fileName: ".env");
-  await Supabase.initialize(
-    url: dotenv.get('SUPABASE_URL'),
-    anonKey: dotenv.get('SUPABASE_ANON_KEY'),
-  );
+  if (isConnected) {
+    // Internet is available, initialize Firebase
+    //firebase
+    await Firebase.initializeApp(); // Initialize Firebase
+    await initFcm();
+    // firebase
+
+    await dotenv.load(fileName: ".env");
+    await Supabase.initialize(
+      url: dotenv.get('SUPABASE_URL'),
+      anonKey: dotenv.get('SUPABASE_ANON_KEY'),
+    );
+  } else {
+    // Handle offline scenario
+    //print('No internet connection. Firebase will not be initialized.');
+  }
 
   SidebarController controller = Get.put(SidebarController(), permanent: true);
   ConfigController configController =
@@ -45,8 +51,17 @@ Future<void> main() async {
 
   HttpOverrides.global = MyHttpOverrides();
 
-
   runApp(const MyApp());
+}
+
+Future<bool> checkConnectivity() async {
+  List connectivityResult = await (Connectivity().checkConnectivity());
+  if (connectivityResult.length == 0) {
+    return false;
+  }
+
+  return connectivityResult[0] == ConnectivityResult.mobile ||
+      connectivityResult[0] == ConnectivityResult.wifi;
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -58,11 +73,13 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 Future<void> createNotificationChannels() async {
   const AndroidNotificationChannel callChannel = AndroidNotificationChannel(
-   'partido_notificaciones', 'notificaciones',
+    'partido_notificaciones',
+    'notificaciones',
     description: 'Notifications',
     importance: Importance.high,
   );
@@ -73,46 +90,48 @@ Future<void> createNotificationChannels() async {
       ?.createNotificationChannel(callChannel);
 }
 
+Future<void> _showNotificationWithImage(
+    RemoteNotification notification, String imageUrl) async {
+  final ByteData imageData =
+      await NetworkAssetBundle(Uri.parse(imageUrl)).load("");
+  final Uint8List bytess = imageData.buffer.asUint8List();
+  final AndroidBitmap<Object> largeIcon = ByteArrayAndroidBitmap(bytess);
 
- Future<void> _showNotificationWithImage(RemoteNotification notification, String imageUrl) async {
-    final ByteData imageData = await NetworkAssetBundle(Uri.parse(imageUrl)).load("");
-    final Uint8List bytess = imageData.buffer.asUint8List();
-    final AndroidBitmap<Object> largeIcon = ByteArrayAndroidBitmap(bytess);
-    
-    BigPictureStyleInformation bigPictureStyleInformation = BigPictureStyleInformation(
-      largeIcon, // Usar NetworkImage para cargar desde una URL
-      largeIcon: largeIcon, // Icono grande
-      contentTitle: notification.title,
-      summaryText: notification.body,
-      htmlFormatContent: true,
-      htmlFormatTitle: true,
-    );
+  BigPictureStyleInformation bigPictureStyleInformation =
+      BigPictureStyleInformation(
+    largeIcon, // Usar NetworkImage para cargar desde una URL
+    largeIcon: largeIcon, // Icono grande
+    contentTitle: notification.title,
+    summaryText: notification.body,
+    htmlFormatContent: true,
+    htmlFormatTitle: true,
+  );
 
-     AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-           
-          'partido_notificaciones', 'notificaciones', importance: Importance.max,
-          //'channel.id', 'channel.name',importance: Importance.max,
-            priority: Priority.max,
-            channelShowBadge: true,
-            enableVibration: true,
-            enableLights: true,
-          showWhen: true,
-      styleInformation: bigPictureStyleInformation,
-    );
+  AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+    'partido_notificaciones', 'notificaciones', importance: Importance.max,
+    //'channel.id', 'channel.name',importance: Importance.max,
+    priority: Priority.max,
+    channelShowBadge: true,
+    enableVibration: true,
+    enableLights: true,
+    showWhen: true,
+    styleInformation: bigPictureStyleInformation,
+  );
 
-    NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      notification.title,
-      notification.body,
-      platformChannelSpecifics,
-    );
-  }
+  NotificationDetails platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics);
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    notification.title,
+    notification.body,
+    platformChannelSpecifics,
+  );
+}
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // Handle the background message
-  print("Handling a background message: ${message.messageId}");
+  //print("Handling a background message: ${message.messageId}");
   // You can also show a local notification here if desired
 }
 
@@ -121,11 +140,11 @@ Future<void> initFcm() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-
-
-  var initializationSettingsAndroid = const AndroidInitializationSettings('@mipmap/ic_launcher');
+  var initializationSettingsAndroid =
+      const AndroidInitializationSettings('@mipmap/ic_launcher');
   var initializationSettingsIOS = const DarwinInitializationSettings(); // ios
-  var initializationSettings = InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+  var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
   flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
@@ -134,47 +153,34 @@ Future<void> initFcm() async {
     RemoteNotification? notification = message?.notification;
     AndroidNotification? android = message?.notification?.android;
 
-
-
     if (notification != null && android != null) {
-
       if (message!.data.isNotEmpty) {
         String imageUrl = message.data['image'];
         _showNotificationWithImage(notification, imageUrl);
-      }else{
-
-          flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-
-            const NotificationDetails(
+      } else {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          const NotificationDetails(
               android: AndroidNotificationDetails(
-              
-              'partido_notificaciones', 'notificaciones', importance: Importance.max,
-              //'channel.id', 'channel.name',importance: Importance.max,
-                priority: Priority.max,
-                channelShowBadge: true,
-                enableVibration: true,
-                enableLights: true,
-              showWhen: true,)),
-            payload: json.encode(message.data),
-          );
-
+            'partido_notificaciones', 'notificaciones',
+            importance: Importance.max,
+            //'channel.id', 'channel.name',importance: Importance.max,
+            priority: Priority.max,
+            channelShowBadge: true,
+            enableVibration: true,
+            enableLights: true,
+            showWhen: true,
+          )),
+          payload: json.encode(message.data),
+        );
       }
-
     }
-
-
   });
 
-  
-   createNotificationChannels();
-
-
-
+  createNotificationChannels();
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

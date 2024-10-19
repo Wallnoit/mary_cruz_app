@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
@@ -21,10 +22,24 @@ class _FirstPageState extends State<FirstPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _checkAppVersion(
-          context); // Verificar la versión después de la construcción
-    });
+
+
+    var connectivityResult = resultConnectivity();
+        
+
+    if (connectivityResult == ConnectivityResult.mobile || 
+          connectivityResult == ConnectivityResult.wifi) {
+
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            await _checkAppVersion(
+                context); // Verificar la versión después de la construcción
+          });
+    }
+  }
+
+
+  resultConnectivity()async{
+    return await (Connectivity().checkConnectivity());
   }
 
   Future<void> _checkAppVersion(BuildContext context) async {
@@ -52,7 +67,8 @@ class _FirstPageState extends State<FirstPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const HomePage(); // Renderiza el HomePage sin lógica de verificación en el build
+    
+    return  const HomePage(); // Renderiza el HomePage sin lógica de verificación en el build
   }
 }
 

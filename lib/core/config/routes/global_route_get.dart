@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mary_cruz_app/actualization/first_page.dart';
 import 'package:mary_cruz_app/candidates/pages/candidates_page.dart';
@@ -22,7 +23,7 @@ class GlobalRouteGet {
         transition: Transition.fadeIn),
     GetPage(
         name: '/actualization',
-        page: () => const FirstPage(),
+        page: () => const FirstPage() ,
         transition: Transition.fadeIn),
     GetPage(
         name: '/proposals',

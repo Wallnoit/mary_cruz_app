@@ -50,7 +50,7 @@ class ConfigController extends GetxController {
       var deviceId = await getDeviceId();
       var tokenPhone = await getToken();
 
-      print(" tokenPhone " + tokenPhone.toString());
+      //print(" tokenPhone " + tokenPhone.toString());
       
       final response = await supabase
         .from('usuarios') // Reemplaza con el nombre de tu tabla
@@ -59,7 +59,7 @@ class ConfigController extends GetxController {
 
       
 
-      print(" updateResponse " + (response.length.toString()));
+      //print(" updateResponse " + (response.length.toString()));
 
       if(response.length > 0){
          await supabase
@@ -74,7 +74,7 @@ class ConfigController extends GetxController {
       }
 
     } catch (e) {
-      print("Error al obtener las opciones del menú $e");
+      //print("Error al obtener las opciones del menú $e");
     }
   }
 
@@ -92,4 +92,7 @@ class ConfigController extends GetxController {
       currentVersion.value = '';
     }
   }
+
+
+
 }

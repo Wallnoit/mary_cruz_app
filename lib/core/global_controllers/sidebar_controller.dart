@@ -15,10 +15,23 @@ class SidebarController extends GetxController {
       final List<SidebarOptions> sidebarOptions =
           data.map((e) => SidebarOptions.fromMap(e)).toList();
 
+      print(sidebarOptions);
+
       listSidebarOptions.value = sidebarOptions;
     } catch (e) {
       print("Error al obtener las opciones del menú $e");
-      listSidebarOptions.value = [];
+
+      listSidebarOptions.value = [
+        SidebarOptions(id: "", title: "Home", isVisible: true, order: 1),
+      ];
+
+      for (var i = 0; i < 7; i++) {
+        listSidebarOptions.add(SidebarOptions(
+            id: i.toString(),
+            title: "Opción $i",
+            isVisible: false,
+            order: i + 1));
+      }
     }
   }
 }
