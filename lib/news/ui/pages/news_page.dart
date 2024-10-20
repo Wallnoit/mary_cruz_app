@@ -105,7 +105,10 @@ class _NewsPageState extends State<NewsPage> {
           final newsList = groupedNews[date]!;
           if (index - newsIndex < newsList.length) {
             return InfoContainer(
-              news: newsList[index - newsIndex],
+              title: newsList[index - newsIndex].titulo,
+              description: newsList[index - newsIndex].descripcion,
+              imageUrl: newsList[index - newsIndex].urlImagen,
+              imageHint: newsList[index - newsIndex].imagenHint,
               footer: HeartsScore(),
             );
           }

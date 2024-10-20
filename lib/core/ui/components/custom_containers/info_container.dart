@@ -4,12 +4,18 @@ import 'package:flutter/material.dart';
 import '../../../../news/models/news_model.dart';
 
 class InfoContainer extends StatefulWidget {
-  final NewsModel news;
+  final String title;
+  final String description;
+  final String imageUrl;
+  final String imageHint;
   final Widget footer;
 
   const InfoContainer(
       {super.key,
-        required this.news,
+        required this.title,
+        required this.description,
+        required this.imageUrl,
+        required this.imageHint,
         required this.footer,
       });
 
@@ -44,7 +50,7 @@ class _InfoContainerState extends State<InfoContainer> {
                       children: [
                         Expanded(
                           child: Text(
-                            widget.news.imagenHint,
+                            widget.imageHint,
                             style: Theme.of(context).textTheme.titleMedium,
                             softWrap: true,
                             overflow: TextOverflow.visible,
@@ -59,7 +65,7 @@ class _InfoContainerState extends State<InfoContainer> {
                       ],
                     ),
                     content: CachedNetworkImage(
-                      imageUrl: widget.news.urlImagen,
+                      imageUrl: widget.imageUrl,
                       placeholder: (context, url) => CircularProgressIndicator(),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
@@ -68,7 +74,7 @@ class _InfoContainerState extends State<InfoContainer> {
               );
             },
             child: CachedNetworkImage(
-              imageUrl: widget.news.urlImagen,
+              imageUrl: widget.imageUrl,
               imageBuilder: (context, imageProvider) => Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -102,7 +108,7 @@ class _InfoContainerState extends State<InfoContainer> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  widget.news.titulo,
+                  widget.title,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -111,7 +117,7 @@ class _InfoContainerState extends State<InfoContainer> {
                   height: 10,
                 ),
                 Text(
-                  widget.news.descripcion,
+                  widget.description,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 SizedBox(
