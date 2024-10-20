@@ -119,7 +119,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       icon: Icons.people_alt_outlined,
                       isSelected: selectIndex == SideBar.candidates,
                       isVisible: true,
-                          // controller.listSidebarOptions[1].isVisible ?? false,
+                      // controller.listSidebarOptions[1].isVisible ?? false,
                       onTap: () => Get.offNamed("candidates"),
                     ),
                     RowSidebar(
@@ -134,8 +134,9 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       title: controller.listSidebarOptions[3].title ?? '',
                       icon: Icons.newspaper_outlined,
                       isSelected: selectIndex == SideBar.news,
-                      isVisible: true,
-                          // controller.listSidebarOptions[3].isVisible ?? false,
+                      isVisible:
+                          controller.listSidebarOptions[3].isVisible ?? false,
+                      // controller.listSidebarOptions[3].isVisible ?? false,
                       onTap: () => Get.offNamed("news"),
                     ),
                     RowSidebar(
