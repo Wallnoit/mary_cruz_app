@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,9 @@ import 'package:mary_cruz_app/core/global_controllers/sidebar_controller.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
 import 'package:mary_cruz_app/main.dart';
+
+import 'package:http/http.dart' as http;
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -46,28 +50,45 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<bool> checkConnectivity() async {
-    List connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult.length == 0) {
-      return false;
-    }
 
-    return connectivityResult[0] == ConnectivityResult.mobile ||
-        connectivityResult[0] == ConnectivityResult.wifi;
+Future<bool> checkConnectivity() async {
+  List connectivityResult = await (Connectivity().checkConnectivity());
+  if (connectivityResult.length == 0) {
+    return false;
   }
 
-  void _updateConnectionStatus(List<ConnectivityResult> result) {
-    setState(() {
+  if(connectivityResult[0] == ConnectivityResult.mobile ||
+      connectivityResult[0] == ConnectivityResult.wifi){
+        return await checkNet();
+    }
+
+  return false;
+
+
+}
+
+Future<bool> checkNet()async{
+   try {
+    final response = await http.get(Uri.parse('https://www.google.com'));
+    return response.statusCode == 200; // Comprobamos si la respuesta fue exitosa
+  } catch (e) {
+    return false; // Si hay un error en la petición
+  }
+}
+
+  void _updateConnectionStatus(List<ConnectivityResult> result) async {
+   
       if (result.length == 0) {
         conection = false;
       } else {
         if (result[0] == ConnectivityResult.mobile ||
             result[0] == ConnectivityResult.wifi) {
-          conection = true;
+          conection = await checkNet();
         } else {
           conection = false;
         }
       }
+    setState(()  {
     });
   }
 
@@ -167,11 +188,42 @@ class _HomePageState extends State<HomePage> {
                   height: 20,
                 ),
                 Image.asset(
-                  'lib/assets/logo3.png', // Ruta de la imagen
+                  'lib/assets/logo2.png', // Ruta de la imagen
                 ),
+
+                Container(
+                  height: 80,
+                  width: 80,
+                  child: CachedNetworkImage(
+                            imageUrl: "https://gitlab.com/alexjavier/img_mc/-/raw/main/images.jpeg", 
+                            placeholder: (context, url) =>  SizedBox(
+                                          height: 30.0,
+                                          width: 30.0,
+                                          child: const CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>  Icon(Icons.error),
+                        ),
+                ),
+
+
                 const SizedBox(
                   height: 20,
                 ),
+
+
+                 Container(
+                  height: 80,
+                  width: 80,
+                   child: CachedNetworkImage(
+                            imageUrl: "https://gitlab.com/alexjavier/img_mc/-/raw/main/images__1_.jpeg", 
+                            placeholder: (context, url) =>  SizedBox(
+                                          height: 30.0,
+                                          width: 30.0,
+                                          child: const CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>  Icon(Icons.error),
+                        ),
+                 ),
+
+
                 Visibility(
                   visible: !conection,
                   child: Column(

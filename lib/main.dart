@@ -18,6 +18,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import 'package:http/http.dart' as http;
+
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -60,9 +63,25 @@ Future<bool> checkConnectivity() async {
     return false;
   }
 
-  return connectivityResult[0] == ConnectivityResult.mobile ||
-      connectivityResult[0] == ConnectivityResult.wifi;
+  if(connectivityResult[0] == ConnectivityResult.mobile ||
+      connectivityResult[0] == ConnectivityResult.wifi){
+        return await checkNet();
+    }
+
+  return false;
+
+
 }
+
+Future<bool> checkNet()async{
+   try {
+    final response = await http.get(Uri.parse('https://www.google.com'));
+    return response.statusCode == 200; // Comprobamos si la respuesta fue exitosa
+  } catch (e) {
+    return false; // Si hay un error en la petición
+  }
+}
+
 
 class MyHttpOverrides extends HttpOverrides {
   @override
