@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mary_cruz_app/actualization/first_page.dart';
-import 'package:mary_cruz_app/candidates/pages/candidates_page.dart';
+import 'package:mary_cruz_app/candidates/ui/pages/candidate_description_page.dart';
+import 'package:mary_cruz_app/candidates/ui/pages/candidates_page.dart';
 import 'package:mary_cruz_app/events/pages/events_page.dart';
 import 'package:mary_cruz_app/home/pages/home_page.dart';
 import 'package:mary_cruz_app/news/pages/news_page.dart';
@@ -20,10 +21,16 @@ class GlobalRouteGet {
     GetPage(
         name: '/candidates',
         page: () => const CandidatesPage(),
+        children: [
+          GetPage(
+              name: '/candidate-description',
+              page: () => const CandidateDescriptionPage(),
+              transition: Transition.fadeIn),
+        ],
         transition: Transition.fadeIn),
     GetPage(
         name: '/actualization',
-        page: () => const FirstPage() ,
+        page: () => const FirstPage(),
         transition: Transition.fadeIn),
     GetPage(
         name: '/proposals',
@@ -46,8 +53,9 @@ class GlobalRouteGet {
         page: () => const OpinionsPage(),
         transition: Transition.fadeIn),
     GetPage(
-        name: '/survey',
-        page: () => const SurveyPage(),
-        transition: Transition.fadeIn),
+      name: '/survey',
+      page: () => const SurveyPage(),
+      transition: Transition.fadeIn,
+    ),
   ];
 }
