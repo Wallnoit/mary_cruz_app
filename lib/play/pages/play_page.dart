@@ -1,28 +1,29 @@
+
 import 'package:flutter/material.dart';
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
 
-class CandidatesPage extends StatefulWidget {
-  const CandidatesPage({super.key});
+class PlayPage extends StatefulWidget {
+  const PlayPage({super.key});
 
   @override
-  State<CandidatesPage> createState() => _CandidatesPageState();
+  State<PlayPage> createState() => _PlayPageState();
 }
 
-class _CandidatesPageState extends State<CandidatesPage> {
+class _PlayPageState extends State<PlayPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const CustomAppbar(
-          title: 'Candidatos',
+        appBar:  CustomAppbar(
+          title: 'Juego',
         ),
         drawer: const GlobalSidebar(
-          selectedIndex: SideBar.candidates,
+          selectedIndex: SideBar.news,
         ),
         body: const Center(
-          child: Text('Candidates Page'),
+          child: Text('News Page'),
         ),
       ),
     );

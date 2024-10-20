@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mary_cruz_app/comments/ui/widgets/age_custom_text_field.dart';
 import 'package:mary_cruz_app/comments/ui/widgets/loading_dialog/loading_dialog.dart';
@@ -10,7 +7,6 @@ import 'package:mary_cruz_app/comments/ui/widgets/loading_dialog/loading_dialog_
 import 'package:mary_cruz_app/comments/ui/widgets/terms_conditions_dialog.dart';
 import 'package:mary_cruz_app/core/errors/failures.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_forms/custom_text_field.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/data/users_datasource.dart';
 import '../../core/enums/sidebar.dart';
@@ -20,10 +16,7 @@ import '../../core/ui/components/custom_forms/dropdown.dart';
 import '../../core/ui/components/sidebar.dart';
 import '../../core/utils/cellphone_info.dart';
 import '../../core/utils/cellphone_token.dart';
-import '../../main.dart';
 import '../controllers/opinions_controller.dart';
-import '../data/comments_datasource.dart';
-import '../models/comment_model.dart';
 
 class OpinionsPage extends StatefulWidget {
   const OpinionsPage({
