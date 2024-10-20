@@ -3,8 +3,6 @@ import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_containers/info_container.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
-import 'package:mary_cruz_app/news/models/news_model.dart';
-import 'package:mary_cruz_app/news/data/news_datasource.dart';
 import 'package:mary_cruz_app/proposals/models/proposal_model.dart';
 
 import '../../../core/ui/components/hearts_score.dart';
@@ -64,7 +62,7 @@ class _ProposalsPageState extends State<ProposalsPage> {
           ],
         ),
         drawer: const GlobalSidebar(
-          selectedIndex: SideBar.news,
+          selectedIndex: SideBar.proposals,
         ),
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
