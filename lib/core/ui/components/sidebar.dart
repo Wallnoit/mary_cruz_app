@@ -118,8 +118,8 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       title: controller.listSidebarOptions[1].title ?? '',
                       icon: Icons.people_alt_outlined,
                       isSelected: selectIndex == SideBar.candidates,
-                      isVisible:
-                          controller.listSidebarOptions[1].isVisible ?? false,
+                      isVisible: true,
+                          // controller.listSidebarOptions[1].isVisible ?? false,
                       onTap: () => Get.offNamed("candidates"),
                     ),
                     RowSidebar(
