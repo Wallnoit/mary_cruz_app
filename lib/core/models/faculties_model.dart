@@ -22,6 +22,15 @@ class FacultyModel {
     );
   }
 
+  factory FacultyModel.fromJsonOnProposal(Map<String, dynamic> json) {
+    return FacultyModel(
+      id: json['id_facultad'],
+      nombre: json['nombre'],
+      siglas: json['siglas'],
+      estado: true,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

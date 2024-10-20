@@ -9,8 +9,9 @@ class ProposalsDataSource {
   Future<List<ProposalModel>> getPropuestas() async {
     try{
       final response = await supabase.rpc('get_propuestas_con_facultades_y_enfoques');
-      print('Response: $response');
+      print(response[2]);
       final List<ProposalModel> proposals = (response as List).map((e) => ProposalModel.fromJson(e)).toList();
+      print(proposals[0].facultades.length);
       return proposals;
     }catch(e){
       print('Error al obtener propuestas: $e');

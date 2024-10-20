@@ -26,22 +26,20 @@ class ProposalModel {
       List<ProposedApproachModel> enfoques = [];
       List<FacultyModel> facultades = [];
 
-      // Intentar parsear 'enfoques'
       try {
-        if (json['enfoques'] != null) {
-          json['enfoques'].forEach((v) {
-            enfoques.add(ProposedApproachModel.fromJson(v));
+        if (json['enfoques_propuestas'] != null) {
+          json['enfoques_propuestas'].forEach((v) {
+            enfoques.add(ProposedApproachModel.fromJsonOnProposal(v));
           });
         }
       } catch (e) {
         print('Error al parsear enfoques: $e');
       }
 
-      // Intentar parsear 'facultades'
       try {
-        if (json['facultades'] != null) {
-          json['facultades'].forEach((v) {
-            facultades.add(FacultyModel.fromJson(v));
+        if (json['facultades_afectadas'] != null) {
+          json['facultades_afectadas'].forEach((v) {
+            facultades.add(FacultyModel.fromJsonOnProposal(v));
           });
         }
       } catch (e) {

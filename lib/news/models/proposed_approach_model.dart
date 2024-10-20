@@ -15,6 +15,13 @@ class ProposedApproachModel {
     );
   }
 
+  factory ProposedApproachModel.fromJsonOnProposal(Map<String, dynamic> json) {
+    return ProposedApproachModel(
+      titulo: json['titulo'],
+      descripcion: '',
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'titulo': titulo,

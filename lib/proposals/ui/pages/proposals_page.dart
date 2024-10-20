@@ -4,7 +4,6 @@ import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_containers/info_container.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
 import 'package:mary_cruz_app/proposals/models/proposal_model.dart';
-
 import '../../../core/ui/components/hearts_score.dart';
 import '../../data/proposals_datasource.dart';
 
@@ -86,7 +85,60 @@ class _ProposalsPageState extends State<ProposalsPage> {
           description: proposalItem.descripcion,
           imageUrl: proposalItem.imageUrl,
           imageHint: proposalItem.descripcion,
-          footer: HeartsScore(),
+          footer: Column(
+            children: [
+              const Divider(),
+              Row(
+                children: [
+                  for (var facultad in proposalItem.facultades)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Chip(
+                        label: Text(
+                          (facultad.siglas).toUpperCase(),
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        backgroundColor: Theme.of(context).colorScheme.secondary,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        side: const BorderSide(color: Colors.white, width: 1),
+                      ),
+                    ),
+
+                ],
+              ),
+              const Divider(),
+              Row(
+                children: [
+                  for (var enfoque in proposalItem.enfoques)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Chip(
+                        label: Text(
+                          (enfoque.titulo).toUpperCase(),
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        backgroundColor: Theme.of(context).colorScheme.tertiary,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        side: const BorderSide(color: Colors.white, width: 1),
+                      ),
+                    ),
+
+                ],
+              ),
+              const Divider(),
+              HeartsScore(),
+            ],
+          ),
         );
       },
     );
