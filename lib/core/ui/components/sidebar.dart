@@ -107,7 +107,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       height: 10,
                     ),
                     RowSidebar(
-                      title: controller.listSidebarOptions[0].title ?? '',
+                      title: controller.listSidebarOptions[0].titulo ?? '',
                       icon: Icons.home_outlined,
                       isSelected: selectIndex == SideBar.home,
                       isVisible:
@@ -115,7 +115,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       onTap: () => Get.offNamed("/"),
                     ),
                     RowSidebar(
-                      title: controller.listSidebarOptions[1].title ?? '',
+                      title: controller.listSidebarOptions[1].titulo ?? '',
                       icon: Icons.people_alt_outlined,
                       isSelected: selectIndex == SideBar.candidates,
                       isVisible: true,
@@ -123,15 +123,15 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       onTap: () => Get.offNamed("candidates"),
                     ),
                     RowSidebar(
-                      title: controller.listSidebarOptions[2].title ?? '',
+                      title: controller.listSidebarOptions[2].titulo ?? '',
                       icon: Icons.assignment_outlined,
                       isSelected: selectIndex == SideBar.proposals,
-                      isVisible:
-                          controller.listSidebarOptions[2].isVisible ?? false,
+                      isVisible: true,
+                          // controller.listSidebarOptions[2].isVisible ?? false,
                       onTap: () => Get.offNamed("proposals"),
                     ),
                     RowSidebar(
-                      title: controller.listSidebarOptions[3].title ?? '',
+                      title: controller.listSidebarOptions[3].titulo ?? '',
                       icon: Icons.newspaper_outlined,
                       isSelected: selectIndex == SideBar.news,
                       isVisible: true,
@@ -139,7 +139,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       onTap: () => Get.offNamed("news"),
                     ),
                     RowSidebar(
-                      title: controller.listSidebarOptions[4].title ?? '',
+                      title: controller.listSidebarOptions[4].titulo ?? '',
                       icon: Icons.event_outlined,
                       isSelected: selectIndex == SideBar.events,
                       isVisible:
@@ -147,7 +147,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       onTap: () => Get.offNamed("events"),
                     ),
                     RowSidebar(
-                      title: controller.listSidebarOptions[5].title ?? '',
+                      title: controller.listSidebarOptions[5].titulo ?? '',
                       icon: Icons.star_border_outlined,
                       isSelected: selectIndex == SideBar.testimony,
                       isVisible:
@@ -155,7 +155,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       onTap: () => Get.offNamed("testimony"),
                     ),
                     RowSidebar(
-                      title: controller.listSidebarOptions[6].title ?? '',
+                      title: controller.listSidebarOptions[6].titulo ?? '',
                       icon: Icons.chat_outlined,
                       isSelected: selectIndex == SideBar.opinions,
                       isVisible:
@@ -163,7 +163,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       onTap: () => Get.offNamed("opinions"),
                     ),
                     RowSidebar(
-                      title: controller.listSidebarOptions[7].title ?? '',
+                      title: controller.listSidebarOptions[7].titulo ?? '',
                       icon: Icons.poll_outlined,
                       isSelected: selectIndex == SideBar.survey,
                       isVisible:
