@@ -33,29 +33,64 @@ class _InfoContainerState extends State<InfoContainer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CachedNetworkImage(
-            imageUrl: widget.news.urlImagen,
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
-                    colorFilter:
-                    ColorFilter.mode(Colors.red, BlendMode.dstIn)),
+          GestureDetector(
+            onLongPress: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            widget.news.imagenHint,
+                            style: Theme.of(context).textTheme.titleMedium,
+                            softWrap: true,
+                            overflow: TextOverflow.visible,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ),
+                    content: CachedNetworkImage(
+                      imageUrl: widget.news.urlImagen,
+                      placeholder: (context, url) => CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                  );
+                },
+              );
+            },
+            child: CachedNetworkImage(
+              imageUrl: widget.news.urlImagen,
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                      colorFilter:
+                      ColorFilter.mode(Colors.red, BlendMode.dstIn)),
+                ),
               ),
-            ),
-            progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-              child: SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(value: downloadProgress.progress),
+              progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+                child: SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(value: downloadProgress.progress),
+                ),
               ),
-            ),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-            height: 200,
-            width: double.infinity,
-            fit: BoxFit.cover,
+              errorWidget: (context, url, error) => Icon(Icons.error),
+              height: 200,
+              width: double.infinity,
+              fit: BoxFit.cover,
 
+            ),
           ),
           SizedBox(
             height: 10,
