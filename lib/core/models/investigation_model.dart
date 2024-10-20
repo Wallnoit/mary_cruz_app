@@ -18,7 +18,7 @@ class InvestigationModel {
       id: json['id'],
       title: json['title'],
       description: json['description'],
-      publicationDate: json['publication_date'],
+      publicationDate: json['publicationDate'],
       url: json['url'],
     );
   }
@@ -31,5 +31,10 @@ class InvestigationModel {
       'publicationDate': publicationDate,
       'url': url,
     };
+  }
+
+  @override
+  String toString() {
+    return 'InvestigationModel(id: $id, title: $title, description: $description, publicationDate: $publicationDate, url: $url)';
   }
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mary_cruz_app/candidates/provider/candidates_controller.dart';
+import 'package:mary_cruz_app/core/models/candidates_model.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_chip.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_row.dart';
 import 'package:mary_cruz_app/core/ui/components/data_sections.dart';
@@ -15,18 +18,21 @@ class CandidateDescriptionPage extends StatefulWidget {
 }
 
 class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
-  final youtubeVideo = 'https://www.youtube.com/watch?v=gkZ4dLMH-B8';
+  CandidatesController candidateController = Get.find();
+
   late YoutubePlayerController controller;
-  bool isLoading = false;
+  late CandidatesModel candidate;
 
   @override
   void initState() {
+    candidate = candidateController.candidate.value;
+
     controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(youtubeVideo)!,
+      initialVideoId: YoutubePlayer.convertUrlToId(candidate.urlVideo)!,
       flags: const YoutubePlayerFlags(
         autoPlay: true,
-        mute: false,
-        loop: false,
+        mute: true,
+        loop: true,
       ),
     );
 
@@ -47,11 +53,11 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
+    // if (isLoading) {
+    //   return const Scaffold(
+    //     body: Center(child: CircularProgressIndicator()),
+    //   );
+    // }
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -92,7 +98,7 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                     child: CircleAvatar(
                       radius: 80,
                       backgroundImage: NetworkImage(
-                        'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png',
+                        candidate.image,
                       ),
                     ),
                   ),
@@ -105,7 +111,7 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                 child: Column(
                   children: [
                     Text(
-                      'Mary Cruz Lascano ',
+                      candidate.name,
                       style: Theme.of(context).textTheme.displayLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -113,7 +119,7 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "',
+                      '"${candidate.phrase}"',
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: Theme.of(context).colorScheme.tertiary,
                           ),
@@ -122,7 +128,7 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                     const SizedBox(height: 20),
                     CustomChip(
                         color: Theme.of(context).colorScheme.primary,
-                        label: 'Rectora',
+                        label: candidate.role,
                         labelColor: Colors.white),
                     const SizedBox(height: 20),
                     Divider(
@@ -139,8 +145,8 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                         children: [
                           InkWell(
                             onTap: () {
-                              final String url = Uri.encodeFull(
-                                  'https://www.facebook.com/people/Mary-Cruz/61565950187878/');
+                              final String url =
+                                  Uri.encodeFull(candidate.facebook!);
 
                               launchURL(url);
                             },
@@ -152,8 +158,8 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                           ),
                           InkWell(
                             onTap: () {
-                              final String url = Uri.encodeFull(
-                                  'https://www.instagram.com/marycruzlascano/');
+                              final String url =
+                                  Uri.encodeFull(candidate.instagram!);
 
                               launchURL(url);
                             },
@@ -165,8 +171,8 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                           ),
                           InkWell(
                             onTap: () {
-                              final String url = Uri.encodeFull(
-                                  'https://www.tiktok.com/@marycruzlascano');
+                              final String url =
+                                  Uri.encodeFull(candidate.tiktok!);
 
                               launchURL(url);
                             },
@@ -189,119 +195,75 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                     const SizedBox(height: 40),
 
                     // Sección de formación académica
-                    const DataSections(sectionTitle: "Academico", sectionData: [
-                      CustomRow(
-                          icon: Icons.school_outlined,
-                          text: 'Ingeniera de sistemas'),
-                      CustomRow(
-                          icon: Icons.school_outlined,
-                          text: 'Ingeniera de sistemas asd asdasdasd'),
-                      CustomRow(
-                          icon: Icons.school_outlined,
-                          text: 'Ingeniera de sistemas asd'),
-                    ]),
+                    DataSections(
+                      sectionTitle: "Academico",
+                      sectionData: candidate.academicFormation
+                          .map((e) =>
+                              CustomRow(icon: Icons.school_outlined, text: e))
+                          .toList(),
+                    ),
 
                     const SizedBox(height: 30),
-
-                    const DataSections(
+                    DataSections(
                         sectionTitle: "Experiencia",
-                        sectionData: [
-                          CustomRow(
-                              icon: Icons.work_outline,
-                              text: 'Ingeniera de sistemas'),
-                          CustomRow(
-                              icon: Icons.work_outline,
-                              text: 'Ingeniera de sistemas asd asdasdasd'),
-                          CustomRow(
-                              icon: Icons.work_outline,
-                              text: 'Ingeniera de sistemas asd'),
-                        ]),
+                        sectionData: candidate.workExperience
+                            .map((e) =>
+                                CustomRow(icon: Icons.work_outline, text: e))
+                            .toList()),
 
                     const SizedBox(height: 30),
 
-                    DataSections(sectionTitle: "Investigaciones", sectionData: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Lorem ipsum dolor sit amet',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(fontSize: 21),
-                          ),
-                          const SizedBox(height: 5),
-                          Text('12/12/2021',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.tertiary,
-                                  )),
-                          const SizedBox(height: 10),
-                          Text(
-                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \n\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                ),
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 100),
-                              child: Divider(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .tertiary
-                                    .withOpacity(0.8),
-                              )),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Lorem ipsum dolor sit amet',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(fontSize: 21),
-                          ),
-                          const SizedBox(height: 5),
-                          Text('12/12/2021',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.tertiary,
-                                  )),
-                          const SizedBox(height: 10),
-                          Text(
-                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \n\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                ),
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 100),
-                              child: Divider(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .tertiary
-                                    .withOpacity(0.8),
-                              )),
-                        ],
-                      )
-                    ]),
+                    DataSections(
+                        sectionTitle: "Investigaciones",
+                        sectionData: candidate.investigations!
+                            .map<Widget>(
+                              (e) => Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    e.title,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(fontSize: 21),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                      e
+                                          .publicationDate, // Assuming the correct getter is 'publicationDate'
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary,
+                                          )),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    e.description,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                        ),
+                                  ),
+                                  Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 100),
+                                      child: Divider(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary
+                                            .withOpacity(0.8),
+                                      )),
+                                ],
+                              ),
+                            )
+                            .toList()),
 
                     // Sección de experiencia laboral
                   ],

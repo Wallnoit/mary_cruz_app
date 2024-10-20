@@ -12,7 +12,7 @@ class CandidatesModel {
   final String? tiktok;
   final List<String> academicFormation;
   final List<String> workExperience;
-  final List<InvestigationModel> investigations;
+  final List<InvestigationModel>? investigations;
 
   CandidatesModel({
     required this.id,
@@ -39,13 +39,19 @@ class CandidatesModel {
       instagram: json['instagram'],
       tiktok: json['tiktok'],
       role: json['role'],
-      academicFormation: List<String>.from(json['academicFormation']),
-      workExperience: List<String>.from(json['workExperience']),
+      academicFormation: List<String>.from(json['academicformation']),
+      workExperience: List<String>.from(json['workexperience']),
       investigations: List<InvestigationModel>.from(
         json['investigations'].map(
           (x) => InvestigationModel.fromJson(x),
         ),
-      ), urlVideo: json['urlVideo'],
+      ),
+      urlVideo: json['url_video'],
     );
+  }
+
+  @override
+  String toString() {
+    return 'CandidatesModel(id: $id, name: $name, phrase: $phrase, role: $role, image: $image, urlVideo: $urlVideo, facebook: $facebook, instagram: $instagram, tiktok: $tiktok, academicFormation: $academicFormation, workExperience: $workExperience, investigations: $investigations)';
   }
 }

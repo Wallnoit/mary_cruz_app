@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mary_cruz_app/candidates/provider/candidates_controller.dart';
+import 'package:mary_cruz_app/core/models/candidates_model.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_chip.dart';
 
 class CandidateCard extends StatefulWidget {
-  const CandidateCard({super.key});
+  final CandidatesModel candidate;
+
+  const CandidateCard({super.key, required this.candidate});
 
   @override
   State<CandidateCard> createState() => _CandidateCardState();
 }
 
 class _CandidateCardState extends State<CandidateCard> {
+  CandidatesController controller = Get.find();
+  get candidate => widget.candidate;
+
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -28,14 +36,15 @@ class _CandidateCardState extends State<CandidateCard> {
       ),
       child: InkWell(
         onTap: () {
+          controller.setCandidate(candidate);
+
           Get.toNamed('/candidates/candidate-description');
         },
         splashColor: Colors.grey,
         child: Row(children: [
           CircleAvatar(
             radius: 40,
-            backgroundImage: NetworkImage(
-                'https://www.eltiempo.com/files/image_640_428/uploads/2021/08/23/6123f4b1e3b3d.jpeg'),
+            backgroundImage: NetworkImage(candidate.image),
           ),
           const SizedBox(width: 20),
           Expanded(
@@ -43,7 +52,7 @@ class _CandidateCardState extends State<CandidateCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Mary Cruz Lascano',
+                  candidate.name,
                   style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                         fontSize: 24,
                       ),
@@ -51,7 +60,7 @@ class _CandidateCardState extends State<CandidateCard> {
                 const SizedBox(height: 8),
                 CustomChip(
                     color: Theme.of(context).colorScheme.primary,
-                    label: 'Rectora',
+                    label: candidate.role,
                     labelColor: Colors.white),
               ],
             ),
