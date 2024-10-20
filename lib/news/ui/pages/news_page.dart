@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart'; // Importa para inicializar la localización
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_containers/info_container.dart';
@@ -16,17 +18,20 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
-  // Lista de noticias que se llenará cuando las noticias sean obtenidas
   List<NewsModel> _news = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    _initializeLocale();
     _fetchNews();
   }
 
-  // Función para obtener noticias desde el servicio
+  Future<void> _initializeLocale() async {
+    await initializeDateFormatting('es_ES', null);
+  }
+
   Future<void> _fetchNews() async {
     try {
       final news = await NewsDataSource().getAllNews();
@@ -42,12 +47,23 @@ class _NewsPageState extends State<NewsPage> {
     }
   }
 
-  // Función para manejar la recarga
   Future<void> _refreshNews() async {
     setState(() {
       _isLoading = true;
     });
     await _fetchNews();
+  }
+
+  Map<String, List<NewsModel>> _groupNewsByDate(List<NewsModel> news) {
+    Map<String, List<NewsModel>> groupedNews = {};
+    for (var newsItem in news) {
+      String formattedDate = DateFormat('yyyy-MM-dd').format(newsItem.createdAt);
+      if (!groupedNews.containsKey(formattedDate)) {
+        groupedNews[formattedDate] = [];
+      }
+      groupedNews[formattedDate]?.add(newsItem);
+    }
+    return groupedNews;
   }
 
   @override
@@ -61,24 +77,72 @@ class _NewsPageState extends State<NewsPage> {
           selectedIndex: SideBar.news,
         ),
         body: _isLoading
-            ? const Center(
-                child: CircularProgressIndicator()) // Mostrar el Progress Bar
+            ? const Center(child: CircularProgressIndicator())
             : _news.isEmpty
-                ? const Center(child: Text('No hay noticias disponibles'))
-                : RefreshIndicator(
-                    onRefresh: _refreshNews,
-                    child: ListView.builder(
-                      itemCount: _news.length,
-                      itemBuilder: (context, index) {
-                        final newsItem = _news[index];
-                        return InfoContainer(
-                            news: newsItem,
-                            footer: HeartsScore(
-                            ),
-                        );
-                      },
-                    ),
-                  ),
+            ? const Center(child: Text('No hay noticias disponibles'))
+            : RefreshIndicator(
+          onRefresh: _refreshNews,
+          child: _buildNewsList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNewsList() {
+    final groupedNews = _groupNewsByDate(_news);
+    final sortedKeys = groupedNews.keys.toList()
+      ..sort((a, b) => b.compareTo(a));
+
+    return ListView.builder(
+      itemCount: groupedNews.values.fold(0, (prev, element) => prev + element.length) + sortedKeys.length,
+      itemBuilder: (context, index) {
+        int newsIndex = 0;
+        for (var date in sortedKeys) {
+          if (index == newsIndex) {
+            return _buildDateDivider(date);
+          }
+          newsIndex++;
+          final newsList = groupedNews[date]!;
+          if (index - newsIndex < newsList.length) {
+            return InfoContainer(
+              news: newsList[index - newsIndex],
+              footer: HeartsScore(),
+            );
+          }
+          newsIndex += newsList.length;
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  Widget _buildDateDivider(String date) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: [
+          Expanded(
+            child: Divider(
+              thickness: 1.5,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              DateFormat('dd MMMM yyyy', 'es_ES').format(DateTime.parse(date)),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              )
+            ),
+          ),
+          Expanded(
+            child: Divider(
+              thickness: 1.5,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+        ],
       ),
     );
   }
