@@ -9,11 +9,15 @@ class CandidatesController extends GetxController {
     name: '',
     phrase: '',
     role: '',
-    image: '',
+    imageAvatarSmall: '',
     urlVideo: '',
     facebook: '',
     instagram: '',
     tiktok: '',
+    imageAvatarBig: '',
+    visibleAcademico: false,
+    visibleExperiencia: false,
+    visibleInvestigaciones: false,
     academicFormation: [],
     workExperience: [],
     investigations: [],
@@ -25,6 +29,7 @@ class CandidatesController extends GetxController {
 
   getCandidates() async {
     isLoading.value = true;
+    error.value = false;
     try {
       final data = await supabase.rpc('obtener_candidatos_con_datos');
 

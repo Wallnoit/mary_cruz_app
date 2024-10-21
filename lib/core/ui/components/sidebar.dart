@@ -99,7 +99,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                           decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.surface,
                               image: const DecorationImage(
-                                image: AssetImage('lib/assets/logo3.png'),
+                                image: AssetImage('lib/assets/logo2.png'),
                                 fit: BoxFit.cover,
                               ))),
                     ),
@@ -169,6 +169,14 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       isVisible:
                           controller.listSidebarOptions[7].isVisible ?? false,
                       onTap: () => Get.offNamed("survey"),
+                    ),
+                    RowSidebar(
+                      title: controller.listSidebarOptions[8].title ?? '',
+                      icon: Icons.games,
+                      isSelected: selectIndex == SideBar.play,
+                      isVisible:
+                          controller.listSidebarOptions[8].isVisible ?? false,
+                      onTap: () => Get.offNamed("play"),
                     ),
                     SizedBox(
                       height: 90.h,

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mary_cruz_app/core/entities/question.dart';
-import 'package:mary_cruz_app/core/entities/response.dart';
+import 'package:mary_cruz_app/core/models/question_model.dart';
+import 'package:mary_cruz_app/core/models/response_model.dart';
 import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
 import 'package:mary_cruz_app/core/supabase/supabase_instance.dart';
 
 class SurveyController extends GetxController {
   var questions = [].obs;
   var surveyName = "".obs;
-  var answerQuestions = <Map<String, ResponseQuestion>>[].obs;
+  var answerQuestions = <Map<String, ResponseQuestionModel>>[].obs;
   var questionQuantity = 0.obs;
 
   ConfigController configController = Get.find();
@@ -55,8 +55,8 @@ class SurveyController extends GetxController {
     }
   }
 
-  addAnswer(String idAnswer, ResponseQuestion option) {
-    Map<String, ResponseQuestion> answer = {
+  addAnswer(String idAnswer, ResponseQuestionModel option) {
+    Map<String, ResponseQuestionModel> answer = {
       idAnswer: option,
     };
 
@@ -98,7 +98,7 @@ class SurveyController extends GetxController {
   }
 
   String getNameAnswer(String idQuestion) {
-    Map<String, ResponseQuestion> question = answerQuestions.firstWhere(
+    Map<String, ResponseQuestionModel> question = answerQuestions.firstWhere(
         (element) => element.containsKey(idQuestion),
         orElse: () => {});
 

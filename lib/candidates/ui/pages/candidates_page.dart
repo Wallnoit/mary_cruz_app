@@ -71,17 +71,6 @@ class _CandidatesPageState extends State<CandidatesPage> {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Text('Candidatos',
-                          style: Theme.of(context)
-                              .textTheme
-                              .displayLarge!
-                              .copyWith(
-                                fontWeight: FontWeight.w500,
-                              ))
-                    ],
-                  ),
                   const SizedBox(height: 20),
                   Column(
                     children: List<Widget>.from(

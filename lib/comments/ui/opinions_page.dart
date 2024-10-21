@@ -281,7 +281,7 @@ class OpinionsPageState extends State<OpinionsPage> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dinos que Piensas'),
+        title: const Text('Dinos, ¿qué piensas?'),
       ),
       drawer: const GlobalSidebar(
         selectedIndex: SideBar.opinions,

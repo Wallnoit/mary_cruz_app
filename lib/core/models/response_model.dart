@@ -1,14 +1,14 @@
-class ResponseQuestion {
+class ResponseQuestionModel {
   final String id;
   final String title;
 
-  ResponseQuestion({
+  ResponseQuestionModel({
     required this.id,
     required this.title,
   });
 
-  factory ResponseQuestion.fromMap(Map<String, dynamic> map) {
-    return ResponseQuestion(
+  factory ResponseQuestionModel.fromMap(Map<String, dynamic> map) {
+    return ResponseQuestionModel(
       id: map['idRespuesta'],
       title: map['respuesta'],
     );
