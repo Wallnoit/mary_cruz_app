@@ -16,7 +16,7 @@ class _HeartsScoreState extends State<HeartsScore> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Calificar esta noticia', style: Theme.of(context).textTheme.titleMedium,),
+          title: Text('Califica esta noticia', style: Theme.of(context).textTheme.titleMedium,),
           content: StatefulBuilder(
             builder: (context, setState) {
               return Column(
@@ -92,7 +92,6 @@ class _HeartsScoreState extends State<HeartsScore> {
                             ),
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -139,10 +138,22 @@ class _HeartsScoreState extends State<HeartsScore> {
                 ),
               ],
             ),
-            TextButton(
-              onPressed: _showRatingDialog,
-              child: Text('Calificar',
-                  style: Theme.of(context).textTheme.bodyMedium),
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: _showRatingDialog,
+                child: Text('Calificar',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
             ),
           ],
         ),

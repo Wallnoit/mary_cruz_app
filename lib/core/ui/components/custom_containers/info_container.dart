@@ -119,6 +119,7 @@ class _InfoContainerState extends State<InfoContainer> {
                 Text(
                   widget.description,
                   style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.justify,
                 ),
                 SizedBox(
                   height: 10,
