@@ -1,9 +1,10 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:launch_review/launch_review.dart';
+//import 'package:launch_review/launch_review.dart';
 import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
 import 'package:mary_cruz_app/home/ui/pages/home_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -15,7 +16,18 @@ class FirstPage extends StatefulWidget {
 const String appVersionLocal = "0.0.1"; // Version actual de la app local
 
 openStore() {
-  LaunchReview.launch(androidAppId: 'com.mary.cruz.uta', iOSAppId: '');
+  //LaunchReview.launch(androidAppId: 'com.mary.cruz.uta', iOSAppId: '');
+  openApkPure('com.mary.cruz.uta');
+
+}
+
+void openApkPure(String packageName) async {
+  final url = 'https://apkpure.com/es/$packageName';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'No se pudo abrir $url';
+  }
 }
 
 class _FirstPageState extends State<FirstPage> {
