@@ -4,7 +4,7 @@ import 'package:mary_cruz_app/actualization/first_page.dart';
 import 'package:mary_cruz_app/candidates/ui/pages/candidate_description_page.dart';
 import 'package:mary_cruz_app/candidates/ui/pages/candidates_page.dart';
 import 'package:mary_cruz_app/events/pages/events_page.dart';
-import 'package:mary_cruz_app/home/pages/home_page.dart';
+import 'package:mary_cruz_app/home/ui/pages/home_page.dart';
 import 'package:mary_cruz_app/proposals/pages/proposals_page.dart';
 import 'package:mary_cruz_app/survey/pages/survey_page.dart';
 import 'package:mary_cruz_app/testimony/pages/testimony_page.dart';

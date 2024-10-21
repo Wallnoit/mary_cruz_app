@@ -7,8 +7,13 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
+import 'package:mary_cruz_app/core/models/diary_model.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
+import 'package:mary_cruz_app/core/utils/utils.dart';
+import 'package:mary_cruz_app/home/provider/diary_controller.dart';
+import 'package:mary_cruz_app/home/ui/widgets/diary_item.dart';
+import 'package:mary_cruz_app/home/ui/widgets/section_per_month.dart';
 import 'package:mary_cruz_app/main.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,6 +24,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  DiaryController diaryController = Get.put(DiaryController(), permanent: true);
+
   bool conection = true;
 
   @override
@@ -32,6 +39,8 @@ class _HomePageState extends State<HomePage> {
         .listen((List<ConnectivityResult> result) {
       _updateConnectionStatus(result);
     });
+
+    diaryController.getDiary();
   }
 
   void verificateConection() async {
@@ -132,71 +141,89 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          appBar: conection?const CustomAppbar(
-            title: 'Home',
-          ):null,
-          drawer: const GlobalSidebar(
-            selectedIndex: SideBar.home,
+    return Obx(() {
+      if (diaryController.isLoading.value) {
+        return const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        );
+      }
+
+      if (!diaryController.isLoading.value && diaryController.error.value) {
+        return const Scaffold(
+          appBar: CustomAppbar(
+            title: 'Candidatos',
           ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+          drawer: GlobalSidebar(
+            selectedIndex: SideBar.candidates,
+          ),
+          body: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Grandes cosas están por venir,',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
+                  'Error de conexión',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  'Mantente atento!',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Image.asset(
-                  'lib/assets/logo3.png', // Ruta de la imagen
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Visibility(
-                  visible: !conection,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Sin conexión a internet',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.tertiary,
-                        ),
-                      ),
-                      Text(
-                        'Por favor, verifique su conexión',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).colorScheme.tertiary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                SizedBox(height: 5),
+                Text('Intentelo más tarde.')
               ],
             ),
-          )),
-    );
+          ),
+        );
+      }
+
+      return SafeArea(
+        child: Scaffold(
+            appBar: const CustomAppbar(
+              title: 'Home',
+            ),
+            drawer: const GlobalSidebar(
+              selectedIndex: SideBar.home,
+            ),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Cronograma',
+                        style:
+                            Theme.of(context).textTheme.displayLarge!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                      ),
+                      Icon(
+                        Icons.calendar_today,
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 30,
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: diaryController.sectionsPerMonth.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 25),
+                          child: SectionPerMonth(
+                            sectionPerMonth:
+                                diaryController.sectionsPerMonth[index],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )),
+      );
+    });
   }
 }
