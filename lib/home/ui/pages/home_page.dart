@@ -200,13 +200,15 @@ class _HomePageState extends State<HomePage> {
               selectedIndex: SideBar.home,
             ),
             body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding:
+                  const EdgeInsets.only(right: 20, left: 20, top: 0, bottom: 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Image.asset(
-                    'lib/assets/logo2.png',
+                    'lib/assets/logo.png',
                     width: 200,
+                    height: 150,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,7 +228,15 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   const SizedBox(
-                    height: 30,
+                    height: 10,
+                  ),
+                  Divider(
+                    color: Theme.of(context).colorScheme.primary,
+                    height: 0.1,
+                    thickness: 1.5,
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                   Expanded(
                     child: ListView.builder(

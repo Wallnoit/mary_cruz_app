@@ -94,8 +94,8 @@ class _DiaryItemState extends State<DiaryItem> {
                     ),
                     Icon(
                         isExpanded
-                            ? Icons.remove_red_eye_rounded
-                            : Icons.remove_red_eye_outlined,
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
                         color: Theme.of(context).colorScheme.tertiary,
                         size: 30),
                   ],
