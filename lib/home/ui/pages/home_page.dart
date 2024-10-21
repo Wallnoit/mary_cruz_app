@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +7,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
-import 'package:mary_cruz_app/core/models/diary_model.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
-import 'package:mary_cruz_app/core/utils/utils.dart';
 import 'package:mary_cruz_app/home/provider/diary_controller.dart';
-import 'package:mary_cruz_app/home/ui/widgets/diary_item.dart';
 import 'package:mary_cruz_app/home/ui/widgets/section_per_month.dart';
 import 'package:mary_cruz_app/main.dart';
 

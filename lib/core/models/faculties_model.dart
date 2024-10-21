@@ -1,5 +1,7 @@
 
 
+import 'package:postgrest/src/types.dart';
+
 class FacultyModel {
   final int id;
   final String nombre;
@@ -53,5 +55,7 @@ class FacultyModel {
       estado: estado ?? this.estado,
     );
   }
+
+  static fromMap(PostgrestMap e) {}
 
 }
