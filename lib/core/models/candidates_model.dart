@@ -8,6 +8,7 @@ class CandidatesModel {
   final String imageAvatarSmall;
   final String imageAvatarBig;
   final String urlVideo;
+  final String resumen;
   final String? facebook;
   final String? instagram;
   final String? tiktok;
@@ -35,6 +36,7 @@ class CandidatesModel {
     required this.workExperience,
     required this.investigations,
     required this.imageAvatarBig,
+    required this.resumen,
   });
 
   factory CandidatesModel.fromJson(Map<String, dynamic> json) {
@@ -48,6 +50,7 @@ class CandidatesModel {
       instagram: json['instagram'],
       tiktok: json['tiktok'],
       role: json['role'],
+      resumen: json['resumen'],
       visibleAcademico: json['visible_academico'],
       visibleExperiencia: json['visible_experiencia'],
       visibleInvestigaciones: json['visible_investigacion'],
@@ -66,6 +69,7 @@ class CandidatesModel {
     return CandidatesModel(
       id: json['id'] ?? '',
       name: json['name'],
+      resumen: json['resumen'],
       phrase: json['phrase'],
       imageAvatarSmall: json['image'],
       role: json['role'],
@@ -77,10 +81,8 @@ class CandidatesModel {
       visibleExperiencia: json['visible_experiencia'],
       visibleInvestigaciones: json['visible_investigacion'],
       imageAvatarBig: json['image_avatar_big'],
-
     );
   }
-
 
   Map<String, dynamic> toJson() {
     return {

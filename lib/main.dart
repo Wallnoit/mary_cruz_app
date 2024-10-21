@@ -14,7 +14,6 @@ import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
 import 'package:mary_cruz_app/core/global_controllers/sidebar_controller.dart';
 import 'package:mary_cruz_app/core/theme/theme_data/global_theme_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
