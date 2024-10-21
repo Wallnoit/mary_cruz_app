@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'loading_dialog_controller.dart';
+import '../../../controllers/loading_dialog_controller.dart';
 
 class CommentsLoadingDialog extends StatefulWidget {
   final ValueNotifier<String> statusNotifier;

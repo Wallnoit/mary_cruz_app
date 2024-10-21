@@ -22,25 +22,27 @@ class _HeartsScoreState extends State<HeartsScore> {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(5, (index) {
-                      return IconButton(
-                        icon: Icon(
-                          index < tempRating
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        iconSize: 40,
-                        onPressed: () {
-                          setState(() {
-                            tempRating =
-                                index + 1; // Actualiza la calificación seleccionada
-                          });
-                        },
-                      );
-                    }),
+                  FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(5, (index) {
+                        return IconButton(
+                          icon: Icon(
+                            index < tempRating
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          iconSize: 40,
+                          onPressed: () {
+                            setState(() {
+                              tempRating =
+                                  index + 1; // Actualiza la calificación seleccionada
+                            });
+                          },
+                        );
+                      }),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
