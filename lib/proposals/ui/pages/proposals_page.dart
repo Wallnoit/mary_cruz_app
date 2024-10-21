@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_containers/info_container.dart';
@@ -8,6 +11,7 @@ import 'package:mary_cruz_app/proposals/models/proposed_approach_model.dart';
 import '../../../core/data/faculties_datasource.dart';
 import '../../../core/models/faculties_model.dart';
 import '../../../core/ui/components/hearts_score.dart';
+import '../../controllers/filter_controller.dart';
 import '../../data/proposals_datasource.dart';
 import '../../data/proposed_approach_datasource.dart';
 import '../widgets/filter_dialog.dart';
@@ -65,6 +69,9 @@ class _ProposalsPageState extends State<ProposalsPage> {
     );
   }
 
+  final FilterController controller = Get.put(FilterController());
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -87,7 +94,6 @@ class _ProposalsPageState extends State<ProposalsPage> {
             ? const Center(child: Text('No hay propuestas disponibles'))
             : Column(
           children: [
-            // Filtros que siempre estarán visibles
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(

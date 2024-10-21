@@ -1,5 +1,6 @@
 
 
+import 'package:mary_cruz_app/core/models/candidates_model.dart';
 import 'package:mary_cruz_app/core/models/faculties_model.dart';
 import 'package:mary_cruz_app/proposals/models/proposed_approach_model.dart';
 
@@ -10,6 +11,7 @@ class ProposalModel {
   String imageUrl;
   List<ProposedApproachModel> enfoques;
   List<FacultyModel> facultades;
+  List<CandidatesModel> candidatos;
 
 
   ProposalModel({
@@ -19,12 +21,14 @@ class ProposalModel {
     required this.imageUrl,
     required this.enfoques,
     required this.facultades,
+    required this.candidatos,
   });
 
   factory ProposalModel.fromJson(Map<String, dynamic> json) {
     try {
       List<ProposedApproachModel> enfoques = [];
       List<FacultyModel> facultades = [];
+      List<CandidatesModel> candidatos = [];
 
       try {
         if (json['enfoques_propuestas'] != null) {
@@ -46,6 +50,16 @@ class ProposalModel {
         print('Error al parsear facultades: $e');
       }
 
+      try {
+        if (json['candidatos'] != null) {
+          json['candidatos'].forEach((c) {
+           candidatos.add(CandidatesModel.fromJsonToFilterProposals(c));
+          });
+        }
+      } catch (e) {
+        print('Error al parsear candidatos: $e');
+      }
+
       return ProposalModel(
         id: json['propuesta_id'],
         titulo: json['titulo'],
@@ -53,6 +67,7 @@ class ProposalModel {
         imageUrl: json['img_url'],
         enfoques: enfoques,
         facultades: facultades,
+        candidatos: candidatos,
       );
     } catch (e, stackTrace) {
       print('Error al convertir JSON en ProposalModel: $e');
@@ -69,6 +84,7 @@ class ProposalModel {
     data['imageUrl'] = this.imageUrl;
     data['enfoques'] = this.enfoques.map((v) => v.toJson()).toList();
     data['facultades'] = this.facultades.map((v) => v.toJson()).toList();
+    data['candidatos'] = this.candidatos.map((v) => v.toJson()).toList();
     return data;
   }
 
@@ -79,6 +95,7 @@ class ProposalModel {
     String? imageUrl,
     List<ProposedApproachModel>? enfoques,
     List<FacultyModel>? facultades,
+    List<CandidatesModel>? candidatos,
   }) {
     return ProposalModel(
       id: id ?? this.id,
@@ -87,6 +104,7 @@ class ProposalModel {
       imageUrl: imageUrl ?? this.imageUrl,
       enfoques: enfoques ?? this.enfoques,
       facultades: facultades ?? this.facultades,
+      candidatos: candidatos ?? this.candidatos,
     );
   }
 

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import '../../../core/data/faculties_datasource.dart';
 import '../../../core/models/faculties_model.dart';
 import '../../../proposals/models/proposed_approach_model.dart';
+import '../../controllers/filter_controller.dart';
 import '../../data/proposed_approach_datasource.dart';
 
 class FilterDialog extends StatefulWidget {
@@ -160,8 +163,10 @@ class _FilterDialogState extends State<FilterDialog> {
                       ),
                     ),
                     onPressed: () {
-                      print('Facultades seleccionadas: $_selectedFacultades');
-                      print('Enfoques seleccionados: $_selectedEnfoques');
+                      final filterController = Get.put(FilterController());
+                      filterController.setFacultades(_selectedFacultades);
+                      filterController.setEnfoques(_selectedEnfoques);
+                      print('Facultades seleccionadas: ${filterController.facultades}');
                       Navigator.of(context).pop();
                     },
                     child: Text(
