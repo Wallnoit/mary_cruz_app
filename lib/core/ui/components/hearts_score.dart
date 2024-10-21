@@ -22,52 +22,32 @@ class _HeartsScoreState extends State<HeartsScore> {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(5, (index) {
-                      return IconButton(
-                        icon: Icon(
-                          index < tempRating
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        iconSize: 40,
-                        onPressed: () {
-                          setState(() {
-                            tempRating =
-                                index + 1; // Actualiza la calificación seleccionada
-                          });
-                        },
-                      );
-                    }),
+                  FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(5, (index) {
+                        return IconButton(
+                          icon: Icon(
+                            index < tempRating
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          iconSize: 40,
+                          onPressed: () {
+                            setState(() {
+                              tempRating =
+                                  index + 1; // Actualiza la calificación seleccionada
+                            });
+                          },
+                        );
+                      }),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: Row(
                       children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            onPressed: () async {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text(
-                              'Guardar',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
-                                  ?.copyWith(color: Colors.white, fontSize: 18),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
                         Expanded(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -90,6 +70,29 @@ class _HeartsScoreState extends State<HeartsScore> {
                             ),
                           ),
                         ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: () async {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              'Guardar',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall
+                                  ?.copyWith(color: Colors.white, fontSize: 18),
+                            ),
+                          ),
+                        ),
+
                       ],
                     ),
                   ),
