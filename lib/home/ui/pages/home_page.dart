@@ -19,7 +19,6 @@ import 'package:mary_cruz_app/main.dart';
 
 import 'package:http/http.dart' as http;
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -57,48 +56,44 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<bool> checkConnectivity() async {
+    List connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult.length == 0) {
+      return false;
+    }
 
-Future<bool> checkConnectivity() async {
-  List connectivityResult = await (Connectivity().checkConnectivity());
-  if (connectivityResult.length == 0) {
+    if (connectivityResult[0] == ConnectivityResult.mobile ||
+        connectivityResult[0] == ConnectivityResult.wifi) {
+      return await checkNet();
+    }
+
     return false;
   }
 
-  if(connectivityResult[0] == ConnectivityResult.mobile ||
-      connectivityResult[0] == ConnectivityResult.wifi){
-        return await checkNet();
+  Future<bool> checkNet() async {
+    try {
+      final response = await http.get(Uri.parse('https://www.google.com'));
+      return response.statusCode ==
+          200; // Comprobamos si la respuesta fue exitosa
+    } catch (e) {
+      return false; // Si hay un error en la petición
     }
-
-  return false;
-
-
-}
-
-Future<bool> checkNet()async{
-   try {
-    final response = await http.get(Uri.parse('https://www.google.com'));
-    return response.statusCode == 200; // Comprobamos si la respuesta fue exitosa
-  } catch (e) {
-    return false; // Si hay un error en la petición
   }
-}
 
   void _updateConnectionStatus(List<ConnectivityResult> result) async {
-   
-      if (result.length == 0) {
-        conection = false;
+    if (result.length == 0) {
+      conection = false;
+    } else {
+      if (result[0] == ConnectivityResult.mobile ||
+          result[0] == ConnectivityResult.wifi) {
+        conection = await checkNet();
       } else {
-        if (result[0] == ConnectivityResult.mobile ||
-            result[0] == ConnectivityResult.wifi) {
-          conection = await checkNet();
-        } else {
-          conection = false;
-        }
+        conection = false;
       }
-      if(mounted){
-        setState(()  {
-        });
-      }
+    }
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   resultConnectivity() async {
@@ -209,11 +204,15 @@ Future<bool> checkNet()async{
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  Image.asset(
+                    'lib/assets/logo2.png',
+                    width: 200,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Cronograma',
+                        'Agenda',
                         style:
                             Theme.of(context).textTheme.displayLarge!.copyWith(
                                   fontWeight: FontWeight.w500,

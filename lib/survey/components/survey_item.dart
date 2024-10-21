@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mary_cruz_app/core/entities/question.dart';
-import 'package:mary_cruz_app/core/entities/response.dart';
+import 'package:mary_cruz_app/core/models/question_model.dart';
+import 'package:mary_cruz_app/core/models/response_model.dart';
 
 class SurveyItem extends StatefulWidget {
   final int questionIndex;
   final Question question;
-  final Function(String, ResponseQuestion) onSelectedOption;
+  final Function(String, ResponseQuestionModel) onSelectedOption;
   final Function(String) isSelected;
 
   const SurveyItem({

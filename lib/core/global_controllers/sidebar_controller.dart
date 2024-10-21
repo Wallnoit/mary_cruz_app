@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:mary_cruz_app/core/entities/sidebar_option.dart';
+import 'package:mary_cruz_app/core/models/sidebar_option.dart';
 import 'package:mary_cruz_app/core/supabase/supabase_instance.dart';
 
 class SidebarController extends GetxController {

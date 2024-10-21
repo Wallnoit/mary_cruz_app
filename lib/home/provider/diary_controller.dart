@@ -10,6 +10,20 @@ class DiaryController extends GetxController {
 
   var sectionsPerMonth = <SectionPerMonthModel>[].obs;
 
+  hidePastDates() {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    final List<DiaryModel> filteredDiaryList = diaryList.where((diary) {
+      final diaryDate =
+          DateTime(diary.date.year, diary.date.month, diary.date.day);
+      return diaryDate.isAfter(today) || diaryDate.isAtSameMomentAs(today);
+    }).toList();
+
+    diaryList.value = filteredDiaryList;
+    createSectionsPerMonth();
+  }
+
   createSectionsPerMonth() {
     final Map<int, List<DiaryModel>> sectionsPerMonth = {};
 
@@ -62,7 +76,7 @@ class DiaryController extends GetxController {
       this.diaryList.value = diaryList;
       isLoading.value = false;
 
-      createSectionsPerMonth();
+      hidePastDates();
     } catch (e) {
       print("Error al obtener el cronograma $e");
       this.diaryList.value = [];

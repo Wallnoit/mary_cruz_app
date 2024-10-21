@@ -44,7 +44,7 @@ class _CandidateCardState extends State<CandidateCard> {
         child: Row(children: [
           CircleAvatar(
             radius: 40,
-            backgroundImage: NetworkImage(candidate.image),
+            backgroundImage: NetworkImage(candidate.imageAvatarSmall),
           ),
           const SizedBox(width: 20),
           Expanded(
