@@ -11,7 +11,7 @@ class ProposedApproachModel {
   factory ProposedApproachModel.fromJson(Map<String, dynamic> json) {
     return ProposedApproachModel(
       titulo: json['titulo'],
-      descripcion: json['descripcion'],
+      descripcion: json['descripcion'] ?? '',
     );
   }
 

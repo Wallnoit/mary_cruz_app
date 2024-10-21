@@ -1,7 +1,7 @@
 
 
 import 'package:mary_cruz_app/core/models/faculties_model.dart';
-import 'package:mary_cruz_app/news/models/proposed_approach_model.dart';
+import 'package:mary_cruz_app/proposals/models/proposed_approach_model.dart';
 
 class ProposalModel {
   String id;

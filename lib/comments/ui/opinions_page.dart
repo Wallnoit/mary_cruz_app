@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mary_cruz_app/comments/ui/widgets/age_custom_text_field.dart';
 import 'package:mary_cruz_app/comments/ui/widgets/loading_dialog/loading_dialog.dart';
-import 'package:mary_cruz_app/comments/ui/widgets/loading_dialog/loading_dialog_controller.dart';
+import 'package:mary_cruz_app/comments/controllers/loading_dialog_controller.dart';
 import 'package:mary_cruz_app/comments/ui/widgets/terms_conditions_dialog.dart';
 import 'package:mary_cruz_app/core/errors/failures.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_forms/custom_text_field.dart';

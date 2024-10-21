@@ -4,8 +4,13 @@ import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_containers/info_container.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
 import 'package:mary_cruz_app/proposals/models/proposal_model.dart';
+import 'package:mary_cruz_app/proposals/models/proposed_approach_model.dart';
+import '../../../core/data/faculties_datasource.dart';
+import '../../../core/models/faculties_model.dart';
 import '../../../core/ui/components/hearts_score.dart';
 import '../../data/proposals_datasource.dart';
+import '../../data/proposed_approach_datasource.dart';
+import '../widgets/filter_dialog.dart';
 
 class ProposalsPage extends StatefulWidget {
   const ProposalsPage({super.key});
@@ -18,11 +23,14 @@ class _ProposalsPageState extends State<ProposalsPage> {
   List<ProposalModel> _proposals = [];
   bool _isLoading = true;
 
+
   @override
   void initState() {
     super.initState();
     _fetchProposals();
   }
+
+
 
   Future<void> _fetchProposals() async {
     try {
@@ -47,6 +55,16 @@ class _ProposalsPageState extends State<ProposalsPage> {
     await _fetchProposals();
   }
 
+  void _showFilterDialog() {
+    showModalBottomSheet(
+      context: context,
+      //isScrollControlled: true,
+      builder: (BuildContext context) {
+        return FilterDialog();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -67,9 +85,36 @@ class _ProposalsPageState extends State<ProposalsPage> {
             ? const Center(child: CircularProgressIndicator())
             : _proposals.isEmpty
             ? const Center(child: Text('No hay propuestas disponibles'))
-            : RefreshIndicator(
-          onRefresh: _refreshProposals,
-          child: _buildProposalsList(),
+            : Column(
+          children: [
+            // Filtros que siempre estarán visibles
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Filtros',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.filter_alt_sharp),
+                    onPressed: () {
+                      _showFilterDialog();
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            // Expanded widget para permitir que la lista sea desplazable
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: _refreshProposals,
+                child: _buildProposalsList(),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -102,13 +147,13 @@ class _ProposalsPageState extends State<ProposalsPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        backgroundColor: Theme.of(context).colorScheme.secondary,
+                        backgroundColor:
+                        Theme.of(context).colorScheme.secondary,
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         side: const BorderSide(color: Colors.white, width: 1),
                       ),
                     ),
-
                 ],
               ),
               const Divider(),
@@ -126,13 +171,13 @@ class _ProposalsPageState extends State<ProposalsPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        backgroundColor: Theme.of(context).colorScheme.tertiary,
+                        backgroundColor:
+                        Theme.of(context).colorScheme.tertiary,
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         side: const BorderSide(color: Colors.white, width: 1),
                       ),
                     ),
-
                 ],
               ),
               const Divider(),
