@@ -95,8 +95,10 @@ Future<bool> checkNet()async{
           conection = false;
         }
       }
-    setState(()  {
-    });
+      if(mounted){
+        setState(()  {
+        });
+      }
   }
 
   resultConnectivity() async {

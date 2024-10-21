@@ -23,7 +23,7 @@ class _PlayPageState extends State<PlayPage> {
         drawer: const GlobalSidebar(
           selectedIndex: SideBar.play,
         ),
-        body: Game() ,
+        body: Center(child: Game()) ,
       ),
     );
   }

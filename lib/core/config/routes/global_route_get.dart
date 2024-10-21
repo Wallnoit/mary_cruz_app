@@ -58,7 +58,6 @@ class GlobalRouteGet {
       page: () => const SurveyPage(),
       transition: Transition.fadeIn,
     ),
-
     GetPage(
       name: '/play',
       page: () =>  const PlayPage(),
