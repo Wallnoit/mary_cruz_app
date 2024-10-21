@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mary_cruz_app/candidates/provider/candidates_controller.dart';
 import 'package:mary_cruz_app/core/models/candidates_model.dart';
@@ -92,15 +93,24 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                     ),
                   ),
                   Positioned(
-                    top: getContainerWidth(context) * 0.6 - 50,
+                    top: getContainerWidth(context) * 0.6 - 55, //50
                     left: 0,
                     right: 0, // Centrado
-                    child: CircleAvatar(
+                    child: /*CircleAvatar(
                       radius: 80,
                       backgroundImage: NetworkImage(
                         candidate.imageAvatarBig,
                       ),
-                    ),
+                    ),*/Center(
+                        child: ClipOval(
+                          child: Image.network(
+                            repeat: ImageRepeat.noRepeat,
+                            candidate.imageAvatarBig, 
+                            width: ScreenUtil().setWidth(105), // Ancho del avatar
+                            height: ScreenUtil().setHeight(135), // Alto del avatar
+                            fit: BoxFit.contain, // Ajuste de la imagen
+                          ),
+                                  ),),
                   ),
                 ],
               ),
