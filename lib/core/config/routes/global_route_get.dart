@@ -1,16 +1,19 @@
+import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:mary_cruz_app/candidates/pages/candidates_page.dart';
+import 'package:mary_cruz_app/actualization/first_page.dart';
+import 'package:mary_cruz_app/candidates/ui/pages/candidate_description_page.dart';
+import 'package:mary_cruz_app/candidates/ui/pages/candidates_page.dart';
 import 'package:mary_cruz_app/events/pages/events_page.dart';
 import 'package:mary_cruz_app/home/pages/home_page.dart';
-import 'package:mary_cruz_app/news/pages/news_page.dart';
-import 'package:mary_cruz_app/proposals/pages/proposals_page.dart';
 import 'package:mary_cruz_app/survey/pages/survey_page.dart';
 import 'package:mary_cruz_app/testimony/pages/testimony_page.dart';
 
 import '../../../comments/ui/opinions_page.dart';
+import '../../../news/ui/pages/news_page.dart';
+import '../../../proposals/ui/pages/proposals_page.dart';
 
 class GlobalRouteGet {
-  static const initialRoute = '/';
+  static const initialRoute = '/actualization';
 
   static final List<GetPage> routes = [
     GetPage(
@@ -18,6 +21,16 @@ class GlobalRouteGet {
     GetPage(
         name: '/candidates',
         page: () => const CandidatesPage(),
+        children: [
+          GetPage(
+              name: '/candidate-description',
+              page: () => const CandidateDescriptionPage(),
+              transition: Transition.fadeIn),
+        ],
+        transition: Transition.fadeIn),
+    GetPage(
+        name: '/actualization',
+        page: () => const FirstPage(),
         transition: Transition.fadeIn),
     GetPage(
         name: '/proposals',
@@ -40,8 +53,9 @@ class GlobalRouteGet {
         page: () => const OpinionsPage(),
         transition: Transition.fadeIn),
     GetPage(
-        name: '/survey',
-        page: () => const SurveyPage(),
-        transition: Transition.fadeIn),
+      name: '/survey',
+      page: () => const SurveyPage(),
+      transition: Transition.fadeIn,
+    ),
   ];
 }

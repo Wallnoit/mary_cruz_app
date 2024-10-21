@@ -6,6 +6,7 @@ import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/global_controllers/sidebar_controller.dart';
 import 'package:mary_cruz_app/core/supabase/supabase_instance.dart';
 import 'package:mary_cruz_app/core/utils/screen_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GlobalSidebar extends StatefulWidget {
   final SideBar selectedIndex;
@@ -41,6 +42,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
 
   bool membershipOptions = false;
   bool paymentsOptions = false;
+  SideBar? selected;
 
   getOptionMenu() async {
     final data = await supabase
@@ -51,7 +53,17 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
     print(data);
   }
 
-  SideBar? selected;
+  Future<void> launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri,
+          mode: LaunchMode
+              .externalApplication); // Usa el modo para abrir en un navegador externo
+    } else {
+      throw 'No se pudo abrir la URL $url';
+    }
+  }
 
   @override
   void initState() {
@@ -87,67 +99,75 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                           decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.surface,
                               image: const DecorationImage(
-                                image: AssetImage('lib/assets/logo.png'),
+                                image: AssetImage('lib/assets/logo3.png'),
                                 fit: BoxFit.cover,
                               ))),
                     ),
-                    SizedBox(
-                      height: 5.h,
+                    const SizedBox(
+                      height: 10,
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[0].title ?? '',
                       icon: Icons.home_outlined,
                       isSelected: selectIndex == SideBar.home,
-                      isVisible: controller.listSidebarOptions[0].isVisible,
+                      isVisible:
+                          controller.listSidebarOptions[0].isVisible ?? false,
                       onTap: () => Get.offNamed("/"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[1].title ?? '',
                       icon: Icons.people_alt_outlined,
                       isSelected: selectIndex == SideBar.candidates,
-                      isVisible: controller.listSidebarOptions[1].isVisible,
+                      isVisible: true,
+                      // controller.listSidebarOptions[1].isVisible ?? false,
                       onTap: () => Get.offNamed("candidates"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[2].title ?? '',
                       icon: Icons.assignment_outlined,
                       isSelected: selectIndex == SideBar.proposals,
-                      isVisible: false,
+                      isVisible: true,
+                          // controller.listSidebarOptions[2].isVisible ?? false,
                       onTap: () => Get.offNamed("proposals"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[3].title ?? '',
                       icon: Icons.newspaper_outlined,
                       isSelected: selectIndex == SideBar.news,
-                      isVisible: controller.listSidebarOptions[3].isVisible,
+                      isVisible: true,
+                      // controller.listSidebarOptions[3].isVisible ?? false,
                       onTap: () => Get.offNamed("news"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[4].title ?? '',
                       icon: Icons.event_outlined,
                       isSelected: selectIndex == SideBar.events,
-                      isVisible: controller.listSidebarOptions[4].isVisible,
+                      isVisible:
+                          controller.listSidebarOptions[4].isVisible ?? false,
                       onTap: () => Get.offNamed("events"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[5].title ?? '',
                       icon: Icons.star_border_outlined,
                       isSelected: selectIndex == SideBar.testimony,
-                      isVisible: controller.listSidebarOptions[5].isVisible,
+                      isVisible:
+                          controller.listSidebarOptions[5].isVisible ?? false,
                       onTap: () => Get.offNamed("testimony"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[6].title ?? '',
                       icon: Icons.chat_outlined,
                       isSelected: selectIndex == SideBar.opinions,
-                      isVisible: controller.listSidebarOptions[6].isVisible,
+                      isVisible:
+                          controller.listSidebarOptions[6].isVisible ?? false,
                       onTap: () => Get.offNamed("opinions"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[7].title ?? '',
                       icon: Icons.poll_outlined,
                       isSelected: selectIndex == SideBar.survey,
-                      isVisible: controller.listSidebarOptions[7].isVisible,
+                      isVisible:
+                          controller.listSidebarOptions[7].isVisible ?? false,
                       onTap: () => Get.offNamed("survey"),
                     ),
                     SizedBox(
@@ -182,23 +202,44 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(
-                                Icons.facebook_outlined,
-                                size: 40,
+                              InkWell(
+                                onTap: () {
+                                  final String url = Uri.encodeFull(
+                                      'https://www.facebook.com/people/Mary-Cruz/61565950187878/');
+
+                                  launchURL(url);
+                                },
+                                child: Image.asset(
+                                  'lib/assets/fb.png', // Ruta de la imagen
+                                  width: 40, // Establece el ancho
+                                  height: 40, // Establece la altura
+                                ),
                               ),
-                              SizedBox(
-                                width: 20.w,
+                              InkWell(
+                                onTap: () {
+                                  final String url = Uri.encodeFull(
+                                      'https://www.instagram.com/marycruzlascano/');
+
+                                  launchURL(url);
+                                },
+                                child: Image.asset(
+                                  'lib/assets/insta.png', // Ruta de la imagen
+                                  width: 40, // Establece el ancho
+                                  height: 40, // Establece la altura
+                                ),
                               ),
-                              Icon(
-                                Icons.email_outlined,
-                                size: 40,
-                              ),
-                              SizedBox(
-                                width: 20.w,
-                              ),
-                              Icon(
-                                Icons.tiktok_outlined,
-                                size: 40,
+                              InkWell(
+                                onTap: () {
+                                  final String url = Uri.encodeFull(
+                                      'https://www.tiktok.com/@marycruzlascano');
+
+                                  launchURL(url);
+                                },
+                                child: Image.asset(
+                                  'lib/assets/tiktok.png', // Ruta de la imagen
+                                  width: 40, // Establece el ancho
+                                  height: 40, // Establece la altura
+                                ),
                               ),
                             ],
                           ),
