@@ -7,8 +7,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
+import 'package:mary_cruz_app/core/models/diary_model.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
+import 'package:mary_cruz_app/home/ui/widgets/diary_item.dart';
 import 'package:mary_cruz_app/main.dart';
 
 class HomePage extends StatefulWidget {
@@ -134,9 +136,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: conection?const CustomAppbar(
-            title: 'Home',
-          ):null,
+          appBar: conection
+              ? const CustomAppbar(
+                  title: 'Home',
+                )
+              : null,
           drawer: const GlobalSidebar(
             selectedIndex: SideBar.home,
           ),
@@ -169,6 +173,18 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(
                   height: 20,
+                ),
+                DiaryItem(
+                  diary: DiaryModel(
+                    dayName: 'Lun',
+                    day: 01,
+                    month: 1,
+                    monthName: 'Enero',
+                    title: 'Título',
+                    description: 'Descripción',
+                    timeRange: '10:00 - 12:00',
+                    place: 'Lugar xsdfsdfsdfsf',
+                  ),
                 ),
                 Visibility(
                   visible: !conection,
