@@ -87,21 +87,27 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
               SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
-                      width: getContainerWidth(context) * 0.6,
-                      child: UserAccountsDrawerHeader(
-                          accountName: const Text(
-                            '',
-                          ),
-                          accountEmail: const Text(
-                            '',
-                          ),
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              image: const DecorationImage(
-                                image: AssetImage('lib/assets/logo2.png'),
-                                fit: BoxFit.cover,
-                              ))),
+                    InkWell(
+                      onTap: () {
+                        Get.offNamed("/");
+                      },
+                      splashColor: Colors.transparent,
+                      child: SizedBox(
+                        width: getContainerWidth(context) * 0.6,
+                        child: UserAccountsDrawerHeader(
+                            accountName: const Text(
+                              '',
+                            ),
+                            accountEmail: const Text(
+                              '',
+                            ),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surface,
+                                image: const DecorationImage(
+                                  image: AssetImage('lib/assets/logo2.png'),
+                                  fit: BoxFit.cover,
+                                ))),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -127,7 +133,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       icon: Icons.assignment_outlined,
                       isSelected: selectIndex == SideBar.proposals,
                       isVisible: true,
-                          // controller.listSidebarOptions[2].isVisible ?? false,
+                      // controller.listSidebarOptions[2].isVisible ?? false,
                       onTap: () => Get.offNamed("proposals"),
                     ),
                     RowSidebar(

@@ -23,10 +23,10 @@ class _DataSectionsState extends State<DataSections> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              widget.sectionTitle,
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
+            Text(widget.sectionTitle,
+                style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    )),
             InkWell(
                 borderRadius: BorderRadius.circular(50),
                 onTap: () {
