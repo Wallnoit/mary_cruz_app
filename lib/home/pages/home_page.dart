@@ -189,37 +189,13 @@ Future<bool> checkNet()async{
                   'lib/assets/logo2.png', // Ruta de la imagen
                 ),
 
-                Container(
-                  height: 80,
-                  width: 80,
-                  child: CachedNetworkImage(
-                            imageUrl: "https://gitlab.com/alexjavier/img_mc/-/raw/main/images.jpeg", 
-                            placeholder: (context, url) =>  SizedBox(
-                                          height: 30.0,
-                                          width: 30.0,
-                                          child: const CircularProgressIndicator()),
-                            errorWidget: (context, url, error) =>  Icon(Icons.error),
-                        ),
-                ),
+             
 
 
                 const SizedBox(
                   height: 20,
                 ),
 
-
-                 Container(
-                  height: 80,
-                  width: 80,
-                   child: CachedNetworkImage(
-                            imageUrl: "https://gitlab.com/alexjavier/img_mc/-/raw/main/images__1_.jpeg", 
-                            placeholder: (context, url) =>  SizedBox(
-                                          height: 30.0,
-                                          width: 30.0,
-                                          child: const CircularProgressIndicator()),
-                            errorWidget: (context, url, error) =>  Icon(Icons.error),
-                        ),
-                 ),
 
 
                 Visibility(

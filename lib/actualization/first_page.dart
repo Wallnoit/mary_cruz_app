@@ -62,7 +62,7 @@ class _FirstPageState extends State<FirstPage> {
   String _recoveryInfoServer() {
     ConfigController configController =
         Get.put(ConfigController(), permanent: true);
-    return configController.currentVersion.value;
+    return configController.currentVersionIos.value;
   }
 
   @override

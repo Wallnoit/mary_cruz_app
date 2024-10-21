@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
+import 'package:mary_cruz_app/play/pages/game.dart';
 
 class PlayPage extends StatefulWidget {
   const PlayPage({super.key});
@@ -16,15 +17,13 @@ class _PlayPageState extends State<PlayPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar:  CustomAppbar(
+        appBar:  const CustomAppbar(
           title: 'Juego',
         ),
         drawer: const GlobalSidebar(
-          selectedIndex: SideBar.news,
+          selectedIndex: SideBar.play,
         ),
-        body: const Center(
-          child: Text('News Page'),
-        ),
+        body: Game() ,
       ),
     );
   }

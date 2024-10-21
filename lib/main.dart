@@ -48,6 +48,8 @@ Future<void> main() async {
       Get.put(ConfigController(), permanent: true);
 
   await configController.getCurrentVersion();
+  await configController.getCurrentVersionIos();
+
   await controller.getSidebarOptions();
   await configController.getCurrentSurvey();
   await configController.isCompletedSurveyF();

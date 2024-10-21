@@ -7,6 +7,8 @@ class ConfigController extends GetxController {
   var currentSurvey = "".obs;
   var isCompletedSurvey = false.obs;
   var currentVersion = "".obs;
+  var currentVersionIos = "".obs;
+
 
   getCurrentSurvey() async {
     try {
@@ -90,6 +92,22 @@ class ConfigController extends GetxController {
     } catch (e) {
       print("Error al obtener la version $e");
       currentVersion.value = '';
+    }
+  }
+
+
+    getCurrentVersionIos() async {
+    try {
+      var data = await supabase
+          .from('configuraciones')
+          .select()
+          .eq('key', 'currentVersionIos')
+          .single();
+
+      currentVersionIos.value = data['value'];
+    } catch (e) {
+      print("Error al obtener la version $e");
+      currentVersionIos.value = '';
     }
   }
 
