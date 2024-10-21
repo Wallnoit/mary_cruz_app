@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
-import 'package:mary_cruz_app/home/pages/home_page.dart';
+import 'package:mary_cruz_app/home/ui/pages/home_page.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});

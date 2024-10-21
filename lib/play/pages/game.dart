@@ -108,7 +108,6 @@ class _GameState extends State<Game> {
                             score += 100;
                             complete += 1;
 
-                            print(_game.matchCheck[0].keys.toString().replaceAll("(", "").replaceAll(")", ""));
                             _game.isEnabled[
                               int.parse(
                               _game.matchCheck[0].keys.toString().replaceAll("(", "").replaceAll(")", ""))] = false;
