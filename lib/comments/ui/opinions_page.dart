@@ -9,6 +9,7 @@ import 'package:mary_cruz_app/core/errors/failures.dart';
 import 'package:mary_cruz_app/core/global_controllers/faculties_controller.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_forms/custom_text_field.dart';
 
+import '../../core/data/faculties_datasource.dart';
 import '../../core/data/users_datasource.dart';
 import '../../core/enums/sidebar.dart';
 import '../../core/models/user_model.dart';
@@ -36,8 +37,6 @@ class OpinionsPageState extends State<OpinionsPage> {
       Get.put(OpinionsController(), permanent: true);
   LoadingDialogController loadingDialogController =
       Get.put(LoadingDialogController(), permanent: true);
-  FacultiesController facultiesController =
-      Get.put(FacultiesController(), permanent: true);
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -99,21 +98,29 @@ class OpinionsPageState extends State<OpinionsPage> {
   @override
   void initState() {
     super.initState();
-
     getFacultyData();
+    if (facultyData.isNotEmpty) {
+      facultyController.text = facultyData[0].value;
+    }
     _loadUserData();
-    facultyController.text = facultyData[0].value;
     personTypeController.text = personTypeData[0].value;
     genreController.text = genreData[0].value;
   }
 
   void getFacultyData() async {
-    await facultiesController.getFaculties();
-    facultyData = facultiesController.faculties
-        .map((faculty) =>
-            DropdownData(value: faculty.id.toString(), display: faculty.nombre))
-        .toList();
+    final facultiesData = await FacultiesDataSource().getAllFaculties();
+    setState(() {
+      facultyData = facultiesData
+          .map((faculty) =>
+          DropdownData(value: faculty.id.toString(), display: faculty.nombre))
+          .toList();
+
+      if (facultyData.isNotEmpty) {
+        facultyController.text = facultyData[0].value;
+      }
+    });
   }
+
 
   void validateInputs() {
     setState(() {
