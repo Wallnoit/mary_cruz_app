@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mary_cruz_app/candidates/provider/candidates_controller.dart';
 import 'package:mary_cruz_app/core/models/candidates_model.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_chip.dart';
+import 'package:mary_cruz_app/core/ui/components/custom_forms/role_chip.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_row.dart';
 import 'package:mary_cruz_app/core/ui/components/data_sections.dart';
 import 'package:mary_cruz_app/core/utils/screen_utils.dart';
@@ -67,10 +68,9 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     height: getContainerWidth(context) * 0.6,
-                    color: Colors.red,
                     child: YoutubePlayer(
                       controller: controller,
                       showVideoProgressIndicator: false,
@@ -98,7 +98,7 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                     child: CircleAvatar(
                       radius: 80,
                       backgroundImage: NetworkImage(
-                        candidate.image,
+                        candidate.imageAvatarBig,
                       ),
                     ),
                   ),
@@ -126,8 +126,8 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
-                    CustomChip(
-                        color: Theme.of(context).colorScheme.primary,
+                    RoleChip(
+                        color: Theme.of(context).colorScheme.secondary,
                         label: candidate.role,
                         labelColor: Colors.white),
                     const SizedBox(height: 20),
@@ -143,43 +143,52 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              final String url =
-                                  Uri.encodeFull(candidate.facebook!);
+                          Visibility(
+                            visible: candidate.facebook != null,
+                            child: InkWell(
+                              onTap: () {
+                                final String url =
+                                    Uri.encodeFull(candidate.facebook!);
 
-                              launchURL(url);
-                            },
-                            child: Image.asset(
-                              'lib/assets/fb.png', // Ruta de la imagen
-                              width: 40, // Establece el ancho
-                              height: 40, // Establece la altura
+                                launchURL(url);
+                              },
+                              child: Image.asset(
+                                'lib/assets/fb.png', // Ruta de la imagen
+                                width: 40, // Establece el ancho
+                                height: 40, // Establece la altura
+                              ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              final String url =
-                                  Uri.encodeFull(candidate.instagram!);
+                          Visibility(
+                            visible: candidate.instagram != null,
+                            child: InkWell(
+                              onTap: () {
+                                final String url =
+                                    Uri.encodeFull(candidate.instagram!);
 
-                              launchURL(url);
-                            },
-                            child: Image.asset(
-                              'lib/assets/insta.png', // Ruta de la imagen
-                              width: 40, // Establece el ancho
-                              height: 40, // Establece la altura
+                                launchURL(url);
+                              },
+                              child: Image.asset(
+                                'lib/assets/insta.png', // Ruta de la imagen
+                                width: 40, // Establece el ancho
+                                height: 40, // Establece la altura
+                              ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              final String url =
-                                  Uri.encodeFull(candidate.tiktok!);
+                          Visibility(
+                            visible: candidate.tiktok != null,
+                            child: InkWell(
+                              onTap: () {
+                                final String url =
+                                    Uri.encodeFull(candidate.tiktok!);
 
-                              launchURL(url);
-                            },
-                            child: Image.asset(
-                              'lib/assets/tiktok.png', // Ruta de la imagen
-                              width: 40, // Establece el ancho
-                              height: 40, // Establece la altura
+                                launchURL(url);
+                              },
+                              child: Image.asset(
+                                'lib/assets/tiktok.png', // Ruta de la imagen
+                                width: 40, // Establece el ancho
+                                height: 40, // Establece la altura
+                              ),
                             ),
                           ),
                         ],
@@ -195,42 +204,61 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                     const SizedBox(height: 40),
 
                     // Sección de formación académica
-                    DataSections(
-                      sectionTitle: "Academico",
-                      sectionData: candidate.academicFormation
-                          .map((e) =>
-                              CustomRow(icon: Icons.school_outlined, text: e))
-                          .toList(),
+                    Visibility(
+                      visible: candidate.visibleAcademico,
+                      child: DataSections(
+                        sectionTitle: "Academico",
+                        sectionData: candidate.academicFormation
+                            .map((e) =>
+                                CustomRow(icon: Icons.school_outlined, text: e))
+                            .toList(),
+                      ),
                     ),
 
                     const SizedBox(height: 30),
-                    DataSections(
-                        sectionTitle: "Experiencia",
-                        sectionData: candidate.workExperience
-                            .map((e) =>
-                                CustomRow(icon: Icons.work_outline, text: e))
-                            .toList()),
+                    Visibility(
+                      visible: candidate.visibleExperiencia,
+                      child: DataSections(
+                          sectionTitle: "Experiencia",
+                          sectionData: candidate.workExperience
+                              .map((e) =>
+                                  CustomRow(icon: Icons.work_outline, text: e))
+                              .toList()),
+                    ),
 
                     const SizedBox(height: 30),
 
-                    DataSections(
-                        sectionTitle: "Investigaciones",
-                        sectionData: candidate.investigations!
-                            .map<Widget>(
-                              (e) => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    e.title,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(fontSize: 21),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                      e
-                                          .publicationDate, // Assuming the correct getter is 'publicationDate'
+                    Visibility(
+                      visible: candidate.visibleInvestigaciones,
+                      child: DataSections(
+                          sectionTitle: "Investigaciones",
+                          sectionData: candidate.investigations!
+                              .map<Widget>(
+                                (e) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      e.title,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(fontSize: 21),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                        e
+                                            .publicationDate, // Assuming the correct getter is 'publicationDate'
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary,
+                                            )),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      e.description,
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium!
@@ -238,32 +266,22 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .tertiary,
-                                          )),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    e.description,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
+                                          ),
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 100),
+                                        child: Divider(
                                           color: Theme.of(context)
                                               .colorScheme
-                                              .tertiary,
-                                        ),
-                                  ),
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 100),
-                                      child: Divider(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary
-                                            .withOpacity(0.8),
-                                      )),
-                                ],
-                              ),
-                            )
-                            .toList()),
+                                              .tertiary
+                                              .withOpacity(0.8),
+                                        )),
+                                  ],
+                                ),
+                              )
+                              .toList()),
+                    ),
 
                     // Sección de experiencia laboral
                   ],
