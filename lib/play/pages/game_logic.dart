@@ -21,17 +21,17 @@ class GameLogic {
       cardCount = 9; //16;
       axiCount = 3; //4;
       card_list = [
-        'lib/assets/logo2.png',
-        'lib/assets/logo3.png',
-        'lib/assets/logo2.png',
-        'lib/assets/logo3.png',
+        'lib/assets/img4.JPG',
+        'lib/assets/img1.JPG',
+        'lib/assets/img2.JPG',
+        'lib/assets/img3.JPG',
 
         'lib/assets/logo2.png',
         
-        'lib/assets/logo3.png',
-        'lib/assets/logo3.png',
-        'lib/assets/logo2.png',
-        'lib/assets/logo2.png',
+        'lib/assets/img4.JPG',
+        'lib/assets/img1.JPG',
+        'lib/assets/img2.JPG',
+        'lib/assets/img3.JPG',
         /*'lib/assets/logo2.png',
         'lib/assets/logo2.png',
         'lib/assets/logo2.png',
