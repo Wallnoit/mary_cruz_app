@@ -67,12 +67,17 @@ class CandidatesModel {
       id: json['id'] ?? '',
       name: json['name'],
       phrase: json['phrase'],
-      image: json['image'],
+      imageAvatarSmall: json['image'],
       role: json['role'],
       academicFormation: [],
       workExperience: [],
       investigations: [],
       urlVideo: '',
+      visibleAcademico: json['visible_academico'],
+      visibleExperiencia: json['visible_experiencia'],
+      visibleInvestigaciones: json['visible_investigacion'],
+      imageAvatarBig: json['image_avatar_big'],
+
     );
   }
 
@@ -83,7 +88,7 @@ class CandidatesModel {
       'name': name,
       'phrase': phrase,
       'role': role,
-      'image': image,
+      'image': imageAvatarSmall,
       'url_video': urlVideo,
       'facebook': facebook,
       'instagram': instagram,
