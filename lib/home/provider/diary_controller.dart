@@ -52,8 +52,6 @@ class DiaryController extends GetxController {
       error.value = false;
       final response = await supabase.from('cronograma').select();
 
-      print(response);
-
       final List<DiaryModel> diaryList = response
           .map((e) {
             return DiaryModel.fromJson(e);
@@ -65,8 +63,6 @@ class DiaryController extends GetxController {
       isLoading.value = false;
 
       createSectionsPerMonth();
-
-      print(sectionsPerMonth);
     } catch (e) {
       print("Error al obtener el cronograma $e");
       this.diaryList.value = [];
