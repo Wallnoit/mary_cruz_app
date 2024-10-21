@@ -25,6 +25,7 @@ class CandidatesController extends GetxController {
 
   getCandidates() async {
     isLoading.value = true;
+    error.value = false;
     try {
       final data = await supabase.rpc('obtener_candidatos_con_datos');
 

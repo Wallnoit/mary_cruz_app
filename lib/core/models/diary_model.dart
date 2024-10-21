@@ -1,37 +1,36 @@
 class DiaryModel {
+  final String? id;
   final String title;
   final String description;
-  final int month;
-  final int day;
-  final String dayName;
-  final String monthName;
-  final String timeRange;
+  final DateTime date;
+  final String initTime;
+  final String endTime;
   final String place;
 
-  DiaryModel(
-      {required this.title,
-      required this.description,
-      required this.timeRange,
-      required this.place,
-      required this.month,
-      required this.day,
-      required this.dayName,
-      required this.monthName});
+  DiaryModel({
+    this.id,
+    required this.title,
+    required this.description,
+    required this.date,
+    required this.initTime,
+    required this.endTime,
+    required this.place,
+  });
 
   factory DiaryModel.fromJson(Map<String, dynamic> json) {
     return DiaryModel(
-        title: json['title'],
-        description: json['description'],
-        timeRange: json['time'],
-        place: json['place'],
-        month: json['month'],
-        day: json['day'],
-        dayName: json['dayName'],
-        monthName: json['dayNumber']);
+      id: json['id'],
+      title: json['title'],
+      description: json['descripcion'],
+      place: json['place'],
+      date: DateTime.parse(json['date']),
+      initTime: json['init_time'],
+      endTime: json['end_time'],
+    );
   }
 
   @override
   String toString() {
-    return 'DiaryModel(title: $title, description: $description, time: $timeRange, place: $place)';
+    return 'DiaryModel{title: $title, description: $description, date: $date, initTime: $initTime, endTime: $endTime, place: $place}';
   }
 }
