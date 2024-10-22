@@ -6,9 +6,7 @@ import 'package:mary_cruz_app/comments/ui/widgets/loading_dialog/loading_dialog.
 import 'package:mary_cruz_app/comments/controllers/loading_dialog_controller.dart';
 import 'package:mary_cruz_app/comments/ui/widgets/terms_conditions_dialog.dart';
 import 'package:mary_cruz_app/core/errors/failures.dart';
-import 'package:mary_cruz_app/core/global_controllers/faculties_controller.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_forms/custom_text_field.dart';
-
 import '../../core/data/faculties_datasource.dart';
 import '../../core/data/users_datasource.dart';
 import '../../core/enums/sidebar.dart';
