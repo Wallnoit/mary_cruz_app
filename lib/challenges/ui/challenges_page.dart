@@ -2,26 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart'; // Importa para inicializar la localización
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
-import 'package:mary_cruz_app/core/models/user_model.dart';
-import 'package:mary_cruz_app/core/models/vote_model.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_containers/info_container.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
 import 'package:mary_cruz_app/news/models/news_model.dart';
 import 'package:mary_cruz_app/news/data/news_datasource.dart';
 
-import '../../../core/data/users_datasource.dart';
 import '../../../core/ui/components/hearts_score.dart';
-import '../../../core/utils/cellphone_info.dart';
 
-class NewsPage extends StatefulWidget {
-  const NewsPage({super.key});
+class ChallengesPage extends StatefulWidget {
+  const ChallengesPage({super.key});
 
   @override
-  State<NewsPage> createState() => _NewsPageState();
+  State<ChallengesPage> createState() => _ChallengesPageState();
 }
 
-class _NewsPageState extends State<NewsPage> {
+class _ChallengesPageState extends State<ChallengesPage> {
   List<NewsModel> _news = [];
   bool _isLoading = true;
 
@@ -75,7 +71,7 @@ class _NewsPageState extends State<NewsPage> {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppbar(
-          title: 'Noticias',
+          title: 'Retos',
         ),
         drawer: const GlobalSidebar(
           selectedIndex: SideBar.news,
@@ -113,8 +109,7 @@ class _NewsPageState extends State<NewsPage> {
               description: newsList[index - newsIndex].descripcion,
               imageUrl: newsList[index - newsIndex].urlImagen,
               imageHint: newsList[index - newsIndex].imagenHint,
-              footer: HeartsScore(
-                news: newsList[index - newsIndex],
+              footer: SizedBox(
               ),
             );
           }
@@ -139,10 +134,10 @@ class _NewsPageState extends State<NewsPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
-              DateFormat('dd MMMM yyyy', 'es_ES').format(DateTime.parse(date)),
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              )
+                DateFormat('dd MMMM yyyy', 'es_ES').format(DateTime.parse(date)),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                )
             ),
           ),
           Expanded(

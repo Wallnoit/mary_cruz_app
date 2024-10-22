@@ -272,7 +272,7 @@ class OpinionsPageState extends State<OpinionsPage> {
     try {
       String deviceInfo = await getDeviceId();
       final data =
-          await UsersDataSource().getUserData(idDispositivo: deviceInfo);
+          await UsersDataSource().getUserDataToComments(idDispositivo: deviceInfo);
       setState(() {
         userData = data;
         ageController.text = data.edad.toString();

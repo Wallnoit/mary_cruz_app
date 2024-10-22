@@ -107,7 +107,6 @@ class _ProposalsPageState extends State<ProposalsPage> {
               ),
             ),
 
-            // Expanded widget para permitir que la lista sea desplazable
             Expanded(
               child: RefreshIndicator(
                 onRefresh: _refreshProposals,
@@ -181,7 +180,9 @@ class _ProposalsPageState extends State<ProposalsPage> {
                 ],
               ),
               const Divider(),
-              HeartsScore(),
+              HeartsScore(
+                proposal: proposalItem,
+              ),
             ],
           ),
         );
