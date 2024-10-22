@@ -6,7 +6,6 @@ import 'package:mary_cruz_app/comments/ui/widgets/loading_dialog/loading_dialog.
 import 'package:mary_cruz_app/comments/controllers/loading_dialog_controller.dart';
 import 'package:mary_cruz_app/comments/ui/widgets/terms_conditions_dialog.dart';
 import 'package:mary_cruz_app/core/errors/failures.dart';
-import 'package:mary_cruz_app/core/global_controllers/faculties_controller.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_forms/custom_text_field.dart';
 
 import '../../core/data/faculties_datasource.dart';
@@ -43,27 +42,7 @@ class OpinionsPageState extends State<OpinionsPage> {
 
   List<DropdownData> facultyData = [];
 
-  // List<DropdownData> facultyData = [
-  //   DropdownData(value: '1', display: 'Ciencias Humanas y de la Educación'),
-  //   DropdownData(value: 'FCA', display: 'Facultad de Contabilidad y Auditoría'),
-  //   DropdownData(
-  //       value: 'FCADM', display: 'Facultad de Ciencias Administrativas'),
-  //   DropdownData(
-  //       value: 'FJCS',
-  //       display: 'Facultad de Jurisprudencia y Ciencias Sociales'),
-  //   DropdownData(value: '3', display: 'Facultad de Ciencias Agropecuarias'),
-  //   DropdownData(
-  //       value: '4',
-  //       display:
-  //           'Facultad de Ciencia e Ingenieria en Alimentos y Biotecnología'),
-  //   DropdownData(
-  //       value: 'FDAA', display: 'Facultad de Diseño, Arquitectura y Artes'),
-  //   DropdownData(
-  //       value: 'FICM', display: 'Facultad de Ingeniería Civil y Mecánica'),
-  //   DropdownData(
-  //       value: 'FISEI', display: 'Ingeniería en Sistemas y Electrónica'),
-  //   DropdownData(value: '5', display: 'Facultad de Ciencias de la Salud')
-  // ];
+ 
 
   List<DropdownData> personTypeData = [
     DropdownData(value: 'ESTUDIANTE', display: 'Estudiante'),
@@ -111,8 +90,8 @@ class OpinionsPageState extends State<OpinionsPage> {
     final facultiesData = await FacultiesDataSource().getAllFaculties();
     setState(() {
       facultyData = facultiesData
-          .map((faculty) =>
-          DropdownData(value: faculty.id.toString(), display: faculty.nombre))
+          .map((faculty) => DropdownData(
+              value: faculty.id.toString(), display: faculty.nombre))
           .toList();
 
       if (facultyData.isNotEmpty) {
@@ -120,7 +99,6 @@ class OpinionsPageState extends State<OpinionsPage> {
       }
     });
   }
-
 
   void validateInputs() {
     setState(() {
