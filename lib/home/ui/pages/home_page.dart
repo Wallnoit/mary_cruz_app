@@ -187,70 +187,77 @@ class _HomePageState extends State<HomePage> {
         );
       }
 
-      return SafeArea(
-        child: Scaffold(
-            appBar: const CustomAppbar(
-              title: 'Home',
-            ),
-            drawer: const GlobalSidebar(
-              selectedIndex: SideBar.home,
-            ),
-            body: Padding(
-              padding:
-                  const EdgeInsets.only(right: 20, left: 20, top: 0, bottom: 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Image.asset(
-                    'lib/assets/logo2.png',
-                    width: 200,
-                    height: 150,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Agenda',
-                        style:
-                            Theme.of(context).textTheme.displayLarge!.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                      ),
-                      Icon(
-                        Icons.calendar_today,
-                        color: Theme.of(context).colorScheme.primary,
-                        size: 30,
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Divider(
-                    color: Theme.of(context).colorScheme.primary,
-                    height: 0.1,
-                    thickness: 1.5,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: diaryController.sectionsPerMonth.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 25),
-                          child: SectionPerMonth(
-                            sectionPerMonth:
-                                diaryController.sectionsPerMonth[index],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+      return RefreshIndicator(
+        onRefresh: () async {
+          await diaryController.getDiary();
+        },
+        child: SafeArea(
+          child: Scaffold(
+              appBar: const CustomAppbar(
+                title: 'Home',
               ),
-            )),
+              drawer: const GlobalSidebar(
+                selectedIndex: SideBar.home,
+              ),
+              body: Padding(
+                padding: const EdgeInsets.only(
+                    right: 20, left: 20, top: 0, bottom: 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Image.asset(
+                      'lib/assets/logo.png',
+                      width: 200,
+                      height: 150,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Agenda',
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayLarge!
+                              .copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                        Icon(
+                          Icons.calendar_today,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 30,
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Divider(
+                      color: Theme.of(context).colorScheme.primary,
+                      height: 0.1,
+                      thickness: 1.5,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: diaryController.sectionsPerMonth.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 25),
+                            child: SectionPerMonth(
+                              sectionPerMonth:
+                                  diaryController.sectionsPerMonth[index],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+        ),
       );
     });
   }
