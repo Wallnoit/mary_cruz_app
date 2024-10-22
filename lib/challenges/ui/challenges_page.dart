@@ -76,7 +76,7 @@ class _ChallengesPageState extends State<ChallengesPage> {
           title: 'Retos',
         ),
         drawer: const GlobalSidebar(
-          selectedIndex: SideBar.news,
+          selectedIndex: SideBar.challenges,
         ),
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
