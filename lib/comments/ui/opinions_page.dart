@@ -7,7 +7,6 @@ import 'package:mary_cruz_app/comments/controllers/loading_dialog_controller.dar
 import 'package:mary_cruz_app/comments/ui/widgets/terms_conditions_dialog.dart';
 import 'package:mary_cruz_app/core/errors/failures.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_forms/custom_text_field.dart';
-
 import '../../core/data/faculties_datasource.dart';
 import '../../core/data/users_datasource.dart';
 import '../../core/enums/sidebar.dart';
@@ -252,7 +251,7 @@ class OpinionsPageState extends State<OpinionsPage> {
     try {
       String deviceInfo = await getDeviceId();
       final data =
-          await UsersDataSource().getUserData(idDispositivo: deviceInfo);
+          await UsersDataSource().getUserDataToComments(idDispositivo: deviceInfo);
       setState(() {
         userData = data;
         ageController.text = data.edad.toString();

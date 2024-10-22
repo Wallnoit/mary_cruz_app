@@ -1,6 +1,7 @@
 
 
 class NewsModel {
+  final String? id;
   final String titulo;
   final String descripcion;
   final String urlImagen;
@@ -8,6 +9,7 @@ class NewsModel {
   final DateTime createdAt;
 
   NewsModel({
+    this.id,
     required this.titulo,
     required this.descripcion,
     required this.urlImagen,
@@ -17,6 +19,7 @@ class NewsModel {
 
   factory NewsModel.fromJson(Map<String, dynamic> json) {
     return NewsModel(
+      id: json['id'] ?? 0,
       titulo: json['titulo'],
       descripcion: json['descripcion'],
       urlImagen: json['url_imagen_portada'] ?? '',
@@ -27,6 +30,7 @@ class NewsModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id ?? 0,
       'titulo': titulo,
       'descripcion': descripcion,
       'url_imagen_portada': urlImagen,
@@ -36,6 +40,7 @@ class NewsModel {
   }
 
   NewsModel copyWith({
+    String? id,
     String? titulo,
     String? descripcion,
     String? urlImagen,
@@ -43,6 +48,7 @@ class NewsModel {
     DateTime? createdAt
   }) {
     return NewsModel(
+      id: id ?? this.id,
       titulo: titulo ?? this.titulo,
       descripcion: descripcion ?? this.descripcion,
       urlImagen: urlImagen ?? this.urlImagen,

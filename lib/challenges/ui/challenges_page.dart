@@ -2,72 +2,70 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart'; // Importa para inicializar la localización
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
-import 'package:mary_cruz_app/core/models/user_model.dart';
-import 'package:mary_cruz_app/core/models/vote_model.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_containers/info_container.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
 import 'package:mary_cruz_app/news/models/news_model.dart';
 import 'package:mary_cruz_app/news/data/news_datasource.dart';
 
-import '../../../core/data/users_datasource.dart';
 import '../../../core/ui/components/hearts_score.dart';
-import '../../../core/utils/cellphone_info.dart';
+import '../data/challenges_datasource.dart';
+import '../models/challenge_model.dart';
 
-class NewsPage extends StatefulWidget {
-  const NewsPage({super.key});
+class ChallengesPage extends StatefulWidget {
+  const ChallengesPage({super.key});
 
   @override
-  State<NewsPage> createState() => _NewsPageState();
+  State<ChallengesPage> createState() => _ChallengesPageState();
 }
 
-class _NewsPageState extends State<NewsPage> {
-  List<NewsModel> _news = [];
+class _ChallengesPageState extends State<ChallengesPage> {
+  List<ChallengeModel> _challenges = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _initializeLocale();
-    _fetchNews();
+    _fetchChallenges();
   }
 
   Future<void> _initializeLocale() async {
     await initializeDateFormatting('es_ES', null);
   }
 
-  Future<void> _fetchNews() async {
+  Future<void> _fetchChallenges() async {
     try {
-      final news = await NewsDataSource().getAllNews();
+      final challenges = await ChallengesDataSource().getAllChallenges();
       setState(() {
-        _news = news;
+        _challenges = challenges;
         _isLoading = false;
       });
     } catch (e) {
       setState(() {
         _isLoading = false;
       });
-      print('Error al obtener noticias: $e');
+      print('Error al obtener retos: $e');
     }
   }
 
-  Future<void> _refreshNews() async {
+  Future<void> _refreshChallenges() async {
     setState(() {
       _isLoading = true;
     });
-    await _fetchNews();
+    await _fetchChallenges();
   }
 
-  Map<String, List<NewsModel>> _groupNewsByDate(List<NewsModel> news) {
-    Map<String, List<NewsModel>> groupedNews = {};
-    for (var newsItem in news) {
-      String formattedDate = DateFormat('yyyy-MM-dd').format(newsItem.createdAt);
-      if (!groupedNews.containsKey(formattedDate)) {
-        groupedNews[formattedDate] = [];
+  Map<String, List<ChallengeModel>> _groupChallengesByDate(List<ChallengeModel> challenges) {
+    Map<String, List<ChallengeModel>> groupedChallenges= {};
+    for (var challengeItem in challenges) {
+      String formattedDate = DateFormat('yyyy-MM-dd').format(challengeItem.createdAt);
+      if (!groupedChallenges.containsKey(formattedDate)) {
+        groupedChallenges[formattedDate] = [];
       }
-      groupedNews[formattedDate]?.add(newsItem);
+      groupedChallenges[formattedDate]?.add(challengeItem);
     }
-    return groupedNews;
+    return groupedChallenges;
   }
 
   @override
@@ -75,30 +73,30 @@ class _NewsPageState extends State<NewsPage> {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppbar(
-          title: 'Noticias',
+          title: 'Retos',
         ),
         drawer: const GlobalSidebar(
           selectedIndex: SideBar.news,
         ),
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
-            : _news.isEmpty
-            ? const Center(child: Text('No hay noticias disponibles'))
+            : _challenges.isEmpty
+            ? const Center(child: Text('No hay retos nibles'))
             : RefreshIndicator(
-          onRefresh: _refreshNews,
-          child: _buildNewsList(),
+          onRefresh: _refreshChallenges,
+          child: _buildChallengesList(),
         ),
       ),
     );
   }
 
-  Widget _buildNewsList() {
-    final groupedNews = _groupNewsByDate(_news);
-    final sortedKeys = groupedNews.keys.toList()
+  Widget _buildChallengesList() {
+    final groupedChallenges = _groupChallengesByDate(_challenges);
+    final sortedKeys = groupedChallenges.keys.toList()
       ..sort((a, b) => b.compareTo(a));
 
     return ListView.builder(
-      itemCount: groupedNews.values.fold(0, (prev, element) => prev + element.length) + sortedKeys.length,
+      itemCount: groupedChallenges.values.fold(0, (prev, element) => prev + element.length) + sortedKeys.length,
       itemBuilder: (context, index) {
         int newsIndex = 0;
         for (var date in sortedKeys) {
@@ -106,15 +104,14 @@ class _NewsPageState extends State<NewsPage> {
             return _buildDateDivider(date);
           }
           newsIndex++;
-          final newsList = groupedNews[date]!;
+          final newsList = groupedChallenges[date]!;
           if (index - newsIndex < newsList.length) {
             return InfoContainer(
-              title: newsList[index - newsIndex].titulo,
-              description: newsList[index - newsIndex].descripcion,
-              imageUrl: newsList[index - newsIndex].urlImagen,
-              imageHint: newsList[index - newsIndex].imagenHint,
-              footer: HeartsScore(
-                news: newsList[index - newsIndex],
+              title: newsList[index - newsIndex].nombre,
+              description: newsList[index - newsIndex].description,
+              imageUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+              imageHint:'',
+              footer: SizedBox(
               ),
             );
           }
@@ -139,10 +136,10 @@ class _NewsPageState extends State<NewsPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
-              DateFormat('dd MMMM yyyy', 'es_ES').format(DateTime.parse(date)),
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              )
+                DateFormat('dd MMMM yyyy', 'es_ES').format(DateTime.parse(date)),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                )
             ),
           ),
           Expanded(
