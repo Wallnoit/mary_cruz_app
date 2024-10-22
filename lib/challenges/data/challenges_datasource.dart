@@ -8,12 +8,12 @@ import '../../core/supabase/supabase_instance.dart';
 
 class ChallengesDataSource{
 
-  Future<List<NewsModel>> getAllChallenges() async {
+  Future<List<ChallengeModel>> getAllChallenges() async {
     try {
       final response = await supabase.from('retos').select();
       print('Response: $response');
-      final List<NewsModel> news = response.map<NewsModel>((data) => NewsModel.fromJson(data)).toList();
-      return news;
+      final List<ChallengeModel> challenges = response.map<ChallengeModel>((data) => ChallengeModel.fromJson(data)).toList();
+      return challenges;
     } catch (e) {
       print('Error al obtener retos: $e');
       throw Exception('Error al obtener retos');

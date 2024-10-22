@@ -15,9 +15,9 @@ class ChallengeModel {
 
   factory ChallengeModel.fromJson(Map<String, dynamic> json) {
     return ChallengeModel(
-      id: json['id'],
+      id: json['id'] ,
       nombre: json['nombre'],
-      description: json['description'],
+      description: json['descripcion'],
       createdAt: DateTime.parse(json['created_at']),
     );
   }
