@@ -63,6 +63,8 @@ class _GameState extends State<Game> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.width+MediaQuery.of(context).size.width/2.5;
+
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -70,7 +72,7 @@ class _GameState extends State<Game> {
           Padding(
             padding:  EdgeInsets.only(bottom: ScreenUtil().setHeight(5)),
             child: Text(
-                          'Sueña, crea, innova',
+                          'Unidos lo haremos posible',
                           style:
                               Theme.of(context).textTheme.displayMedium!.copyWith(
                                     fontWeight: FontWeight.w500,
@@ -94,16 +96,16 @@ class _GameState extends State<Game> {
             ],
           ),
           SizedBox(
-            height: screenWidth,
+            height: screenHeight,
             width: screenWidth,
             child: GridView.builder(
                 itemCount: _game.cardsImg!.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: _game.axiCount,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 15,
                 ),
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(8),
                 itemBuilder: (context, index) {
                   return GestureDetector(
                       onTap:  _game.isEnabled[index] ?() {
@@ -172,16 +174,39 @@ class _GameState extends State<Game> {
                         // _game.matchCheck
                       }:null,
                       child: Container(
-                        decoration: BoxDecoration(
+                         decoration: BoxDecoration(
+                              shape: BoxShape.circle, // Forma circular
+                              border: Border.all(
+                                color: _game.isEnabled[index] ? Colors.black : Theme.of(context).primaryColor, // Color de la línea
+                                width: _game.isEnabled[index] ? 1 : 4, // Grosor del borde
+                              ),
+                            ),
+                          child: Center(
+                                child: CircleAvatar(
+                                  radius: 60.0, // Ajusta el tamaño del avatar
+                                  backgroundColor: Color(0xFFE2E4E3), // Color de fondo
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      _game.cardsImg![index], // URL de la imagen
+                                      width: ScreenUtil().setWidth(110),
+                                      height: ScreenUtil().setHeight(180),
+                                      fit: BoxFit.contain, // Ajuste de la imagen
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+
+                        /*decoration: BoxDecoration(
                           border: Border.all(
                             color: _game.isEnabled[index] ? Colors.black : Theme.of(context).primaryColor, // Color de la línea
                             width: _game.isEnabled[index] ? 1 : 3, // Grosor de la línea
                           ),
                             //color:  _game.isEnabled[index] ? Colors.white : Colors.grey,
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(8),
                             image: DecorationImage(
                                 image: AssetImage(_game.cardsImg![index]),
-                                fit: BoxFit.cover)),
+                                fit: BoxFit.cover)),*/
                       ));
                 }),
           ),

@@ -14,6 +14,7 @@ class CandidatesController extends GetxController {
     facebook: '',
     instagram: '',
     tiktok: '',
+    resumen: '',
     imageAvatarBig: '',
     visibleAcademico: false,
     visibleExperiencia: false,
@@ -37,7 +38,6 @@ class CandidatesController extends GetxController {
 
       final List<CandidatesModel> candidatesList = data
           .map((e) {
-            print(e['url_video']);
             return CandidatesModel.fromJson(e as Map<String, dynamic>);
           })
           .toList()

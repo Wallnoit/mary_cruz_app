@@ -43,20 +43,29 @@ class _CandidateCardState extends State<CandidateCard> {
         },
         splashColor: Colors.grey,
         child: Row(children: [
-          /*CircleAvatar(
-            radius: 40,
-            backgroundImage: NetworkImage(candidate.imageAvatarSmall),
-          ),*/
           Center(
-                        child: ClipOval(
-                          child: Image.network(
-                            repeat: ImageRepeat.noRepeat,
-                            candidate.imageAvatarSmall, 
-                            width: ScreenUtil().setWidth(55), // Ancho del avatar
-                            height: ScreenUtil().setHeight(70), // Alto del avatar
-                            fit: BoxFit.contain, // Ajuste de la imagen
-                          ),
-                                  ),),
+            child: ClipOval(
+              child: Image.network(
+                repeat: ImageRepeat.noRepeat,
+                candidate.imageAvatarSmall,
+                width: ScreenUtil().setWidth(55),
+                height: ScreenUtil().setHeight(70),
+                fit: BoxFit.contain,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  } else {
+                    return Image.asset(
+                      'lib/assets/${candidate.id}.JPG',
+                      width: ScreenUtil().setWidth(55),
+                      height: ScreenUtil().setHeight(70),
+                      fit: BoxFit.contain,
+                    );
+                  }
+                },
+              ),
+            ),
+          ),
           const SizedBox(width: 20),
           Expanded(
             child: Column(

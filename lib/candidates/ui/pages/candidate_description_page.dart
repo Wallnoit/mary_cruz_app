@@ -256,9 +256,9 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                     const SizedBox(height: 40),
 
                     Text(
-                      candidate.phrase,
+                      candidate.resumen,
                       style: Theme.of(context).textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.justify,
                     ),
 
                     const SizedBox(height: 40),

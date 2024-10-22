@@ -21,4 +21,43 @@ class FilterController extends GetxController {
       enfoques.add(enfoque);
     }
   }
+
+  List<FacultyModel> getFacultades() {
+    return facultades;
+  }
+
+   String getFacultadesString() {
+    String valFacu = "";
+    for(FacultyModel facu in facultades){
+      valFacu +=" "+facu.siglas;
+    }
+    return valFacu;
+  }
+
+
+  List<ProposedApproachModel> getEnfoques() {
+    return enfoques;
+  }
+
+
+   String getEnfoquesString() {
+    String valEnfoque = "";
+    for(ProposedApproachModel enfo in enfoques){
+      valEnfoque +=" "+enfo.titulo;
+    }
+    return valEnfoque;
+
+   }
+
+
+   bool hasInfo(){
+    return (facultades.length + enfoques.length) >0 ? true : false;
+   }
+
+    void eraseInfo(){
+      facultades.clear();
+      enfoques.clear();
+   }
+    
+
 }

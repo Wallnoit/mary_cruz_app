@@ -9,11 +9,14 @@ import '../../data/proposed_approach_datasource.dart';
 
 class FilterDialog extends StatefulWidget {
 
+  final List<FacultyModel>? facultadesGeneral;
+  final List<ProposedApproachModel>? enfoquesGeneral;
 
-  const FilterDialog({
+  FilterDialog({
     Key? key,
+    this.facultadesGeneral,
+    this.enfoquesGeneral,
   }) : super(key: key);
-
   @override
   _FilterDialogState createState() => _FilterDialogState();
 }
@@ -31,7 +34,7 @@ class _FilterDialogState extends State<FilterDialog> {
   @override
   void initState() {
     super.initState();
-    _fetchData();
+    _fetchData(); 
   }
 
   Future<void> _fetchData() async {
@@ -45,10 +48,18 @@ class _FilterDialogState extends State<FilterDialog> {
         _enfoques = approaches;
         _isLoading = false;
       });
+
+
+      _selectedFacultades = widget.facultadesGeneral!;
+      _selectedEnfoques = widget.enfoquesGeneral!;
+
+     
     } catch (e) {
       print('Error al obtener datos: $e');
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,14 +101,19 @@ class _FilterDialogState extends State<FilterDialog> {
                             ?.copyWith(
                             fontSize: 18,
                             fontWeight: FontWeight.normal)),
-                    value: _selectedFacultades.contains(facultad),
+                    value: _selectedFacultades.where((e) => e.siglas == facultad.siglas).toList().isNotEmpty ? true: false, 
                     onChanged: (bool? value) {
-                      setState(() {
-                        if (value == true) {
+                      if (_selectedFacultades.where((e) => e.siglas == facultad.siglas).toList().isEmpty) {
                           _selectedFacultades.add(facultad);
                         } else {
-                          _selectedFacultades.remove(facultad);
+                          //_selectedFacultades.remove(facultad);
+
+                          _selectedFacultades.removeWhere((e) => e.siglas == facultad.siglas);
+                          print(facultad.siglas);
                         }
+
+                      setState(() {
+                        _selectedFacultades;
                       });
                     },
                     activeColor: Theme.of(context).primaryColor,
@@ -163,10 +179,11 @@ class _FilterDialogState extends State<FilterDialog> {
                       ),
                     ),
                     onPressed: () {
-                      final filterController = Get.put(FilterController());
-                      filterController.setFacultades(_selectedFacultades);
-                      filterController.setEnfoques(_selectedEnfoques);
-                      print('Facultades seleccionadas: ${filterController.facultades}');
+                      //final filterController = Get.put(FilterController());
+                      print("_selectedFacultades "+ _selectedFacultades.toString());
+                      //filterController.setFacultades(_selectedFacultades);
+                      //filterController.setEnfoques(_selectedEnfoques);
+                      //print('Facultades seleccionadas: ${filterController.facultades}');
                       Navigator.of(context).pop();
                     },
                     child: Text(
