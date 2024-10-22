@@ -124,10 +124,11 @@ class _HeartsScoreState extends State<HeartsScore> {
             Padding(
               padding: const EdgeInsets.only(left: 8),
               child: Text(
-                '($_randomVotes votos)', // Mostrar el número de votos entre paréntesis
+                '(${(_randomRating / 5 * 100).toStringAsFixed(1)}%)', // Mostrar el porcentaje de rating
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
+
             Padding(
               padding: const EdgeInsets.only(left: 8),
               child: ElevatedButton(
