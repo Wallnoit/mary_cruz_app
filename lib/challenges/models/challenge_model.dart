@@ -4,12 +4,16 @@ class ChallengeModel {
   final int id;
   final String nombre;
   final String description;
+  final String imgUrl;
+  final String imgHint;
   final DateTime createdAt;
 
   ChallengeModel({
     required this.id,
     required this.nombre,
     required this.description,
+    required this.imgUrl,
+    required this.imgHint,
     required this.createdAt,
   });
 
@@ -18,6 +22,8 @@ class ChallengeModel {
       id: json['id'] ,
       nombre: json['nombre'],
       description: json['descripcion'],
+      imgUrl: json['img_url'] ?? '',
+      imgHint: json['img_hint'] ?? '',
       createdAt: DateTime.parse(json['created_at']),
     );
   }
@@ -27,6 +33,8 @@ class ChallengeModel {
       'id': id,
       'nombre': nombre,
       'description': description,
+      'img_url': imgUrl,
+      'img_hint': imgHint,
       'created_at': createdAt.toIso8601String(),
     };
   }
@@ -35,12 +43,16 @@ class ChallengeModel {
     int? id,
     String? nombre,
     String? description,
+    String? imgUrl,
+    String? imgHint,
     DateTime? createdAt,
   }) {
     return ChallengeModel(
       id: id ?? this.id,
       nombre: nombre ?? this.nombre,
       description: description ?? this.description,
+      imgUrl: imgUrl ?? this.imgUrl,
+      imgHint: imgHint ?? this.imgHint,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -49,58 +61,69 @@ class ChallengeModel {
 
 
 class ChallengeUserModel{
-  final int id;
-  final String idDispositivo;
-  final int idReto;
+  final int? id;
+  final String idUsuario;
   final String nombre;
   final String telefono;
+  final String dataUrL;
+  final bool? aprobado;
+  final int? ranking;
   final DateTime createdAt;
 
   ChallengeUserModel({
-    required this.id,
-    required this.idDispositivo,
-    required this.idReto,
+     this.id,
+    required this.idUsuario,
     required this.nombre,
     required this.telefono,
+    required this.dataUrL,
+    this.aprobado,
+    this.ranking,
     required this.createdAt,
   });
 
   factory ChallengeUserModel.fromJson(Map<String, dynamic> json) {
     return ChallengeUserModel(
       id: json['id'],
-      idDispositivo: json['id_dispositivo'],
-      idReto: json['id_reto'],
+      idUsuario: json['id_usuario'],
       nombre: json['nombre'],
       telefono: json['telefono'],
+      dataUrL: json['data_url'] ?? '',
+      aprobado: json['aprobado'] ?? '',
+      ranking: json['ranking'] ?? -1,
       createdAt: DateTime.parse(json['created_at']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'id_dispositivo': idDispositivo,
-      'id_reto': idReto,
+      'id_usuario': idUsuario,
       'nombre': nombre,
       'telefono': telefono,
+      'data_url': dataUrL,
+      'aprobado': false,
+      'ranking': ranking,
       'created_at': createdAt.toIso8601String(),
     };
   }
 
   ChallengeUserModel copyWith({
     int? id,
-    String? idDispositivo,
-    int? idReto,
+    String? idUsuario,
     String? nombre,
     String? telefono,
+    String? dataUrL,
+    bool? aprobado,
+    int? ranking,
     DateTime? createdAt,
   }) {
     return ChallengeUserModel(
       id: id ?? this.id,
-      idDispositivo: idDispositivo ?? this.idDispositivo,
-      idReto: idReto ?? this.idReto,
+      idUsuario: idUsuario ?? this.idUsuario,
       nombre: nombre ?? this.nombre,
       telefono: telefono ?? this.telefono,
+      dataUrL: dataUrL ?? this.dataUrL,
+      aprobado: aprobado ?? this.aprobado,
+      ranking: ranking ?? this.ranking,
       createdAt: createdAt ?? this.createdAt,
     );
   }
