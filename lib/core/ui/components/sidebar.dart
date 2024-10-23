@@ -124,16 +124,16 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       title: controller.listSidebarOptions[1].title ?? '',
                       icon: Icons.people_alt_outlined,
                       isSelected: selectIndex == SideBar.candidates,
-                      isVisible: true,
-                      // controller.listSidebarOptions[1].isVisible ?? false,
+                      isVisible:
+                          controller.listSidebarOptions[1].isVisible ?? false,
                       onTap: () => Get.offNamed("candidates"),
                     ),
                     RowSidebar(
                       title: controller.listSidebarOptions[2].title ?? '',
                       icon: Icons.assignment_outlined,
                       isSelected: selectIndex == SideBar.proposals,
-                      isVisible: true,
-                      // controller.listSidebarOptions[2].isVisible ?? false,
+                      isVisible:
+                          controller.listSidebarOptions[2].isVisible ?? false,
                       onTap: () => Get.offNamed("proposals"),
                     ),
                     RowSidebar(
@@ -141,7 +141,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       icon: Icons.newspaper_outlined,
                       isSelected: selectIndex == SideBar.news,
                       isVisible:
-                      controller.listSidebarOptions[3].isVisible ?? false,
+                          controller.listSidebarOptions[3].isVisible ?? false,
                       onTap: () => Get.offNamed("news"),
                     ),
                     RowSidebar(
@@ -189,7 +189,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       icon: Icons.emoji_emotions,
                       isSelected: selectIndex == SideBar.challenges,
                       isVisible:
-                      controller.listSidebarOptions[9].isVisible ?? false,
+                          controller.listSidebarOptions[9].isVisible ?? false,
                       onTap: () => Get.offNamed("challenges"),
                     ),
                     SizedBox(
