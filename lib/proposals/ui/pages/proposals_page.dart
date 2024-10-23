@@ -265,13 +265,16 @@ class _ProposalsPageState extends State<ProposalsPage> {
           imageHint: proposalItem.descripcion,
           footer: Column(
             children: [
-              const Divider(),
+              proposalItem.candidatos.length>0? 
+              const Divider(): const SizedBox(height: 0.0, width: 0.0,),
               Row(
                 children: [
                   
                           Expanded(
                             flex: 2,
-                             child: SizedBox(
+                             child: 
+                             proposalItem.candidatos.length>0?
+                             SizedBox(
                                 height: 30, 
                                child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -297,19 +300,20 @@ class _ProposalsPageState extends State<ProposalsPage> {
                                     );
                                   }
                                 ),
-                             ),
+                             ): const SizedBox(height: 0.0,width: 0.0,),
                            )
                 ],
               ),
               
-
-              const Divider(),
+              proposalItem.enfoques.length>0? 
+              const Divider(): const SizedBox(height: 0.0, width: 0.0,),
               Row(
                 children: [  
-                        
+
                           Expanded(
                             flex: 2,
-                             child: SizedBox(
+                             child: proposalItem.enfoques.length>0? 
+                             SizedBox(
                                 height: 30, 
                                child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -335,7 +339,7 @@ class _ProposalsPageState extends State<ProposalsPage> {
                                     );
                                   }
                                 ),
-                             ),
+                             ): const SizedBox(height: 0.0,width: 0.0,),
                            )
                   
                   /*for (var enfoque in proposalItem.enfoques)

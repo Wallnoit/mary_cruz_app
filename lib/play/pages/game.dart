@@ -201,7 +201,7 @@ class _GameState extends State<Game> {
                                   _game.isEnabled = [true, true, true, true, false, true,true, true, true /*, true, true, true,true, true, true, true, true, true, true*/];
         
                                 _showDialog(context, 'Ganaste',
-                                    'Tu puntuación fue de: $score');
+                                    'Tu puntuación fue de: $score \nrecueda para seguir creciendo tecnològicamente vota todo \nUnión y futuro universitario');
                                 timer.cancel();
                               }
                             } else {
