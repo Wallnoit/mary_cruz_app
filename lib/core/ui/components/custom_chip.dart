@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mary_cruz_app/core/utils/utils.dart';
 
 class CustomChip extends StatefulWidget {
   final Color color;
@@ -27,7 +28,7 @@ class _CustomChipState extends State<CustomChip> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        label,
+        fixedString(label, 30),
         style: TextStyle(
             color: labelColor, fontSize: 13, fontWeight: FontWeight.bold),
       ),

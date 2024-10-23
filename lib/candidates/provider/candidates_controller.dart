@@ -9,11 +9,16 @@ class CandidatesController extends GetxController {
     name: '',
     phrase: '',
     role: '',
-    image: '',
+    imageAvatarSmall: '',
     urlVideo: '',
     facebook: '',
     instagram: '',
     tiktok: '',
+    resumen: '',
+    imageAvatarBig: '',
+    visibleAcademico: false,
+    visibleExperiencia: false,
+    visibleInvestigaciones: false,
     academicFormation: [],
     workExperience: [],
     investigations: [],
@@ -25,6 +30,7 @@ class CandidatesController extends GetxController {
 
   getCandidates() async {
     isLoading.value = true;
+    error.value = false;
     try {
       final data = await supabase.rpc('obtener_candidatos_con_datos');
 
@@ -32,7 +38,6 @@ class CandidatesController extends GetxController {
 
       final List<CandidatesModel> candidatesList = data
           .map((e) {
-            print(e['url_video']);
             return CandidatesModel.fromJson(e as Map<String, dynamic>);
           })
           .toList()

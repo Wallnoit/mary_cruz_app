@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mary_cruz_app/candidates/provider/candidates_controller.dart';
 import 'package:mary_cruz_app/core/models/candidates_model.dart';
@@ -42,9 +43,28 @@ class _CandidateCardState extends State<CandidateCard> {
         },
         splashColor: Colors.grey,
         child: Row(children: [
-          CircleAvatar(
-            radius: 40,
-            backgroundImage: NetworkImage(candidate.image),
+          Center(
+            child: ClipOval(
+              child: Image.network(
+                repeat: ImageRepeat.noRepeat,
+                candidate.imageAvatarSmall,
+                width: ScreenUtil().setWidth(55),
+                height: ScreenUtil().setHeight(70),
+                fit: BoxFit.contain,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  } else {
+                    return Image.asset(
+                      'lib/assets/${candidate.id}.JPG',
+                      width: ScreenUtil().setWidth(55),
+                      height: ScreenUtil().setHeight(70),
+                      fit: BoxFit.contain,
+                    );
+                  }
+                },
+              ),
+            ),
           ),
           const SizedBox(width: 20),
           Expanded(

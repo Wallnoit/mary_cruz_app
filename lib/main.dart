@@ -14,9 +14,11 @@ import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
 import 'package:mary_cruz_app/core/global_controllers/sidebar_controller.dart';
 import 'package:mary_cruz_app/core/theme/theme_data/global_theme_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import 'package:http/http.dart' as http;
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +47,8 @@ Future<void> main() async {
       Get.put(ConfigController(), permanent: true);
 
   await configController.getCurrentVersion();
+  await configController.getCurrentVersionIos();
+
   await controller.getSidebarOptions();
   await configController.getCurrentSurvey();
   await configController.isCompletedSurveyF();
@@ -60,9 +64,25 @@ Future<bool> checkConnectivity() async {
     return false;
   }
 
-  return connectivityResult[0] == ConnectivityResult.mobile ||
-      connectivityResult[0] == ConnectivityResult.wifi;
+  if(connectivityResult[0] == ConnectivityResult.mobile ||
+      connectivityResult[0] == ConnectivityResult.wifi){
+        return await checkNet();
+    }
+
+  return false;
+
+
 }
+
+Future<bool> checkNet()async{
+   try {
+    final response = await http.get(Uri.parse('https://www.google.com'));
+    return response.statusCode == 200; // Comprobamos si la respuesta fue exitosa
+  } catch (e) {
+    return false; // Si hay un error en la petición
+  }
+}
+
 
 class MyHttpOverrides extends HttpOverrides {
   @override

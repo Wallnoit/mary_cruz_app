@@ -6,5 +6,7 @@ enum SideBar {
   news,
   testimony,
   opinions,
-  survey
+  survey,
+  play,
+  challenges
 }

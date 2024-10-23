@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:mary_cruz_app/candidates/provider/candidates_controller.dart';
 import 'package:mary_cruz_app/core/models/candidates_model.dart';
-import 'package:mary_cruz_app/core/ui/components/custom_chip.dart';
+import 'package:mary_cruz_app/core/ui/components/custom_forms/role_chip.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_row.dart';
 import 'package:mary_cruz_app/core/ui/components/data_sections.dart';
 import 'package:mary_cruz_app/core/utils/screen_utils.dart';
@@ -19,6 +21,7 @@ class CandidateDescriptionPage extends StatefulWidget {
 
 class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
   CandidatesController candidateController = Get.find();
+  late bool isMuted;
 
   late YoutubePlayerController controller;
   late CandidatesModel candidate;
@@ -26,17 +29,24 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
   @override
   void initState() {
     candidate = candidateController.candidate.value;
+    isMuted = true;
 
     controller = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId(candidate.urlVideo)!,
-      flags: const YoutubePlayerFlags(
+      flags: YoutubePlayerFlags(
         autoPlay: true,
-        mute: true,
+        mute: isMuted,
         loop: true,
       ),
     );
 
     super.initState();
+  }
+
+  existAllSocialNetworks() {
+    return candidate.facebook != null &&
+        candidate.instagram != null &&
+        candidate.tiktok != null;
   }
 
   Future<void> launchURL(String url) async {
@@ -53,13 +63,29 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
 
   @override
   Widget build(BuildContext context) {
-    // if (isLoading) {
-    //   return const Scaffold(
-    //     body: Center(child: CircularProgressIndicator()),
-    //   );
-    // }
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100),
+            ),
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Icon(
+                Icons.arrow_back_ios,
+                size: 35,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,38 +93,60 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  Container(
-                    width: double.infinity,
-                    height: getContainerWidth(context) * 0.6,
-                    color: Colors.red,
-                    child: YoutubePlayer(
-                      controller: controller,
-                      showVideoProgressIndicator: false,
-                      progressIndicatorColor: Colors.transparent,
-                      bottomActions: [],
-                      controlsTimeOut: const Duration(seconds: 3),
-                    ),
-                  ),
+                  SizedBox(
+                      width: double.infinity,
+                      height: getContainerWidth(context) * 0.6,
+                      child: YoutubePlayer(
+                        controller: controller,
+                        showVideoProgressIndicator: false,
+                        progressIndicatorColor: Colors.transparent,
+                        bottomActions: [
+                          isMuted
+                              ? IconButton(
+                                  icon: const Icon(Icons.volume_off),
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    controller.unMute();
+
+                                    print(
+                                        'Muted: ${controller.value.isPlaying}');
+
+                                    setState(() {
+                                      isMuted = false;
+                                    });
+                                  },
+                                )
+                              : IconButton(
+                                  icon: const Icon(Icons.volume_up),
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    controller.mute();
+                                    print(
+                                        'unMuted: ${controller.value.isPlaying}');
+
+                                    setState(() {
+                                      isMuted = true;
+                                    });
+                                  },
+                                ),
+                        ],
+                        controlsTimeOut: const Duration(seconds: 3),
+                      )),
                   // Boton de regreso
+
                   Positioned(
-                    top: 10,
-                    left: 10,
-                    child: IconButton(
-                      color: Colors.white,
-                      icon: const Icon(Icons.arrow_back_ios, size: 35),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    top: getContainerWidth(context) * 0.6 - 50,
+                    top: getContainerWidth(context) * 0.6 - 55, //50
                     left: 0,
                     right: 0, // Centrado
-                    child: CircleAvatar(
-                      radius: 80,
-                      backgroundImage: NetworkImage(
-                        candidate.image,
+                    child: Center(
+                      child: ClipOval(
+                        child: Image.network(
+                          repeat: ImageRepeat.noRepeat,
+                          candidate.imageAvatarBig,
+                          width: ScreenUtil().setWidth(105),
+                          height: ScreenUtil().setHeight(135),
+                          fit: BoxFit.contain, // Ajuste de la imagen
+                        ),
                       ),
                     ),
                   ),
@@ -126,7 +174,7 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
-                    CustomChip(
+                    RoleChip(
                         color: Theme.of(context).colorScheme.primary,
                         label: candidate.role,
                         labelColor: Colors.white),
@@ -138,53 +186,66 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                           .withOpacity(0.8),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 17, vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              final String url =
-                                  Uri.encodeFull(candidate.facebook!);
-
-                              launchURL(url);
-                            },
-                            child: Image.asset(
-                              'lib/assets/fb.png', // Ruta de la imagen
-                              width: 40, // Establece el ancho
-                              height: 40, // Establece la altura
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              final String url =
-                                  Uri.encodeFull(candidate.instagram!);
-
-                              launchURL(url);
-                            },
-                            child: Image.asset(
-                              'lib/assets/insta.png', // Ruta de la imagen
-                              width: 40, // Establece el ancho
-                              height: 40, // Establece la altura
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              final String url =
-                                  Uri.encodeFull(candidate.tiktok!);
-
-                              launchURL(url);
-                            },
-                            child: Image.asset(
-                              'lib/assets/tiktok.png', // Ruta de la imagen
-                              width: 40, // Establece el ancho
-                              height: 40, // Establece la altura
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 17, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: existAllSocialNetworks()
+                              ? MainAxisAlignment.spaceBetween
+                              : MainAxisAlignment.center,
+                          children: [
+                            if (candidate.facebook != null)
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: InkWell(
+                                  onTap: () {
+                                    final String url =
+                                        Uri.encodeFull(candidate.facebook!);
+                                    launchURL(url);
+                                  },
+                                  child: Image.asset(
+                                    'lib/assets/fb.png', // Ruta de la imagen
+                                    width: 40, // Establece el ancho
+                                    height: 40, // Establece la altura
+                                  ),
+                                ),
+                              ),
+                            if (candidate.instagram != null)
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: InkWell(
+                                  onTap: () {
+                                    final String url =
+                                        Uri.encodeFull(candidate.instagram!);
+                                    launchURL(url);
+                                  },
+                                  child: Image.asset(
+                                    'lib/assets/insta.png', // Ruta de la imagen
+                                    width: 40, // Establece el ancho
+                                    height: 40, // Establece la altura
+                                  ),
+                                ),
+                              ),
+                            if (candidate.tiktok != null)
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: InkWell(
+                                  onTap: () {
+                                    final String url =
+                                        Uri.encodeFull(candidate.tiktok!);
+                                    launchURL(url);
+                                  },
+                                  child: Image.asset(
+                                    'lib/assets/tiktok.png', // Ruta de la imagen
+                                    width: 40, // Establece el ancho
+                                    height: 40, // Establece la altura
+                                  ),
+                                ),
+                              ),
+                          ],
+                        )),
                     Divider(
                       color: Theme.of(context)
                           .colorScheme
@@ -194,43 +255,70 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
 
                     const SizedBox(height: 40),
 
+                    Text(
+                      candidate.resumen,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      textAlign: TextAlign.justify,
+                    ),
+
+                    const SizedBox(height: 40),
+
                     // Sección de formación académica
-                    DataSections(
-                      sectionTitle: "Academico",
-                      sectionData: candidate.academicFormation
-                          .map((e) =>
-                              CustomRow(icon: Icons.school_outlined, text: e))
-                          .toList(),
+                    Visibility(
+                      visible: candidate.visibleAcademico,
+                      child: DataSections(
+                        sectionTitle: "Formación Académica",
+                        sectionData: candidate.academicFormation
+                            .map((e) =>
+                                CustomRow(icon: Icons.school_outlined, text: e))
+                            .toList(),
+                      ),
                     ),
 
                     const SizedBox(height: 30),
-                    DataSections(
-                        sectionTitle: "Experiencia",
-                        sectionData: candidate.workExperience
-                            .map((e) =>
-                                CustomRow(icon: Icons.work_outline, text: e))
-                            .toList()),
+                    Visibility(
+                      visible: candidate.visibleExperiencia,
+                      child: DataSections(
+                          sectionTitle: "Experiencia Profesional",
+                          sectionData: candidate.workExperience
+                              .map((e) =>
+                                  CustomRow(icon: Icons.work_outline, text: e))
+                              .toList()),
+                    ),
 
                     const SizedBox(height: 30),
 
-                    DataSections(
-                        sectionTitle: "Investigaciones",
-                        sectionData: candidate.investigations!
-                            .map<Widget>(
-                              (e) => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    e.title,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(fontSize: 21),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                      e
-                                          .publicationDate, // Assuming the correct getter is 'publicationDate'
+                    Visibility(
+                      visible: candidate.visibleInvestigaciones,
+                      child: DataSections(
+                          sectionTitle: "Publicaciones",
+                          sectionData: candidate.investigations!
+                              .map<Widget>(
+                                (e) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      e.title,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(fontSize: 21),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                        e
+                                            .publicationDate, // Assuming the correct getter is 'publicationDate'
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary,
+                                            )),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      e.description,
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium!
@@ -238,32 +326,22 @@ class _CandidateDescriptionPageState extends State<CandidateDescriptionPage> {
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .tertiary,
-                                          )),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    e.description,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
+                                          ),
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 100),
+                                        child: Divider(
                                           color: Theme.of(context)
                                               .colorScheme
-                                              .tertiary,
-                                        ),
-                                  ),
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 100),
-                                      child: Divider(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary
-                                            .withOpacity(0.8),
-                                      )),
-                                ],
-                              ),
-                            )
-                            .toList()),
+                                              .tertiary
+                                              .withOpacity(0.8),
+                                        )),
+                                  ],
+                                ),
+                              )
+                              .toList()),
+                    ),
 
                     // Sección de experiencia laboral
                   ],

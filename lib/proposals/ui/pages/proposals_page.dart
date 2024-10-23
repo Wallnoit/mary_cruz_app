@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:mary_cruz_app/core/enums/sidebar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_appbar.dart';
 import 'package:mary_cruz_app/core/ui/components/custom_containers/info_container.dart';
 import 'package:mary_cruz_app/core/ui/components/sidebar.dart';
 import 'package:mary_cruz_app/proposals/models/proposal_model.dart';
-import 'package:mary_cruz_app/proposals/models/proposed_approach_model.dart';
-import '../../../core/data/faculties_datasource.dart';
-import '../../../core/models/faculties_model.dart';
 import '../../../core/ui/components/hearts_score.dart';
 import '../../controllers/filter_controller.dart';
 import '../../data/proposals_datasource.dart';
-import '../../data/proposed_approach_datasource.dart';
 import '../widgets/filter_dialog.dart';
 
 class ProposalsPage extends StatefulWidget {
@@ -113,7 +107,6 @@ class _ProposalsPageState extends State<ProposalsPage> {
               ),
             ),
 
-            // Expanded widget para permitir que la lista sea desplazable
             Expanded(
               child: RefreshIndicator(
                 onRefresh: _refreshProposals,
@@ -187,7 +180,9 @@ class _ProposalsPageState extends State<ProposalsPage> {
                 ],
               ),
               const Divider(),
-              HeartsScore(),
+              HeartsScore(
+                proposal: proposalItem,
+              ),
             ],
           ),
         );

@@ -87,21 +87,27 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
               SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
-                      width: getContainerWidth(context) * 0.6,
-                      child: UserAccountsDrawerHeader(
-                          accountName: const Text(
-                            '',
-                          ),
-                          accountEmail: const Text(
-                            '',
-                          ),
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              image: const DecorationImage(
-                                image: AssetImage('lib/assets/logo3.png'),
-                                fit: BoxFit.cover,
-                              ))),
+                    InkWell(
+                      onTap: () {
+                        Get.offNamed("/");
+                      },
+                      splashColor: Colors.transparent,
+                      child: SizedBox(
+                        width: getContainerWidth(context) * 0.6,
+                        child: UserAccountsDrawerHeader(
+                            accountName: const Text(
+                              '',
+                            ),
+                            accountEmail: const Text(
+                              '',
+                            ),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surface,
+                                image: const DecorationImage(
+                                  image: AssetImage('lib/assets/logo2.png'),
+                                  fit: BoxFit.cover,
+                                ))),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -127,7 +133,7 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       icon: Icons.assignment_outlined,
                       isSelected: selectIndex == SideBar.proposals,
                       isVisible: true,
-                          // controller.listSidebarOptions[2].isVisible ?? false,
+                      // controller.listSidebarOptions[2].isVisible ?? false,
                       onTap: () => Get.offNamed("proposals"),
                     ),
                     RowSidebar(
@@ -169,6 +175,22 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                       isVisible:
                           controller.listSidebarOptions[7].isVisible ?? false,
                       onTap: () => Get.offNamed("survey"),
+                    ),
+                    RowSidebar(
+                      title: controller.listSidebarOptions[8].title ?? '',
+                      icon: Icons.games,
+                      isSelected: selectIndex == SideBar.play,
+                      isVisible:
+                          controller.listSidebarOptions[8].isVisible ?? false,
+                      onTap: () => Get.offNamed("play"),
+                    ),
+                    RowSidebar(
+                      title: controller.listSidebarOptions[9].title ?? '',
+                      icon: Icons.emoji_emotions,
+                      isSelected: selectIndex == SideBar.challenges,
+                      isVisible:
+                      controller.listSidebarOptions[9].isVisible ?? false,
+                      onTap: () => Get.offNamed("challenges"),
                     ),
                     SizedBox(
                       height: 90.h,
