@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../core/data/users_datasource.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/utils/cellphone_info.dart';
@@ -215,10 +217,30 @@ class _StepperDialogState extends State<StepperDialog> {
                                     .copyWith(fontWeight: FontWeight.bold),
                               ),
                               TextSpan(
-                                text:
-                                    'En la sección "Compartir con personas y grupos", introduce el correo electrónico del destinatario que deseas que tenga acceso al video. Asegúrate de configurar el permiso como "Puede ver" para que solo pueda visualizarlo, sin posibilidad de editar.',
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
+                                children: [
+                                  TextSpan(
+                                    text: 'En la sección "Compartir con personas y grupos", introduce el correo: ',
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  TextSpan(
+                                    text: 'marycruzuta@gmail.com',
+                                    style: TextStyle(
+                                      color: Colors.blue, // Cambia el color si lo deseas
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        launchUrl(Uri.parse('mailto:marycruzuta@gmail.com'));
+                                      },
+                                  ),
+                                  TextSpan(
+                                    text:
+                                    ' del destinatario que deseas que tenga acceso al video. Asegúrate de configurar el permiso como "Puede ver" para que solo pueda visualizarlo, sin posibilidad de editar.',
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ],
+                              )
+
                             ],
                           ),
                         ),
