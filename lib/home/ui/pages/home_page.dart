@@ -165,10 +165,10 @@ class _HomePageState extends State<HomePage> {
       if (!diaryController.isLoading.value && diaryController.error.value) {
         return const Scaffold(
           appBar: CustomAppbar(
-            title: 'Candidatos',
+            title: 'Home',
           ),
           drawer: GlobalSidebar(
-            selectedIndex: SideBar.candidates,
+            selectedIndex: SideBar.home,
           ),
           body: Center(
             child: Column(
