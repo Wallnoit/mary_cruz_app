@@ -35,7 +35,7 @@ class UsersDataSource {
     }
   }
 
-  Future<UserModel> getUserData({required String idDispositivo}) async {
+  Future<UserModel> getUserDataToComments({required String idDispositivo}) async {
     print('Obteniendo datos de usuario');
     try {
       final response = await supabase
@@ -45,6 +45,30 @@ class UsersDataSource {
           .filter('facultad', 'not.is', null);
       print('esta es la response');
       print(response);
+      if (response == null || response.isEmpty) {
+        print('No se encontraron datos para el usuario con el id_dispositivo proporcionado');
+        throw NotFoundFailure(errorMessage: 'Usuario no encontrado');
+      }
+      print('Datos de usuario obtenidos correctamente');
+      return UserModel.fromJson(response.first);
+    } catch (e) {
+      if (e is NotFoundFailure) {
+        print(e.errorMessage);
+        throw e;
+      } else {
+        print(e);
+        throw ServerFailure(errorMessage: 'Error en servidor al obtener datos del usuario');
+      }
+    }
+  }
+
+  Future<UserModel> getUserData({required String idDispositivo}) async {
+    print('Obteniendo datos de usuario');
+    try {
+      final response = await supabase
+          .from('usuarios')
+          .select()
+          .eq('id_dispositivo', idDispositivo);
       if (response == null || response.isEmpty) {
         print('No se encontraron datos para el usuario con el id_dispositivo proporcionado');
         throw NotFoundFailure(errorMessage: 'Usuario no encontrado');

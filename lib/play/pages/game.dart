@@ -1,9 +1,16 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:mary_cruz_app/core/global_controllers/config_controller.dart';
 import 'package:mary_cruz_app/play/pages/game_logic.dart';
 import 'package:mary_cruz_app/play/pages/widgets/board.dart';
+
+import 'package:http/http.dart' as http;
+
 
 class Game extends StatefulWidget {
   Game({Key? key}) : super(key: key);
@@ -23,6 +30,10 @@ class _GameState extends State<Game> {
   int startTime = 60;
   String level = '';
   var complete = 0;
+
+  String phraseGeneralShow = '"Unidos lo haremos posible"';
+
+
   void startTimer(BuildContext context) {
     if (startTime == 0) {}
     const oneSecond = Duration(seconds: 1);
@@ -48,7 +59,51 @@ class _GameState extends State<Game> {
     super.initState();
 
     startTimer(context);
+    getInfoPhrase();
+   
   }
+
+
+  getInfoPhrase()async{
+     bool isConnected = await checkConnectivity();
+
+    if (isConnected) {
+
+      ConfigController configController =
+        Get.put(ConfigController(), permanent: true);
+
+
+      await configController.getPhraseGeneral();
+
+      phraseGeneralShow = configController.phraseGame.value;
+
+    }
+  }
+
+
+  Future<bool> checkConnectivity() async {
+    List connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult.length == 0) {
+      return false;
+    }
+
+    if(connectivityResult[0] == ConnectivityResult.mobile ||
+        connectivityResult[0] == ConnectivityResult.wifi){
+          return await checkNet();
+      }
+
+    return false;
+  } 
+
+
+  Future<bool> checkNet()async{
+   try {
+    final response = await http.get(Uri.parse('https://www.google.com'));
+    return response.statusCode == 200; // Comprobamos si la respuesta fue exitosa
+  } catch (e) {
+    return false; // Si hay un error en la petición
+  }
+}
 
   @override
   void didChangeDependencies() {
@@ -63,6 +118,8 @@ class _GameState extends State<Game> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.width+MediaQuery.of(context).size.width/2.5;
+
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -70,7 +127,7 @@ class _GameState extends State<Game> {
           Padding(
             padding:  EdgeInsets.only(bottom: ScreenUtil().setHeight(5)),
             child: Text(
-                          'Sueña, crea, innova',
+                          phraseGeneralShow,
                           style:
                               Theme.of(context).textTheme.displayMedium!.copyWith(
                                     fontWeight: FontWeight.w500,
@@ -94,16 +151,16 @@ class _GameState extends State<Game> {
             ],
           ),
           SizedBox(
-            height: screenWidth,
+            height: screenHeight,
             width: screenWidth,
             child: GridView.builder(
                 itemCount: _game.cardsImg!.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: _game.axiCount,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 15,
                 ),
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(8),
                 itemBuilder: (context, index) {
                   return GestureDetector(
                       onTap:  _game.isEnabled[index] ?() {
@@ -172,16 +229,39 @@ class _GameState extends State<Game> {
                         // _game.matchCheck
                       }:null,
                       child: Container(
-                        decoration: BoxDecoration(
+                         decoration: BoxDecoration(
+                              shape: BoxShape.circle, // Forma circular
+                              border: Border.all(
+                                color: _game.isEnabled[index] ? Colors.black : Theme.of(context).primaryColor, // Color de la línea
+                                width: _game.isEnabled[index] ? 1 : 4, // Grosor del borde
+                              ),
+                            ),
+                          child: Center(
+                                child: CircleAvatar(
+                                  radius: 60.0, // Ajusta el tamaño del avatar
+                                  backgroundColor: Color(0xFFE2E4E3), // Color de fondo
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      _game.cardsImg![index], // URL de la imagen
+                                      width: ScreenUtil().setWidth(110),
+                                      height: ScreenUtil().setHeight(180),
+                                      fit: BoxFit.contain, // Ajuste de la imagen
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+
+                        /*decoration: BoxDecoration(
                           border: Border.all(
                             color: _game.isEnabled[index] ? Colors.black : Theme.of(context).primaryColor, // Color de la línea
                             width: _game.isEnabled[index] ? 1 : 3, // Grosor de la línea
                           ),
                             //color:  _game.isEnabled[index] ? Colors.white : Colors.grey,
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(8),
                             image: DecorationImage(
                                 image: AssetImage(_game.cardsImg![index]),
-                                fit: BoxFit.cover)),
+                                fit: BoxFit.cover)),*/
                       ));
                 }),
           ),

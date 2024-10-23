@@ -184,6 +184,14 @@ class _GlobalSidebarState extends State<GlobalSidebar> {
                           controller.listSidebarOptions[8].isVisible ?? false,
                       onTap: () => Get.offNamed("play"),
                     ),
+                    RowSidebar(
+                      title: controller.listSidebarOptions[9].title ?? '',
+                      icon: Icons.emoji_emotions,
+                      isSelected: selectIndex == SideBar.challenges,
+                      isVisible:
+                      controller.listSidebarOptions[9].isVisible ?? false,
+                      onTap: () => Get.offNamed("challenges"),
+                    ),
                     SizedBox(
                       height: 90.h,
                     ),
