@@ -1,15 +1,12 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
+import 'package:flutter/material.dart'; 
 import '../../../core/data/users_datasource.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/utils/cellphone_info.dart';
 import '../../data/challenges_datasource.dart';
 import '../../models/challenge_model.dart';
-import '../../../core/errors/failures.dart'; // Asegúrate de importar DuplicateFailure
+import '../../../core/errors/failures.dart';
 
 class StepperDialog extends StatefulWidget {
-
   const StepperDialog({super.key});
 
   @override
@@ -41,7 +38,8 @@ class _StepperDialogState extends State<StepperDialog> {
   Future<void> onSaveChallenge() async {
     try {
       String deviceInfo = await getDeviceId();
-      final UserModel user = await UsersDataSource().getUserData(idDispositivo: deviceInfo);
+      final UserModel user =
+          await UsersDataSource().getUserData(idDispositivo: deviceInfo);
       final ChallengeUserModel challengeUser = ChallengeUserModel(
         idUsuario: user.id ?? '',
         nombre: _nameController.text,
@@ -86,17 +84,14 @@ class _StepperDialogState extends State<StepperDialog> {
               padding: const EdgeInsets.only(bottom: 8),
               child: Text(
                 _errorMessage!,
-                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
               ),
             ),
           Expanded(
             child: Stepper(
               currentStep: _currentStep,
-              onStepTapped: (int step) {
-                setState(() {
-                  _currentStep = step;
-                });
-              },
+              onStepTapped: null, // Deshabilitar el avance al tocar
               onStepContinue: () {
                 // Valida los formularios en cada paso antes de continuar
                 if (_currentStep == 1) {
@@ -151,7 +146,8 @@ class _StepperDialogState extends State<StepperDialog> {
                   title: Text('Cómo cumplir los retos?'),
                   content: Text('Descripción del paso 1'),
                   isActive: _currentStep >= 0,
-                  state: _currentStep > 0 ? StepState.complete : StepState.indexed,
+                  state:
+                      _currentStep > 0 ? StepState.complete : StepState.indexed,
                 ),
                 // Paso 2 - Formulario de información
                 Step(
@@ -163,7 +159,8 @@ class _StepperDialogState extends State<StepperDialog> {
                       child: Column(
                         children: [
                           TextFormField(
-                            controller: _nameController, // Controlador del nombre
+                            controller:
+                                _nameController, // Controlador del nombre
                             decoration: InputDecoration(labelText: 'Nombre'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -173,9 +170,12 @@ class _StepperDialogState extends State<StepperDialog> {
                             },
                           ),
                           TextFormField(
-                            controller: _phoneController, // Controlador del teléfono
-                            keyboardType: TextInputType.phone, // Teclado numérico
-                            decoration: InputDecoration(labelText: 'Número de teléfono'),
+                            controller:
+                                _phoneController, // Controlador del teléfono
+                            keyboardType:
+                                TextInputType.phone, // Teclado numérico
+                            decoration: InputDecoration(
+                                labelText: 'Número de teléfono'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Por favor ingresa tu número de teléfono';
@@ -192,7 +192,8 @@ class _StepperDialogState extends State<StepperDialog> {
                     ),
                   ),
                   isActive: _currentStep >= 1,
-                  state: _currentStep > 1 ? StepState.complete : StepState.indexed,
+                  state:
+                      _currentStep > 1 ? StepState.complete : StepState.indexed,
                 ),
                 // Paso 3 - Formulario del enlace
                 Step(
@@ -204,13 +205,15 @@ class _StepperDialogState extends State<StepperDialog> {
                       child: Column(
                         children: [
                           TextFormField(
-                            controller: _urlController, // Controlador del enlace
-                            decoration: InputDecoration(labelText: 'Url Google Drive'),
+                            controller:
+                                _urlController, // Controlador del enlace
+                            decoration:
+                                InputDecoration(labelText: 'Url Google Drive'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Por favor ingresa el link';
                               } else if (!RegExp(
-                                  r'^(https?:\/\/)?([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+.*)$')
+                                      r'^(https?:\/\/)?([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+.*)$')
                                   .hasMatch(value)) {
                                 return 'Por favor ingresa un URL válido';
                               }
@@ -222,7 +225,8 @@ class _StepperDialogState extends State<StepperDialog> {
                     ),
                   ),
                   isActive: _currentStep >= 2,
-                  state: _currentStep == 2 ? StepState.editing : StepState.indexed,
+                  state:
+                      _currentStep == 2 ? StepState.editing : StepState.indexed,
                 ),
               ],
             ),
