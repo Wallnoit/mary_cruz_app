@@ -165,7 +165,9 @@ class _HeartsScoreState extends State<HeartsScore> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Califica esta noticia', style: Theme.of(context).textTheme.titleMedium),
+          title: widget.proposal != null
+              ? Text('Califica esta propuesta', style: Theme.of(context).textTheme.titleMedium)
+              : Text('Califica esta noticia' , style: Theme.of(context).textTheme.titleMedium),
           content: StatefulBuilder(
             builder: (context, setState) {
               return Column(
@@ -212,6 +214,28 @@ class _HeartsScoreState extends State<HeartsScore> {
                         Expanded(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).colorScheme.secondary,
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: _isLoading ? null : () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              'Cancelar',
+                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context).primaryColor,
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               shape: RoundedRectangleBorder(
@@ -254,28 +278,6 @@ class _HeartsScoreState extends State<HeartsScore> {
                             },
                             child: Text(
                               'Guardar',
-                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).colorScheme.secondary,
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            onPressed: _isLoading ? null : () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text(
-                              'Cancelar',
                               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                 color: Colors.white,
                                 fontSize: 18,
