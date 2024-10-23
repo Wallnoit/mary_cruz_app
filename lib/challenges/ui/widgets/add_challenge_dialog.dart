@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import '../../../core/data/users_datasource.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/utils/cellphone_info.dart';
@@ -144,7 +144,115 @@ class _StepperDialogState extends State<StepperDialog> {
                 // Paso 1
                 Step(
                   title: Text('Cómo cumplir los retos?'),
-                  content: Text('Descripción del paso 1'),
+                  content: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Instrucciones para Compartir tu Video:',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 8),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '1. ',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              TextSpan(
+                                text: 'Sube tu video a Google Drive. ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text:
+                                    'Asegúrate de que el archivo esté en formato compatible y que no exceda el límite de tamaño permitido.',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '2. ',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              TextSpan(
+                                text: 'Ajusta la configuración de privacidad: ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text:
+                                    'Haz clic derecho en el video, selecciona "Compartir", y en "Obtener enlace", cambia la opción a "Cualquier persona con el enlace" para que no sea público.',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '3. ',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              TextSpan(
+                                text: 'Especifica el acceso: ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text:
+                                    'En la sección "Compartir con personas y grupos", introduce el correo electrónico del destinatario que deseas que tenga acceso al video. Asegúrate de configurar el permiso como "Puede ver" para que solo pueda visualizarlo, sin posibilidad de editar.',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '4. ',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              TextSpan(
+                                text: 'Envía la invitación: ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text:
+                                    'Haz clic en "Enviar" para compartir el enlace de forma segura.',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '¡Listo! Tu video estará accesible solo para el correo seleccionado.',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
+                  ),
                   isActive: _currentStep >= 0,
                   state:
                       _currentStep > 0 ? StepState.complete : StepState.indexed,
