@@ -19,11 +19,17 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:http/http.dart' as http;
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   bool isConnected = await checkConnectivity();
+
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.white, // Cambia el color aquí
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
 
   if (isConnected) {
     // Internet is available, initialize Firebase
@@ -64,25 +70,23 @@ Future<bool> checkConnectivity() async {
     return false;
   }
 
-  if(connectivityResult[0] == ConnectivityResult.mobile ||
-      connectivityResult[0] == ConnectivityResult.wifi){
-        return await checkNet();
-    }
+  if (connectivityResult[0] == ConnectivityResult.mobile ||
+      connectivityResult[0] == ConnectivityResult.wifi) {
+    return await checkNet();
+  }
 
   return false;
-
-
 }
 
-Future<bool> checkNet()async{
-   try {
+Future<bool> checkNet() async {
+  try {
     final response = await http.get(Uri.parse('https://www.google.com'));
-    return response.statusCode == 200; // Comprobamos si la respuesta fue exitosa
+    return response.statusCode ==
+        200; // Comprobamos si la respuesta fue exitosa
   } catch (e) {
     return false; // Si hay un error en la petición
   }
 }
-
 
 class MyHttpOverrides extends HttpOverrides {
   @override

@@ -163,11 +163,11 @@ class _HomePageState extends State<HomePage> {
       }
 
       if (!diaryController.isLoading.value && diaryController.error.value) {
-        return Scaffold(
-          appBar: const CustomAppbar(
+        return const Scaffold(
+          appBar: CustomAppbar(
             title: 'Home',
           ),
-          drawer: const GlobalSidebar(
+          drawer: GlobalSidebar(
             selectedIndex: SideBar.home,
           ),
           body: Center(
@@ -180,12 +180,12 @@ class _HomePageState extends State<HomePage> {
                       width: 200,
                       height: 150,
                     ),*/
-                const Text(
+                Text(
                   'Error de conexión',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 5),
-                const Text('Intentelo más tarde.')
+                SizedBox(height: 5),
+                Text('Intentelo más tarde.')
               ],
             ),
           ),
@@ -249,6 +249,7 @@ class _HomePageState extends State<HomePage> {
                       child: ListView.builder(
                         itemCount: diaryController.sectionsPerMonth.length,
                         itemBuilder: (context, index) {
+                          
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 25),
                             child: SectionPerMonth(
