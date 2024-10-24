@@ -32,6 +32,7 @@ class _GameState extends State<Game> {
   var complete = 0;
 
   String phraseGeneralShow = '"Unidos lo haremos posible"';
+  String msgGeneralGame = "";
 
 
   void startTimer(BuildContext context) {
@@ -59,6 +60,8 @@ class _GameState extends State<Game> {
     super.initState();
 
     startTimer(context);
+    msgGeneralGame = "Tu puntuación fue de: $score";
+
     getInfoPhrase();
    
   }
@@ -74,9 +77,10 @@ class _GameState extends State<Game> {
 
 
       await configController.getPhraseGeneral();
+      await configController.getMsgPlayGeneral();
 
       phraseGeneralShow = configController.phraseGame.value;
-
+      msgGeneralGame = configController.msgGame.value;
     }
   }
 
@@ -200,8 +204,8 @@ class _GameState extends State<Game> {
                                 //_game.isEnabled = [true, true, true, true, true, true,true, true, true, true, true, true,true, true, true, true, true, true, true];
                                   _game.isEnabled = [true, true, true, true, false, true,true, true, true /*, true, true, true,true, true, true, true, true, true, true*/];
         
-                                _showDialog(context, 'Ganaste',
-                                    'Tu puntuación fue de: $score \nrecueda para seguir creciendo tecnològicamente vota todo \nUnión y futuro universitario');
+                                _showDialog(context, 'Ganaste', 
+                                    'Tu puntuación fue de: $score \n$msgGeneralGame'); 
                                 timer.cancel();
                               }
                             } else {

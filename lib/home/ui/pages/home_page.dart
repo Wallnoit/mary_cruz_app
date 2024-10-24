@@ -163,11 +163,11 @@ class _HomePageState extends State<HomePage> {
       }
 
       if (!diaryController.isLoading.value && diaryController.error.value) {
-        return const Scaffold(
-          appBar: CustomAppbar(
+        return Scaffold(
+          appBar: const CustomAppbar(
             title: 'Home',
           ),
-          drawer: GlobalSidebar(
+          drawer: const GlobalSidebar(
             selectedIndex: SideBar.home,
           ),
           body: Center(
@@ -175,12 +175,17 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                /*Image.asset(
+                      'lib/assets/logo2.png',
+                      width: 200,
+                      height: 150,
+                    ),*/
+                const Text(
                   'Error de conexión',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 5),
-                Text('Intentelo más tarde.')
+                const SizedBox(height: 5),
+                const Text('Intentelo más tarde.')
               ],
             ),
           ),
