@@ -29,6 +29,7 @@ class _HeartsScoreState extends State<HeartsScore> {
   late int _randomVotes;
 
   Future<void> onSaveNewsVote({required int rate}) async{
+    print('Guardando voto de noticia');
     try{
       String deviceInfo = await getDeviceId();
       final UserModel user = await UsersDataSource().getUserData(idDispositivo: deviceInfo);

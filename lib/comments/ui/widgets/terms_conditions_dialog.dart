@@ -43,28 +43,6 @@ class _TermsConditionsDialogState extends State<TermsConditionsDialog> {
                   Expanded(
                       child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    onPressed: () async {
-                      Navigator.of(context).pop();
-                      widget.onAccept();
-                    },
-                    child: Text(
-                      'Confirmar',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: Colors.white, fontSize: 18),
-                    ),
-                  )),
-                  SizedBox(width: 10),
-                  Expanded(
-                      child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       shape: RoundedRectangleBorder(
@@ -82,6 +60,29 @@ class _TermsConditionsDialogState extends State<TermsConditionsDialog> {
                           ?.copyWith(color: Colors.white, fontSize: 18),
                     ),
                   )),
+                  SizedBox(width: 10),
+                  Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () async {
+                          Navigator.of(context).pop();
+                          widget.onAccept();
+                        },
+                        child: Text(
+                          'Confirmar',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall
+                              ?.copyWith(color: Colors.white, fontSize: 18),
+                        ),
+                      )),
+
                 ],
               ),
             ),
