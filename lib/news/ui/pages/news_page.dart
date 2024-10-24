@@ -83,7 +83,20 @@ class _NewsPageState extends State<NewsPage> {
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
             : _news.isEmpty
-            ? const Center(child: Text('No hay noticias disponibles'))
+            ? const Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Error de conexión',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 5),
+              Text('Intentelo más tarde.')
+            ],
+          ),
+        )
             : RefreshIndicator(
           onRefresh: _refreshNews,
           child: _buildNewsList(),

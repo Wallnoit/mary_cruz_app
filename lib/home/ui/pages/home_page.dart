@@ -165,16 +165,21 @@ class _HomePageState extends State<HomePage> {
       if (!diaryController.isLoading.value && diaryController.error.value) {
         return const Scaffold(
           appBar: CustomAppbar(
-            title: 'Candidatos',
+            title: 'Home',
           ),
           drawer: GlobalSidebar(
-            selectedIndex: SideBar.candidates,
+            selectedIndex: SideBar.home,
           ),
           body: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                /*Image.asset(
+                      'lib/assets/logo2.png',
+                      width: 200,
+                      height: 150,
+                    ),*/
                 Text(
                   'Error de conexión',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -206,7 +211,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Image.asset(
-                      'lib/assets/logo.png',
+                      'lib/assets/logo2.png',
                       width: 200,
                       height: 150,
                     ),
@@ -244,6 +249,7 @@ class _HomePageState extends State<HomePage> {
                       child: ListView.builder(
                         itemCount: diaryController.sectionsPerMonth.length,
                         itemBuilder: (context, index) {
+                          
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 25),
                             child: SectionPerMonth(
