@@ -41,7 +41,7 @@ class _TermsConditionsDialogState extends State<TermsConditionsDialog> {
                 GestureDetector(
                   onTap: () async {
                     final Uri url = Uri.parse(
-                        'https://tusitio.com/terminos'); // Reemplaza con tu URL
+                        'https://drive.google.com/file/d/1dsvCwmLiYSv3qRY5E67yQDOFHaUgSPBu/view?usp=share_link'); // Reemplaza con tu URL
                     if (await canLaunchUrl(url)) {
                       await launchUrl(url);
                     } else {
