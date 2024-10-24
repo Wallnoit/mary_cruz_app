@@ -129,7 +129,20 @@ class _ProposalsPageState extends State<ProposalsPage> {
           body: _isLoading
               ? const Center(child: CircularProgressIndicator())
               : _proposals.isEmpty
-              ? const Center(child: Text('No hay propuestas disponibles'))
+              ? const Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Error de conexión',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 5),
+                Text('Intentelo más tarde.')
+              ],
+            ),
+          )
               : Column(
             children: [
               Padding(

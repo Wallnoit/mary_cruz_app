@@ -85,7 +85,20 @@ class _ChallengesPageState extends State<ChallengesPage> {
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
             : _challenges.isEmpty
-            ? const Center(child: Text('No hay retos disponibles'))
+            ? const Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Error de conexión',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 5),
+              Text('Intentelo más tarde.')
+            ],
+          ),
+        )
             : RefreshIndicator(
           onRefresh: _refreshChallenges,
           child: _buildChallengesList(),
