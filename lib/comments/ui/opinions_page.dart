@@ -44,7 +44,7 @@ class OpinionsPageState extends State<OpinionsPage> {
   List<DropdownData> personTypeData = [
     DropdownData(value: 'ESTUDIANTE', display: 'Estudiante'),
     DropdownData(value: 'ADMINISTRATIVO', display: 'Administrativo'),
-    DropdownData(value: 'PROFESOR', display: 'Profesor'),
+    DropdownData(value: 'DOCENTE', display: 'Docente'),
   ];
 
   List<DropdownData> genreData = [
